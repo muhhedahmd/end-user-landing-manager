@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-// @ts-expect-error
 import "./globals.css";
 import Header from "@/composnents/Header/header";
 import { CompanyInfo } from "@/types/schema";

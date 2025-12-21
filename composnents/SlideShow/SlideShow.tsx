@@ -35,10 +35,6 @@ async function fetchSlideShows({ skip, take }: { skip: number, take: number }): 
 }
 
 
-
-
-
-
 async function SlideShowsProd() {
     const slideShows = await fetchSlideShows({ skip: 0, take: ITEMS_PER_PAGE })
     if (slideShows.status === "error" || !slideShows) return
