@@ -1,0 +1,96 @@
+import Link from "next/link"
+import HeaderClient from "./header-client"
+import Image from "next/image"
+
+interface CompanyInfo {
+  name: string
+  logo?: {
+    url: string
+    alt?: string
+    height?: number,
+    width?: number
+    blurHash?: string
+  }
+}
+
+export const dynamic = "force-static"
+
+async function getCompanyInfo(): Promise<CompanyInfo | null> {
+  try {
+    const res = await fetch("http://localhost:5000/api/company-info", {
+      cache: "force-cache",
+      next: { revalidate: 3600 },
+    })
+
+    if (!res.ok) return null
+    const json = await res.json()
+    return json?.data ?? null
+  } catch {
+    return null
+  }
+}
+
+export default async function Header() {
+  const companyInfo = await getCompanyInfo()
+
+  const navItems = [
+    { label: "Services", href: "#services" },
+    { label: "Portfolio", href: "#portfolio" },
+    { label: "Team", href: "#team" },
+    { label: "Blog", href: "#blog" },
+    { label: "Features", href: "#features" },
+    { label: "Pricing", href: "#pricing" },
+    { label: "About", href: "#about" },
+    { label: "Contact", href: "#contact" },
+  ]
+
+  return (
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
+      <div className="container mx-auto h-16 flex items-center justify-between px-4">
+        <Link href="/" className="flex items-center gap-2">
+          {companyInfo?.logo ? (
+            <Image
+            src={companyInfo.logo.url}
+            width={8}
+            height={8}
+            alt={companyInfo.logo.alt || companyInfo.name}
+            className="h-8 w-8 object-contain"
+            
+            />
+            // <ImageWithBlurHash 
+            // image={ { 
+            //   className: "h-8 w-8 object-contain",
+            //   alt : companyInfo.logo.alt || companyInfo.name,
+            //   ...companyInfo?.logo
+            // }}
+            // />
+          ) : (
+            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold">
+              {companyInfo?.name?.charAt(0) ?? "V"}
+            </div>
+          )}
+          <span className="font-semibold hidden sm:inline">
+            {companyInfo?.name ?? "Brand"}
+          </span>
+        </Link>
+
+        <nav className="hidden md:flex items-center gap-1">
+          {navItems.map(item => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="px-4 py-2 text-sm font-medium hover:text-primary transition"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        <HeaderClient navItems={navItems} />
+      </div>
+    </header>
+  )
+}
+
+
+// components/layout/HeaderClient.tsx
