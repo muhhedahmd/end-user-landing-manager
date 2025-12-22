@@ -4,6 +4,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/composnents/Header/header";
 import { CompanyInfo } from "@/types/schema";
+import {AnalyticsProvider} from "@/providers/analytic-provider";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -94,7 +96,10 @@ export default function RootLayout({
       >
         <Header />
         <main>
+          <AnalyticsProvider>
+
           {children}
+          </AnalyticsProvider>
         </main>
       </body>
     </html>

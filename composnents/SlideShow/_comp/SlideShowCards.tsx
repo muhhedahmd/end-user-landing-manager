@@ -9,7 +9,7 @@ import Link from "next/link"
 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const ServiceCard = ({ data, imaged = false, splitcarousel  , story }: { story?: boolean, data: any, imaged?: boolean, splitcarousel?: boolean }) => {
+export const ServiceCard = ({ data, imaged = false, splitcarousel, story }: { story?: boolean, data: any, imaged?: boolean, splitcarousel?: boolean }) => {
     const DataToRender = data?.name ? data : data.data
 
 
@@ -133,7 +133,7 @@ export const ServiceCard = ({ data, imaged = false, splitcarousel  , story }: { 
             </motion.article>
         )
     }
-    else return(<motion.article
+    else return (<motion.article
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -234,8 +234,134 @@ export const ServiceCard = ({ data, imaged = false, splitcarousel  , story }: { 
 }
 
 
-export const ClientCard = ({ data }: { data: ClientWithRelationsSlide }) => {
+export const ClientCard = ({ data, cube }: { data: ClientWithRelationsSlide, cube?: boolean }) => {
 
+    if (cube) {
+
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="group relative h-full  rounded-2xl bg-card border border-border hover:border-primary/50 transition-all duration-300"
+        >
+            {/* Main Image */}
+            {data.image && (
+
+                <div className="relative h-120  bg-muted/50 border-b border-border ">
+                    <BlurredImage
+                        imageUrl={data.image.url}
+                        height={data.image.height || 400}
+                        width={data.image.width || 400}
+                        alt={data.image.alt || data.name}
+                        blurhash={data.image.blurHash || ""}
+                        quality={100}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                    />
+
+                    {data.isFeatured && (
+                        <span className="absolute top-3 left-3 bg-accent text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full">
+                            Featured
+                        </span>
+                    )}
+                </div>
+            )}
+
+            {/* Logo Section */}
+            {data.logo && (
+                <div className=" bg-muted/30 flex  items-center justify-start gap-4 p-4 border-b border-border">
+                    <BlurredImage
+                        imageUrl={data.logo.url}
+                        height={data.logo.height || 100}
+                        width={data.logo.width || 100}
+                        alt={data.logo.alt || `${data.name} logo`}
+                        blurhash={data.logo.blurHash || ""}
+                        quality={100}
+                        className="max-w-5 max-h-5 w-5 h-5 object-contain rounded-md"
+                    />
+                    <motion.h3
+                        className="text-lg font-bold text-foreground font-sora"
+                        initial={{ opacity: 0, x: -10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.1 }}
+                    >
+                        {data.name}
+                    </motion.h3>
+                </div>
+            )}
+
+            <div className="p-6 space-y-3">
+
+
+                {data.industry && (
+                    <motion.span
+                        className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full font-inter"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                    >
+                        {data.industry}
+                    </motion.span>
+                )}
+
+                {data.description && (
+                    <motion.p
+                        className="text-sm text-muted-foreground leading-relaxed font-inter"
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.3 }}
+                    >
+                        {data.description}
+                    </motion.p>
+                )}
+
+                {data.richDescription && data.richDescription !== data.description && (
+                    <motion.div
+                        className="text-sm text-muted-foreground leading-relaxed font-inter prose prose-sm dark:prose-invert"
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.35 }}
+                        dangerouslySetInnerHTML={{ __html: data.richDescription }}
+                    />
+                )}
+
+                {data.website && (
+                    <motion.a
+                        href={data.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary/80 transition-colors font-inter group/link"
+                        initial={{ opacity: 0, x: -10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.4 }}
+                    >
+                        Visit Website
+                        <span className="group-hover/link:translate-x-1 transition-transform duration-200">→</span>
+                    </motion.a>
+                )}
+
+                {/* Status Footer */}
+                {(!data.isActive || data.type) && (
+                    <motion.div
+                        className="pt-3 mt-3 border-t border-border flex items-center justify-between text-xs text-muted-foreground font-inter"
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.5 }}
+                    >
+                        <span>Type: {data.type}</span>
+                        {!data.isActive && (
+                            <span className="text-destructive font-medium">Inactive</span>
+                        )}
+                    </motion.div>
+                )}
+            </div>
+        </motion.div>
+    }
     return <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -845,7 +971,6 @@ export const TestimonialCard = ({ data, minmal, }: { data: TestimonialWithImage,
 
 
 export const TeamMemberCard = ({ data }: { data: TeamMemberWithImage }) => {
-    console.log({ data })
     return (<motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -854,9 +979,14 @@ export const TeamMemberCard = ({ data }: { data: TeamMemberWithImage }) => {
     >
         <div className="relative h-56 overflow-hidden bg-muted">
             {data.image && (
-                <img
-                    src={data.image.url}
+                <BlurredImage
+
+                    imageUrl={data.image.url || ""}
+                    height={data.image.height || 400}
+                    width={data.image.width || 800}
                     alt={data.image.alt || data.name}
+                    blurhash={data.image.blurHash || ""}
+                    quality={100}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
             )}

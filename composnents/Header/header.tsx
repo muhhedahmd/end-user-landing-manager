@@ -37,7 +37,7 @@ export default async function Header() {
     { label: "Services", href: "#services" },
     { label: "Portfolio", href: "#portfolio" },
     { label: "Team", href: "#team" },
-    { label: "Blog", href: "#blog" },
+    { label: "Blog", href: "/blogs" },
     { label: "Features", href: "#features" },
     { label: "Pricing", href: "#pricing" },
     { label: "About", href: "#about" },

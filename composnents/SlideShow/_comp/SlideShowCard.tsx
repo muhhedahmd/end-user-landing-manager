@@ -2,6 +2,7 @@ import { CompositionType, SlideshowType } from "@/types/schema";
 import { SlideShow } from "@/types/slideShows";
 import { SlideHeader } from "./slideShowHeader";
 import { SlideshowCardClient } from "./SlideShowCardClient";
+import { cn } from "@/lib/utils";
 
 interface SlideshowCardProps {
   item: SlideShow;
@@ -23,6 +24,9 @@ export function SlideshowCard({
   const compositionType = CompositionType[item.composition as keyof typeof CompositionType];
   const slideShowType = SlideshowType[item.type as keyof typeof SlideshowType];
 
+  // const isContainer  = compositionType && (compositionType !== "SINGLE" || compositionType !== "CUBE")
+  const isCube  =  compositionType === "CUBE"
+  const isSingle  = compositionType === "SINGLE"
   
   return (
     <div
@@ -30,7 +34,7 @@ export function SlideshowCard({
         backgroundColor: bgColor,
         color: textColor,
       }}
-      className="rounded-lg duration-200 overflow-hidden w-full"
+      className={cn( "rounded-lg duration-200 overflow-hidden w-full " ,!isCube && !isSingle &&  "container mx-auto")}
     >
       {/* Server-rendered header */}
       <SlideHeader
@@ -39,11 +43,7 @@ export function SlideshowCard({
         description={item.description || ""}
         slideShowType={slideShowType}
       />
-      <p>
-        {item.type}- 
-        {slideShowType} -
-        {compositionType}
-      </p>
+    
 
 
       <div className="mt-5" />

@@ -39,7 +39,7 @@ async function SlideShowsProd() {
     const slideShows = await fetchSlideShows({ skip: 0, take: ITEMS_PER_PAGE })
     if (slideShows.status === "error" || !slideShows) return
     return (
-        <div className="min-h-screen container mx-auto px-4 py-16 ">
+        <div className="min-h-screen  px-4 py-16 ">
             <div className="space-y-6">
                 {slideShows.data && slideShows.data.data.map((item, index) => (
 
