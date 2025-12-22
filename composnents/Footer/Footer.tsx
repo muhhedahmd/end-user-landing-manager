@@ -9,7 +9,7 @@ import Image from "next/image"
 
 async function getCompanyInfo(): Promise<CompanyInfo | null> {
     try {
-        const res = await fetch("http://localhost:5000/api/company-info", {
+        const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL  + "/api/company-info", {
             cache: "force-cache",
             next: { revalidate: 3600 },
         })
