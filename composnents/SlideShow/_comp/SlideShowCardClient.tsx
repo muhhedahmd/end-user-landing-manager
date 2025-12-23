@@ -1,23 +1,21 @@
 "use client";
 
 import { memo, useRef, useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
+// import { motion } from "framer-motion";
+// import dynamic from "next/dynamic";
 import { CompositionType } from "@/types/schema";
+// import SingleCompositionTest from "./expermintal/SingleCompTest";
+// import CubeCompositionTest from "./expermintal/CubeCompTest";
+// import { CompositionPreview } from "./CompositionPreviw";
+// import { mockSlides } from "@/lib/utils";/
+import  RenderSlides  from "./RenderSlide";
 
-const RenderSlides = dynamic(
-  () => import("./RenderSlide").then((mod) => mod.RenderSlidesManual),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="h-96 bg-muted/20 animate-pulse rounded-xl" />
-    ),
-  }
-);
+
+
 
 interface SlideshowCardClientProps {
   id: string;
-  composition: string;
+  composition: keyof typeof CompositionType;
   autoPlay: boolean;
   interval: number;
   index: number;
@@ -69,24 +67,34 @@ export const SlideshowCardClient = memo(function SlideshowCardClient({
     };
   }, [hasBeenVisible]);
 
+  const isCube = composition === "CUBE"
+  const isSingle = composition === "SINGLE"
+
+  // if (isSingle)
+  //   return (
+  //     <SingleCompositionTest />
+  //   )
+
   return (
-    <motion.div
-      ref={cardRef}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: Math.min(index * 0.05, 0.3) }}
-      viewport={{ once: true, margin: "100px" }}
+
+
+    <div
+    // ref={cardRef}
+    // initial={{ opacity: 0, y: 20 }}
+    // whileInView={{ opacity: 1, y: 0 }}
+    // transition={{ duration: 0.3, delay: Math.min(index * 0.05, 0.3) }}
+    // viewport={{ once: true, margin: "100px" }}
     >
       {/* Only render slides after component has been visible at least once */}
       {/* {hasBeenVisible && ( */}
-        <RenderSlides
-          isInViewport={isInViewport}
-          autoPlay={autoPlay}
-          interval={interval}
-          id={id}
-          composition={composition as CompositionType}
-        />
+      <RenderSlides
+        isInViewport={isInViewport}
+        autoPlay={autoPlay}
+        interval={interval}
+        id={id}
+        composition={composition as CompositionType}
+      />
       {/* )} */}
-    </motion.div>
+    </div>
   );
 });

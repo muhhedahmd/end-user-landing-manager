@@ -1,5 +1,5 @@
 
-// import { AnimatePresence } from "framer-motion";
+
 import { SlideshowCard } from "./_comp/SlideShowCard";
 import { PaginatedResponse } from "@/types/services";
 import { SlideShow } from "@/types/slideShows";

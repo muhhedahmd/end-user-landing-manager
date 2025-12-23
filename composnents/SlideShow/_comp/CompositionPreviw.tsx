@@ -314,7 +314,6 @@ export function CompositionPreview({ isInViewport, interval, autoPlay, compositi
 
     case "SINGLE":
 
-        if(!slides || slides.length === 0 ) return
 
     return(
       <SingleCompsotion slides={slides}/>
@@ -611,7 +610,6 @@ export function CompositionPreview({ isInViewport, interval, autoPlay, compositi
       )
 
     case "CUBE":
-    if(!slides || slides.length === 0 ) return
 
       // expemental
       return     <CubeComposition  slides={slides}  />

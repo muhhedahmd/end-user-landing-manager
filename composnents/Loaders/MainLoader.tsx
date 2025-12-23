@@ -45,6 +45,9 @@ const MainLoader = ({ duration = 6000 }: { duration?: number }) => {
       document.body.style.overflow = "auto";
     };
   }, [visible]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
 
   if (!visible) return null;
 

@@ -1,0 +1,209 @@
+import { ClientWithRelationsSlide } from "@/types/schema"
+import Image from "next/image"
+import Link from "next/link"
+interface ClientCardProps {
+    data: ClientWithRelationsSlide
+    cube?: boolean,
+    single?: boolean
+}
+import { gsap } from 'gsap';
+import { ScrollTrigger } from "gsap/all"
+import BlurredImage from "@/composnents/Reusabale/ClientImageWithBlurHash"
+gsap.registerPlugin(ScrollTrigger);
+
+export const ClientCard = ({ data, single }: ClientCardProps) => {
+    console.log(data)
+
+    // useLayoutEffect(() => {
+    //     const card = cardRef.current
+    //     if (!card) return
+
+    //     gsap.fromTo(
+    //         card,
+    //         { opacity: 0, y: 20 },
+    //         {
+    //             opacity: 1,
+    //             y: 0,
+    //             duration: 0.6,
+    //             scrollTrigger: {
+    //                 trigger: card,
+    //                 start: "top 90%",
+    //                 toggleActions: "play none none reverse"
+    //             }
+    //         }
+    //     )
+
+    //     // Animate children
+
+    // }, [])
+
+    // if (cube) {
+    //     return (
+    //         <div
+    //             ref={cardRef}
+    //             className="group  relative h-full rounded-2xl bg-card border border-border hover:border-primary/50 transition-all duration-300"
+    //         >
+    //             {data.image && (
+    //                 <div className="relative h-120 bg-muted/50 border-b border-border">
+    //                     <BlurredImage
+    //                         imageUrl={data.image.url}
+    //                         height={data.image.height || 400}
+    //                         width={data.image.width || 400}
+    //                         alt={data.image.alt || data.name}
+    //                         blurhash={data.image.blurHash || ""}
+    //                         quality={100}
+    //                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+    //                     />
+    //                     {data.isFeatured && (
+    //                         <span className="absolute top-3 left-3 bg-accent text-accent-foreground text-xs font-semibold px-3 py-1 rounded-full">
+    //                             Featured
+    //                         </span>
+    //                     )}
+    //                 </div>
+    //             )}
+
+    //             {data.logo && (
+    //                 <div className="bg-muted/30 flex items-center justify-start gap-4 p-4 border-b border-border">
+    //                     <BlurredImage
+    //                         imageUrl={data.logo.url}
+    //                         height={data.logo.height || 100}
+    //                         width={data.logo.width || 100}
+    //                         alt={data.logo.alt || `${data.name} logo`}
+    //                         blurhash={data.logo.blurHash || ""}
+    //                         quality={100}
+    //                         className="max-w-5 max-h-5 w-5 h-5 object-contain rounded-md"
+    //                     />
+    //                     <h3 className="client-title text-lg font-bold text-foreground font-sora">
+    //                         {data.name}
+    //                     </h3>
+    //                 </div>
+    //             )}
+
+    //             <div className="p-6 space-y-3">
+    //                 {data.industry && (
+    //                     <span className="client-industry inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full font-inter">
+    //                         {data.industry}
+    //                     </span>
+    //                 )}
+
+    //                 {data.description && (
+    //                     <p className="client-description text-sm text-muted-foreground leading-relaxed font-inter">
+    //                         {data.description}
+    //                     </p>
+    //                 )}
+
+    //                 {data.richDescription && data.richDescription !== data.description && (
+    //                     <div
+    //                         className="client-description text-sm text-muted-foreground leading-relaxed font-inter prose prose-sm dark:prose-invert"
+    //                         dangerouslySetInnerHTML={{ __html: data.richDescription }}
+    //                     />
+    //                 )}
+
+    //                 {data.website && (
+    //                     <Link
+    //                         href={data.website}
+    //                         target="_blank"
+    //                         rel="noopener noreferrer"
+    //                         className="client-website inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary/80 transition-colors font-inter group/link"
+
+    //                     >
+    //                         Visit Website
+    //                         <span className="group-hover/link:translate-x-1 transition-transform duration-200">
+    //                             →
+    //                         </span>
+    //                     </Link>
+
+    //                 )}
+
+    //                 {(!data.isActive || data.type) && (
+    //                     <div className="client-footer pt-3 mt-3 border-t border-border flex items-center justify-between text-xs text-muted-foreground font-inter">
+    //                         <span>Type: {data.type}</span>
+    //                         {!data.isActive && (
+    //                             <span className="text-destructive font-medium">Inactive</span>
+    //                         )}
+    //                     </div>
+    //                 )}
+    //             </div>
+    //         </div >
+    //     )
+    // }
+
+    return (
+
+        <div
+            className="group relative h-full overflow-hidden rounded-2xl bg-card border border-border hover:border-primary/50 transition-all duration-300"
+        >
+     
+            {data.image && (
+
+                <div className="relative h-70  bg-muted/50 border-b border-border ">
+                    <BlurredImage
+                        imageUrl={data.image.url}
+                        height={data.image.height || 400}
+                        width={data.image.width || 400}
+                        alt={data.image.alt || data.name}
+                        blurhash={data.image.blurHash || ""}
+                        quality={100}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                    />
+                </div>
+            )}
+
+            {/* Logo Section */}
+            {data.logo && (
+                <div className=" bg-muted/30 flex  items-center justify-start gap-4 p-4 border-b border-border">
+                    <BlurredImage
+                        imageUrl={data.logo.url}
+                        height={data.logo.height || 100}
+                        width={data.logo.width || 100}
+                        alt={data.logo.alt || `${data.name} logo`}
+                        blurhash={data.logo.blurHash || ""}
+                        quality={100}
+                        className="max-w-5 max-h-5 w-5 h-5 object-contain rounded-md"
+                    />
+                    <h3
+                        className="text-lg font-bold text-foreground font-sora"
+                    >
+                        {data.name}
+                    </h3>
+                </div>
+            )}
+            <div className="p-6 space-y-3">
+                {data.industry && (
+                    <span className="client-industry inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full font-inter">
+                        {data.industry}
+                    </span>
+                )}
+
+                {data.description && (
+                    <p className="client-description text-sm text-muted-foreground leading-relaxed font-inter">
+                        {data.description}
+                    </p>
+                )}
+
+                {data.richDescription && data.richDescription !== data.description && (
+                    <div
+                        className="client-description text-sm text-muted-foreground leading-relaxed font-inter prose prose-sm dark:prose-invert"
+                        dangerouslySetInnerHTML={{ __html: data.richDescription }}
+                    />
+                )}
+
+                {data.website && (
+                    <Link
+                        href={data.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="client-website inline-flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary/80 transition-colors font-inter group/link"
+                    >
+                        Visit Website
+                        <span className="group-hover/link:translate-x-1 transition-transform duration-200">
+                            →
+                        </span>
+                    </Link>
+                )}
+
+
+            </div>
+        </div >
+    )
+}

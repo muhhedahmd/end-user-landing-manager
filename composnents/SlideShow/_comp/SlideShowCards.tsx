@@ -244,7 +244,7 @@ export const ClientCard = ({ data, cube }: { data: ClientWithRelationsSlide, cub
             viewport={{ once: true }}
             className="group relative h-full  rounded-2xl bg-card border border-border hover:border-primary/50 transition-all duration-300"
         >
-            {/* Main Image */}
+
             {data.image && (
 
                 <div className="relative h-120  bg-muted/50 border-b border-border ">

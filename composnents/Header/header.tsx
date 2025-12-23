@@ -17,7 +17,7 @@ export const dynamic = "force-static"
 
 async function getCompanyInfo(): Promise<CompanyInfo | null> {
   try {
-    console.log(process.env.NEXT_PUBLIC_BACKEND_URL)
+
     const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/company-info", {
       cache: "force-cache",
       next: { revalidate: 3600 },
@@ -26,7 +26,7 @@ async function getCompanyInfo(): Promise<CompanyInfo | null> {
     if (!res.ok) return null
     const json = await res.json()
     return json?.data ?? null
-  } catch(err) {
+  } catch (err) {
     console.error(err)
     return null
   }
@@ -52,12 +52,12 @@ export default async function Header() {
         <Link href="/" className="flex items-center gap-2">
           {companyInfo?.logo ? (
             <Image
-            src={companyInfo.logo.url}
-            width={8}
-            height={8}
-            alt={companyInfo.logo.alt || companyInfo.name}
-            className="h-8 w-8 object-contain"
-            
+              src={companyInfo.logo.url}
+              width={8}
+              height={8}
+              alt={companyInfo.logo.alt || companyInfo.name}
+              className="h-8 w-8 object-contain"
+
             />
             // <ImageWithBlurHash 
             // image={ { 

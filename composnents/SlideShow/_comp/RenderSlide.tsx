@@ -4,7 +4,6 @@ import { CompositionType } from "@/types/schema";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { slidesService } from "./services/slideShowService";
 import { CompositionPreview } from "./CompositionPreviw";
-import { AnimatePresence, motion } from "framer-motion";
 
 
 interface RenderSlidesProps {
@@ -14,7 +13,7 @@ interface RenderSlidesProps {
   autoPlay: boolean;
   composition: CompositionType;
 }
-export function RenderSlidesManual({
+function RenderSlidesManual({
   isInViewport,
   id,
   interval = 5000,
@@ -87,14 +86,11 @@ export function RenderSlidesManual({
     );
   }
 
-  if (slides.length === 0) {
-    return null;
-  }
-  
+
   else return (
     <>
 
-      {!isLoading && !error && slides.length > 0 && (
+      {!isLoading && !error &&  (
         <CompositionPreview
           interval={interval}
           autoPlay={autoPlay}
@@ -104,13 +100,11 @@ export function RenderSlidesManual({
         />
       )}
 
-      {error && (
-        <div className="h-96 rounded-lg bg-destructive/10 flex items-center justify-center">
-          <p className="text-destructive">{error}</p>
-        </div>
-      )}
+     
     </>
   );
 
 }
 
+
+export default RenderSlidesManual

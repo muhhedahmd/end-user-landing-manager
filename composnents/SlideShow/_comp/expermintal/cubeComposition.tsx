@@ -2,8 +2,9 @@ import React, { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { slide } from "@/types/schema";
-import { TypeToRender } from "../TypeToRender";
+// import { TypeToRender } from "../TypeToRender";
 import { useScrollTriggerReady } from "@/hooks/useScrollTriggerReady";
+import { TypeToRenderProd } from "../TypToRenderProd";
 gsap.registerPlugin(ScrollTrigger);
 
  const CubeComposition = ({slides} : { 
@@ -89,13 +90,13 @@ gsap.registerPlugin(ScrollTrigger);
       <div className="flex items-center justify-center pt-[10rem]">
         <div className="cards relative flex items-center justify-center flex-col">
             
-         {slides.map((n) => (
+         {slides.map((n , i ) => (
             <div
-              key={n.id}
+              key={i}
               ref={addCardRef}
-              className="relative mb-12 flex h-120 w-230 items-center justify-center  shadow-lg rounded-2xl "
+              className="relative mb-12 flex h-120 w-230 items-center bg-black justify-center  shadow-lg rounded-2xl "
             >
-              <TypeToRender slide={n} cube={true} />
+              {/* <TypeToRenderProd slide={n} cube={true} /> */}
             </div>
           ))}
         </div>
