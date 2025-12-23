@@ -17,7 +17,8 @@ export const dynamic = "force-static"
 
 async function getCompanyInfo(): Promise<CompanyInfo | null> {
   try {
-    const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "api/company-info", {
+    console.log(process.env.NEXT_PUBLIC_BACKEND_URL)
+    const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/company-info", {
       cache: "force-cache",
       next: { revalidate: 3600 },
     })
@@ -25,7 +26,8 @@ async function getCompanyInfo(): Promise<CompanyInfo | null> {
     if (!res.ok) return null
     const json = await res.json()
     return json?.data ?? null
-  } catch {
+  } catch(err) {
+    console.error(err)
     return null
   }
 }

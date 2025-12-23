@@ -71,52 +71,13 @@ export function RenderSlidesManual({
     }
   }, [id]);
 
-  // const [loadedComponents, setLoadedComponents] = useState({
-  //   slideShows: false,
-  // });
 
-  // // Check if all components are loaded
-  // useEffect(() => {
-  //   const allLoaded = Object.values(loadedComponents).every((loaded) => loaded);
-
-  //   if (allLoaded) {
-  //     // Add a small delay for smooth transition
-  //     const timer = setTimeout(() => {
-  //       setIsLoading(false);
-  //     }, 5000);
-
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [loadedComponents]);
-
-
-
-  // useEffect(() => {
-  //   if (!isLoading && slides.length > 0) {
-  //     setLoadedComponents({
-  //       slideShows: true
-  //     })
-  //   }
-  // }, [isLoading, slides])
 
 
   useEffect(() => {
     fetchSlides();
   }, [fetchSlides]);
 
-
-  // if (isLoading) {
-  //   return <AnimatePresence mode="wait">
-  //     <motion.div
-  //       // key={item.id}
-  //       initial={{ opacity: 0 }}
-  //       animate={{ opacity: 1 }}
-  //       exit={{ opacity: 0 }}
-  //     >
-  //       <FullScreenLoader />
-  //     </motion.div>
-  //   </AnimatePresence>
-  // }
 
   if (error) {
     return (
@@ -129,6 +90,7 @@ export function RenderSlidesManual({
   if (slides.length === 0) {
     return null;
   }
+  
   else return (
     <>
 
@@ -151,43 +113,4 @@ export function RenderSlidesManual({
   );
 
 }
-
-
-// const FullScreenLoader = () => {
-//   const [progress, setProgress] = useState(0);
-
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       setProgress((prev) => {
-//         if (prev >= 100) {
-//           clearInterval(interval);
-//           return 100;
-//         }
-//         return prev + 10;
-//       });
-//     }, 200);
-
-//     return () => clearInterval(interval);
-//   }, []);
-
-
-//   return (
-//     <div className="fixed inset-0 z-[100] bg-background flex flex-col items-center justify-center">
-//       <div className="mb-8 animate-pulse">
-//         <div className="w-20 h-20 rounded-2xl bg-primary flex items-center justify-center shadow-2xl">
-//           <span className="text-primary-foreground font-bold text-4xl">E</span>
-//         </div>
-//       </div>
-
-//       <p className="text-muted-foreground mb-8">Please wait while we prepare your experience</p>
-
-//       <div className="w-200 h-2 bg-muted rounded-full overflow-hidden">
-//         <div
-//           className="h-full bg-primary transition-all duration-300 ease-out rounded-full"
-//           style={{ width: `${progress}%` }}
-//         />
-//       </div>
-//     </div>
-//   );
-// };
 

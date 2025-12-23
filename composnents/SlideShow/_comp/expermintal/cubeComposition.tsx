@@ -3,8 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { slide } from "@/types/schema";
 import { TypeToRender } from "../TypeToRender";
-import { useGSAP } from "@gsap/react";
-
+import { useScrollTriggerReady } from "@/hooks/useScrollTriggerReady";
 gsap.registerPlugin(ScrollTrigger);
 
  const CubeComposition = ({slides} : { 
@@ -12,6 +11,9 @@ gsap.registerPlugin(ScrollTrigger);
  }) => {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
+
+    const isReady = useScrollTriggerReady(rootRef, [slides.length , slides  , cardsRef]);
+  
    const addCardRef = (el: HTMLDivElement | null) => {
     if (el && !cardsRef.current.includes(el)) {
       cardsRef.current.push(el);
@@ -19,6 +21,7 @@ gsap.registerPlugin(ScrollTrigger);
   };
   useLayoutEffect(() => {
  const cards = cardsRef.current;
+ if(!isReady) return
     if (!cards.length) return;    const spacer = 20;
     const minScale = 0.8;
 
@@ -73,7 +76,7 @@ gsap.registerPlugin(ScrollTrigger);
     return () => {
       ScrollTrigger.getAll().forEach((st) => st.kill());
     };
-  }, [ cardsRef , rootRef ]);
+  }, [ cardsRef , rootRef , isReady ]);
 
   return (
     <div

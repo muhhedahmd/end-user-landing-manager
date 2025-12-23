@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const MainLoader = ({ duration = 7000 }: { duration?: number }) => {
+const MainLoader = ({ duration = 6000 }: { duration?: number }) => {
   const [progress, setProgress] = useState(0);
   const [visible, setVisible] = useState(true);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
