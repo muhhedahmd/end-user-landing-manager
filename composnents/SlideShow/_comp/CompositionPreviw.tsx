@@ -7,6 +7,8 @@ import type { slide } from "@/types/schema"
 import { TypeToRender } from "./TypeToRender"
 import CubeComposition from "./expermintal/cubeComposition"
 import SingleCompsotion from "./expermintal/singleComposition"
+import { TypeToRenderProd } from "./TypToRenderProd"
+import { ExpermintalParallaxContainer } from "./expermintal/ExpermintalParallaxContainer"
 
 interface CompositionPreviewProps {
   composition:
@@ -428,36 +430,33 @@ interface CompositionPreviewProps {
 
     case "PARALLAX":
       return (
-        <div className="space-y-8">
-          <div
-            className="relative  overflow-hidden rounded-3xl flex flex-col w-full h-full gap-5"
-            onMouseMove={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect()
-              const offset = ((e.clientX - rect.left) / rect.width - 0.5) * 30
-              setScrollPosition(offset)
-            }}
-          >
-            <AnimatePresence mode="wait" >
 
-              {slides.map((slide, idx) => {
-                return (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: scrollPosition }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.4 }}
-                    className=" inset-0    min-h-screen space-y-12"
-                  >
-                    <TypeToRender play={isInViewport} slide={slide} split={true} index={idx} />
-                  </motion.div>
-
-                )
-              })}
-            </AnimatePresence>
-          </div>
-
-        </div>
+        <ExpermintalParallaxContainer slides={slides} isInViewport={isInViewport} />
+        // <div className="space-y-4 sm:space-y-6 md:space-y-8 px-4 sm:px-6 lg:px-8">
+        //     <div
+        //         ref={containerRef}
+        //         className="relative overflow-hidden rounded-2xl sm:rounded-3xl flex flex-col w-full h-full gap-3 sm:gap-4 md:gap-5"
+        //         onMouseMove={handleMouseMove}
+        //         onTouchStart={handleTouchStart}
+        //     >
+        //         {slides.map((slide, idx) => (
+        //             <div
+        //                 key={idx}
+        //                 ref={(el) => {
+        //                     if (el) slidesRef.current[idx] = el;
+        //                 }}
+        //                 className="inset-0 min-h-screen space-y-6 sm:space-y-8 md:space-y-12"
+        //             >
+        //                 <TypeToRender 
+        //                     play={isInViewport} 
+        //                     slide={slide} 
+        //                     split={true} 
+        //                     index={idx} 
+        //                 />
+        //             </div>
+        //         ))}
+        //     </div>
+        // </div>
       )
 
     case "COVERFLOW":
@@ -755,11 +754,7 @@ interface CompositionPreviewProps {
                 <div className="h-full ">
                   <TypeToRender play={isInViewport} slide={slide} imaged={true} minmal={true} />
                 </div>
-                {/* <div className=" inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
-                  <motion.div initial={{ scale: 0 }} whileHover={{ scale: 1 }} className="text-white text-2xl">
-                    +
-                  </motion.div>
-                </div> */}
+            
               </motion.button>
             ))}
           </div>

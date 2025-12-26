@@ -27,6 +27,7 @@ export function SlideshowCard({
   // const isContainer  = compositionType && (compositionType !== "SINGLE" || compositionType !== "CUBE")
   const isCube  =  compositionType === "CUBE"
   const isSingle  = compositionType === "SINGLE"
+  const isParallax  = compositionType === "PARALLAX"
   
   return (
     <div
@@ -34,7 +35,7 @@ export function SlideshowCard({
         backgroundColor: bgColor,
         color: textColor,
       }}
-      className={cn( "rounded-lg duration-200 overflow-hidden w-full " ,!isCube && !isSingle &&  "container mx-auto")}
+      className={cn( "rounded-lg duration-200 overflow-hidden w-full " ,!isCube && !isSingle && !isParallax &&  "container mx-auto")}
     >
       {/* Server-rendered header */}
       <SlideHeader

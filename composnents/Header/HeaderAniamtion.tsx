@@ -23,6 +23,7 @@ const HeaderAniamtion = ({ children }: {
         gsap.set(headerRef.current, {
           y: -230,
           autoAlpha: 1,
+          display :"block"
         });
 
         // Add to timeline after loader
@@ -48,9 +49,11 @@ const HeaderAniamtion = ({ children }: {
 
   useGSAP(()=>{
        if (pathname === "/services") {
-          gsap.set(
+          gsap.to(
             headerRef.current,
             {
+         display :"block",
+
               position: "sticky",
               top: 0,
               y: 0,
@@ -68,7 +71,7 @@ const HeaderAniamtion = ({ children }: {
   })
 
   return (
-    <header ref={headerRef} className=" z-50 w-full   backdrop-blur">
+    <header ref={headerRef} className=" z-50 w-full -translate-y-20  hidden  backdrop-blur">
       {children}
     </header>
   )

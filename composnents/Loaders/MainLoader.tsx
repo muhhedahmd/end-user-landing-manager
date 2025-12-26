@@ -1,9 +1,9 @@
-"use client";
-
+"use client"
 import { useGSAP } from "@gsap/react";
 import { useEffect, useRef, useState } from "react";
 import { useTimeLine } from "@/context/MainLoaderTimeLine";
 import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const MainLoader = ({ duration = 3000 }: { duration?: number }) => {
   const { timeline, ctx } = useTimeLine();
@@ -24,7 +24,7 @@ const MainLoader = ({ duration = 3000 }: { duration?: number }) => {
   useGSAP(
     () => {
       // Run only once and when timeline/ctx are ready
-      if (!loaderRef.current || !progressRef.current || !timeline || !ctx   ) {
+      if (!loaderRef.current || !progressRef.current || !timeline || !ctx) {
         return;
       }
       // Add to main timeline
@@ -34,7 +34,7 @@ const MainLoader = ({ duration = 3000 }: { duration?: number }) => {
             width: "100%",
             ease: "power1.inOut",
             duration: duration / 1000,
-          } , "+= 3.5")
+          }, "+= 3.5")
           .to(loaderRef.current, {
             autoAlpha: 0,
             height: 0,
@@ -46,23 +46,23 @@ const MainLoader = ({ duration = 3000 }: { duration?: number }) => {
           })
           .addLabel("loaderComplete"); // Label after loader exits
       })
-      
+
     },
     {
-      dependencies: [timeline, ctx, duration , pathname], // Remove 'progress' from deps
+      dependencies: [timeline, ctx, duration, pathname], // Remove 'progress' from deps
       scope: loaderRef,
     }
   );
 
 
-
-if(pathname === "/services" ) return
+  const isService = pathname === "/services"
+  // if () return
   return (
     <div
 
-    key={pathname}
+      key={pathname}
       ref={loaderRef}
-      className="inset-0 z-50 h-20 w-screen bg-background flex flex-col items-center justify-center"
+      className={cn("inset-0  z-50 h-20 w-screen bg-background flex flex-col items-center justify-center",isService && "hidden")  }
     >
       <div className=" h-20 bg-muted  w-full overflow-hidden">
         <div

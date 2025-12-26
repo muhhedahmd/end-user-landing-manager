@@ -6,8 +6,6 @@ import { CompanyInfo } from "@/types/schema";
 // import MainLoader from "@/composnents/Loaders/MainLoader";
 import { TimelineProvider } from "@/context/MainLoaderTimeLine";
 import { AnalyticsProvider } from "@/providers/analytic-provider";
-import MainLoader from "@/composnents/Loaders/MainLoader";
-import Header from "@/composnents/Header/header";
 
 
 const geistSans = Geist({
@@ -114,8 +112,6 @@ export default function RootLayout({
       >
         <AnalyticsProvider>
         <TimelineProvider>
-          <MainLoader />
-          <Header />
           <main>
             {children}
           </main>

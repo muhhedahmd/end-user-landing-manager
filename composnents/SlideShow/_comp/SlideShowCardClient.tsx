@@ -1,13 +1,8 @@
 "use client";
 
 import { memo, useRef, useState, useEffect } from "react";
-// import { motion } from "framer-motion";
-// import dynamic from "next/dynamic";
 import { CompositionType } from "@/types/schema";
-// import SingleCompositionTest from "./expermintal/SingleCompTest";
-// import CubeCompositionTest from "./expermintal/CubeCompTest";
-// import { CompositionPreview } from "./CompositionPreviw";
-// import { mockSlides } from "@/lib/utils";/
+
 import  RenderSlides  from "./RenderSlide";
 
 

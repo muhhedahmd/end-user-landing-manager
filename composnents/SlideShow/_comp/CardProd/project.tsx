@@ -5,7 +5,7 @@
 
 import BlurredImage from "@/composnents/Reusabale/ClientImageWithBlurHash"
 import { ProjectWithRelationsSlide } from "@/types/schema"
-import { ExternalLink, Github} from "lucide-react"
+import { ExternalLink, Github } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useRef } from "react"
 import gsap from "gsap"
@@ -19,14 +19,14 @@ interface ProjectCardProps {
 }
 
 export const ProjectCard = ({
+
     data,
     split,
     index = 0,
-    imagePosition,
     story
 }: ProjectCardProps) => {
     if (split) {
-        return <ProjectCardParallax data={data} index={index} imagePosition={imagePosition} />
+        return <ProjectCardParallax data={data} index={index} />
     }
 
     if (story) {
@@ -37,6 +37,7 @@ export const ProjectCard = ({
 }
 
 const ProjectCardDefault = ({ data }: { data: ProjectWithRelationsSlide }) => {
+
     const cardRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -156,189 +157,20 @@ const ProjectCardDefault = ({ data }: { data: ProjectWithRelationsSlide }) => {
     )
 }
 
-const ProjectCardParallax = ({
-    data,
-    index = 0,
-    imagePosition
-}: {
-    data: ProjectWithRelationsSlide
-    index: number
-    imagePosition?: string
-}) => {
-    const containerRef = useRef<HTMLDivElement>(null)
-    const imageRef = useRef<HTMLDivElement>(null)
-    const contentRef = useRef<HTMLDivElement>(null)
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+import { ProjectCardParallax } from "../expermintal/ExpermintalParallax"
 
-    const autoPosition = (["left", "right", "top"] as const)[index % 3]
-    const position: "left" | "right" | "top" | "bottom" =
-        (imagePosition as "left" | "right" | "top" | "bottom") || autoPosition
+gsap.registerPlugin(ScrollTrigger);
 
-    useEffect(() => {
-        const container = containerRef.current
-        const image = imageRef.current
-        const content = contentRef.current
 
-        if (!container || !image || !content) return
 
-        // Container fade
-        gsap.fromTo(
-            container,
-            { opacity: 0 },
-            {
-                opacity: 1,
-                scrollTrigger: {
-                    trigger: container,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: true
-                }
-            }
-        )
 
-        // Image parallax
-        gsap.to(image, {
-            y: 100,
-            scale: 1.1,
-            scrollTrigger: {
-                trigger: container,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 1
-            }
-        })
+// ProjectCardParallax Component - Full GSAP Version
 
-        // Content parallax
-        gsap.to(content, {
-            y: -50,
-            scrollTrigger: {
-                trigger: container,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: 1
-            }
-        })
 
-        // Content elements animation
-        const tag = content.querySelector(".project-tag")
-        const title = content.querySelector(".project-title")
-        const client = content.querySelector(".project-client")
-        const description = content.querySelector(".project-description")
-        const links = content.querySelector(".project-links")
 
-        const elements = [tag, title, client, description, links].filter(Boolean)
 
-        elements.forEach((el, i) => {
-            gsap.fromTo(
-                el,
-                { opacity: 0, x: position === "right" ? 20 : -20 },
-                {
-                    opacity: 1,
-                    x: 0,
-                    duration: 0.6,
-                    delay: 0.2 + i * 0.1,
-                    scrollTrigger: {
-                        trigger: container,
-                        start: "top 80%"
-                    }
-                }
-            )
-        })
-    }, [position])
 
-    const layouts = {
-        left: "flex-row",
-        right: "flex-row-reverse",
-        top: "flex-col",
-        bottom: "flex-col-reverse"
-    }
-
-    const imageSize =
-        ["top", "bottom"].includes(position) ? "h-[60vh] w-full" : "h-screen w-3/5"
-
-    return (
-        <div className="min-h-screen h-screen overflow-hidden flex items-center justify-center py-20 px-4">
-            <div
-                ref={containerRef}
-                className={`group relative w-full overflow-hidden flex ${layouts[position]}`}
-            >
-                {/* Image Section */}
-                <div className={`relative ${imageSize} overflow-hidden`}>
-                    <div ref={imageRef} className="w-full h-full">
-                        {data.image && (
-                            <BlurredImage
-                                imageUrl={data.image.url || ""}
-                                height={data.image.height || 400}
-                                width={data.image.width || 800}
-                                alt={data.image.alt || data.title}
-                                blurhash={data.image.blurHash || ""}
-                                quality={100}
-                                className="w-full h-full object-cover"
-                            />
-                        )}
-                    </div>
-                    <div
-                        className={`absolute inset-0 bg-gradient-to-${position === "left" ? "r" : position === "right" ? "l" : position === "top" ? "b" : "t"
-                            } from-transparent to-slate-900/50`}
-                    />
-                </div>
-
-                {/* Content Section */}
-                <div
-                    ref={contentRef}
-                    className={`flex-1 p-12 ${["top", "bottom"].includes(position) ? "min-h-[40vh]" : ""
-                        } flex flex-col justify-center space-y-6`}
-                >
-                    <div>
-                        <span className="project-tag inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase mb-4">
-                            Featured Project
-                        </span>
-
-                        <h3 className="project-title text-4xl md:text-5xl font-bold mb-4 leading-tight">
-                            {data.title}
-                        </h3>
-                    </div>
-
-                    {data.clientName && (
-                        <div className="project-client flex items-center gap-3">
-                            <div className="w-2 h-2 rounded-full" />
-                            <span className="text-lg font-medium">{data.clientName}</span>
-                        </div>
-                    )}
-
-                    {data.description && (
-                        <p className="project-description text-lg leading-relaxed max-w-xl">
-                            {data.description}
-                        </p>
-                    )}
-
-                    <div className="project-links flex flex-wrap gap-4 pt-6">
-                        {data.projectUrl && (
-                            <Link
-                                href={data.projectUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="group/btn px-8 py-3 rounded-full font-semibold transition-all duration-300 flex items-center gap-2"
-                            >
-                                View Project
-                                <span className="group-hover/btn:translate-x-1 transition-transform">→</span>
-                            </Link>
-                        )}
-                        {data.githubUrl && (
-                            <Link
-                                href={data.githubUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="px-8 py-3 rounded-full border-2 border-slate-600 hover:border-slate-400 hover:text-white font-semibold transition-all duration-300"
-                            >
-                                GitHub
-                            </Link>
-                        )}
-                    </div>
-                </div>
-            </div >
-        </div >
-    )
-}
 
 const ProjectCardStory = ({ data }: { data: ProjectWithRelationsSlide }) => {
     const articleRef = useRef<HTMLElement>(null)
