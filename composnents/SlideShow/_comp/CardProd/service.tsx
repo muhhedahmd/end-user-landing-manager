@@ -9,9 +9,6 @@ import Image from "next/image"
 
 gsap.registerPlugin(ScrollTrigger)
 
-// ============================================================================
-// SERVICE CARD
-// ============================================================================
 
 interface ServiceCardProps {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

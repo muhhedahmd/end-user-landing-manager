@@ -4,6 +4,7 @@ import type { IHero, Image } from "@/types/schema"
 import HeroError from "./hero-error"
 
 import ClientHeroVarients from "./_comp/clientHeroVarients";
+import HeroAnimation from "./_comp/heroAnamation";
 
 
 
@@ -11,8 +12,8 @@ export const dynamic = "force-static"
 
 
 type HeroResult =
-| { status: "success"; hero: IHero; backgroundImage: Image }
-| { status: "error" }
+    | { status: "success"; hero: IHero; backgroundImage: Image }
+    | { status: "error" }
 
 async function fetchActiveHero(): Promise<HeroResult> {
     try {
@@ -38,7 +39,7 @@ async function fetchActiveHero(): Promise<HeroResult> {
             hero: payload.hero,
             backgroundImage: payload.backgroundImage,
         }
-    } catch(error) {
+    } catch (error) {
         console.error(error)
         return { status: "error" }
     }
@@ -52,10 +53,20 @@ export default async function HeroSection() {
     }
 
 
+
     return (
-        <>
-       <ClientHeroVarients hero={result.hero} backgroundImage={result.backgroundImage} />
-        </>
+
+        <section
+        className="w-screen h-screen"
+          role="banner"
+                aria-label={result.hero.name || "Hero section"}
+        >
+
+        <HeroAnimation>
+           
+                <ClientHeroVarients hero={result.hero} backgroundImage={result.backgroundImage} />
+            </HeroAnimation>
+            </section>
     )
 }
 

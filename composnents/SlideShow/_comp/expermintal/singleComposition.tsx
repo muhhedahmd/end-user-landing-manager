@@ -14,6 +14,7 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
   console.log(slides)
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
+  const cardRef = useRef<(HTMLDivElement | null)[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
 
@@ -87,21 +88,22 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
       </div>
 
       {/* Slides container */}
-      <div ref={trackRef} className="flex h-full will-change-transform">
-        {slides.map((slideItem, i) => (
-            <div
-              key={slideItem.id}
-              className="shrink-0 h-full w-[28vw] flex items-center justify-center"
-            >
-              <div className="pointer-events-auto w-110 h-90 overflow-hidden flex items-center justify-center" style={{ width: 480, height: 520 }}>
-
-                <TypeToRenderProd slide={slideItem} cube />
-              </div>
-
+      <div ref={trackRef} className="flex justify-start gap-20 h-full will-change-transform">
+           {slides.map((slideItem, i) => (
+          <div
+            ref={(ref) => { cardRef.current[i] = ref }}
+            key={slideItem.id}
+            className="shrink-0 h-full    flex items-center justify-start"
+          >
+            <div className="pointer-events-auto md:w-220 md:h-120 w-110   overflow-hidden flex items-center justify-center" >
+              <TypeToRenderProd slide={slideItem} cube />
             </div>
-          
+
+          </div>
+
         ))}
 
+       
       </div>
 
       {/* Optional filler to allow scrolling */}

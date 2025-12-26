@@ -1,9 +1,8 @@
-"use client"
+
 import { IHero, Image } from "@/types/schema"
-import { motion } from "framer-motion"
-import { ChevronDown } from "lucide-react"
 import Link from "next/link"
 import BlurredImage from "../Reusabale/ClientImageWithBlurHash"
+import { cn } from "@/lib/utils"
 
 interface ProductionHeroProps {
     hero: IHero
@@ -11,11 +10,18 @@ interface ProductionHeroProps {
 }
 
 export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
-console.log(hero.titleSize)
     if (!hero.isActive) return null
 
     const backgroundImageUrl = backgroundImage?.url || ""
 
+
+        const getMinHeight = () => {
+        if (hero.variant === "FULL_SCREEN") return "min-h-screen"
+        if (hero.variant === "MINIMAL") return "min-h-[400px] md:min-h-[500px]"
+        if (hero.variant === "SPLIT") return "min-h-[70vh]"
+        if (hero.variant === "IMAGE_BACKGROUND") return "min-h-screen md:min-h-screen"
+        return hero.minHeight ? `min-h-[${hero.minHeight}px]` : "min-h-[calc(100vh-64px)]"
+    }
 
     // Parse style overrides
     const styleOverrides = hero.styleOverrides
@@ -52,17 +58,12 @@ console.log(hero.titleSize)
     }
 
     const getButtonClass = (variant?: string | null) => {
-        const baseClasses = "inline-flex items-center justify-center px-8 py-4 rounded-lg font-semibold transition-all duration-300"
-        return `${baseClasses} ${buttonVariantStyles[variant as keyof typeof buttonVariantStyles] || buttonVariantStyles.PRIMARY}`
+        return ` ${buttonVariantStyles[variant as keyof typeof buttonVariantStyles] || buttonVariantStyles.PRIMARY}`
     }
 
     // Responsive height calculation
-    const getMinHeight = () => {
-        if (hero.variant === "FULL_SCREEN") return "min-h-screen"
-        if (hero.variant === "MINIMAL") return "min-h-[400px] md:min-h-[500px]"
-        if (hero.variant === "SPLIT") return "min-h-screen md:min-h-screen"
-        return hero.minHeight ? `min-h-[${hero.minHeight}px]` : "min-h-[calc(100vh-64px)]"
-    }
+    console.log(hero.variant)
+ 
 
     // Content padding based on variant
     const getContentPadding = () => {
@@ -80,45 +81,33 @@ console.log(hero.titleSize)
     const renderContent = () => (
 
         <>
-            <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.8 }}
+            <h1
                 className={`${titleSizeMap[hero.titleSize as keyof typeof titleSizeMap] || titleSizeMap["4xl"]} font-bold leading-tight tracking-tight text-balance`}
                 style={{ color: hero.titleColor || undefined, marginBottom: "1rem" }}
             >
                 {hero.title}
-            </motion.h1>
+            </h1>
 
             {hero.subtitle && (
-                <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.25, duration: 0.6 }}
+                <p
                     className="text-xl sm:text-2xl md:text-3xl font-semibold text-balance"
                     style={{ color: hero.subtitleColor || undefined, marginBottom: "1rem" }}
                 >
                     {hero.subtitle}
-                </motion.p>
+                </p>
             )}
 
             {hero.description && (
-                <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.3, duration: 0.6 }}
+                <p
                     className="text-base sm:text-lg md:text-xl max-w-3xl leading-relaxed text-balance"
                     style={{ color: hero.descriptionColor || undefined, marginBottom: "2rem" }}
                 >
                     {hero.description}
-                </motion.p>
+                </p>
             )}
 
             {(hero.ctaText || hero.secondaryCtaText) && (
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.6 }}
+                <div
                     style={{
                         display: "flex",
                         gap: "1rem",
@@ -129,7 +118,10 @@ console.log(hero.titleSize)
                 >
                     {hero.ctaText && hero.ctaUrl && (
                         <Link href={hero.ctaUrl}>
-                            <button className={getButtonClass(hero.ctaVariant)}>
+                            <button
+                                className={getButtonClass(hero.ctaVariant)}
+                            >
+
                                 {hero.ctaText}
                             </button>
                         </Link>
@@ -141,21 +133,20 @@ console.log(hero.titleSize)
                             </button>
                         </Link>
                     )}
-                </motion.div>
+                </div>
             )}
 
             {hero.showScrollIndicator && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.6, duration: 0.6 }}
-                    className="z-10 absolute -bottom-60   md:-bottom-40 left-1/2  transform -translate-x-1/2 -translate-y-1/2   flex flex-col items-center gap-2 text-foreground/60"
-                >
-                    <p className="text-sm">Scroll to explore</p>
-                    <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>
-                        <ChevronDown size={24} />
-                    </motion.div>
-                </motion.div>
+                <>
+                </>
+                // <div
+
+                //     className="z-10 absolute -bottom-60   md:-bottom-40 left-1/2  transform -translate-x-1/2 -translate-y-1/2   flex flex-col items-center gap-2 text-foreground/60"
+                // >
+                //     <p className="text-sm">Scroll to explore</p>
+                //         <ChevronDown size={24} />
+                //     </div>
+                // </div>
             )}
         </>
     )
@@ -165,35 +156,100 @@ console.log(hero.titleSize)
         switch (hero.variant) {
             case "SPLIT":
                 return (
-                    <div className=" z-10 w-full h-full flex flex-col md:flex-row items-stretch">
-                        <div className="pl-5 flex-1 flex flex-col justify-center" style={{ padding: getContentPadding() }}>
+                    <div className=" relative z-10 w-full  flex flex-col  md:items-enter items-start h-[70vh]">
+
+                        <div className="pl-5 flex-1 flex flex-col md:justify-center justify-start" style={{ padding: getContentPadding() }}>
+
                             <div
+                                className=" flex start  gap-10 items-end justify-between w-full "
                                 style={{
-                                    textAlign: hero.alignment === "CENTER" ? "center" : hero.alignment === "RIGHT" ? "right" : "left",
+                                    // textAlign: hero.alignment === "CENTER" ? "center" : hero.alignment === "RIGHT" ? "right" : "left",
                                 }}
                             >
-                                {renderContent()}
+                                <div>
+
+                                    <h1
+
+                                        className="text-base sm:text-lg md:text-5xl leading-relaxed text-balance font-bold"
+                                        style={{ color: hero.titleColor || undefined, marginBottom: "1rem" }}
+                                    >
+                                        {hero.title}
+                                    </h1>
+
+                                    {hero.subtitle && (
+
+                                        <p
+                                            className="text-xl sm:text-2xl md:text-2xl  text-balance font-light" 
+                                            style={{ color: hero.subtitleColor || undefined, marginBottom: "1rem" }}
+                                        >
+                                            {hero.subtitle}
+                                        </p>
+                                    )}
+
+                                    {hero.description && (
+
+                                        <p
+                                            className="text-base sm:text-lg md:text-xl max-w-3xl leading-relaxed text-balance font-light"
+                                            style={{ color: hero.descriptionColor || undefined, }}
+                                        >
+                                            {hero.description}
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="flex justify-end items-end">
+
+                                    {(hero.ctaText || hero.secondaryCtaText) && (
+
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                gap: "1rem",
+                                                alignItems: "end",
+                                                justifyContent: alignmentMap[hero.alignment as keyof typeof alignmentMap] || "center",
+                                                width: "100%",
+                                                flexWrap: "wrap",
+                                            }}
+                                        >
+                                            {hero.ctaText && hero.ctaUrl && (
+                                                <Link
+
+                                                    href={hero.ctaUrl}>
+                                                    {hero.ctaText}
+                                                </Link>
+                                            )}
+                                            {hero.secondaryCtaText && hero.secondaryCtaUrl && (
+                                                <Link
+
+                                                    href={hero.secondaryCtaUrl}>
+                                                    {hero.secondaryCtaText}
+                                                </Link>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+
+
+
                             </div>
                         </div>
                         {backgroundImageUrl && backgroundImage && (
-                            <motion.div
-                                initial={{ opacity: 0, x: 30 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.8, delay: 0.2 }}
-                                className="hidden rounded-xl p-5 md:flex flex-1 h-150 w-150 overflow-hidden pr-5"
+
+
+                            <div
+                                className=" rounded-xl p-5 flex  h-full  w-full overflow-hidden pr-5"
                             >
 
                                 <BlurredImage
                                     alt={backgroundImage.alt || ""}
                                     imageUrl={backgroundImage.url}
-                                    height={backgroundImage.height && backgroundImage.height > 400 ? backgroundImage.height :  400}
-                                    width={ backgroundImage.width && backgroundImage.width > 400? backgroundImage.width :  400}
+                                    height={backgroundImage.height && backgroundImage.height > 400 ? backgroundImage.height : 400}
+                                    width={backgroundImage.width && backgroundImage.width > 400 ? backgroundImage.width : 400}
                                     blurhash={backgroundImage.blurHash || ""}
                                     className={"w-full h-full object-cover"}
                                     quality={100}
                                 />
 
-                            </motion.div>
+                            </div>
                         )}
                     </div>
                 )
@@ -210,28 +266,22 @@ console.log(hero.titleSize)
             case "MINIMAL":
                 return (
                     <div className="relative z-10 w-full max-w-2xl mx-auto" style={{ padding: getContentPadding() }}>
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8 }}
+                        <div
                             style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}
                         >
                             {renderContent()}
-                        </motion.div>
+                        </div>
                     </div>
                 )
 
             case "VIDEO_BACKGROUND":
                 return (
                     <div className="relative z-10 w-full max-w-4xl mx-auto" style={{ padding: getContentPadding() }}>
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8 }}
+                        <div
                             style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}
                         >
                             {renderContent()}
-                        </motion.div>
+                        </div>
                     </div>
                 )
 
@@ -241,10 +291,7 @@ console.log(hero.titleSize)
                         className="relative z-10 w-full h-full flex flex-col items-center justify-center"
                         style={{ padding: getContentPadding() }}
                     >
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.8 }}
+                        <div
                             style={{
                                 display: "flex",
                                 flexDirection: "column",
@@ -254,18 +301,15 @@ console.log(hero.titleSize)
                             }}
                         >
                             {renderContent()}
-                        </motion.div>
+                        </div>
                     </div>
                 )
 
             default: // CENTERED
                 return (
                     <div className="relative z-10 w-full max-w-4xl mx-auto" style={{ padding: getContentPadding() }}>
-                        <motion.div
+                        <div
 
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8 }}
                             style={{
                                 display: "flex",
                                 flexDirection: "column",
@@ -274,24 +318,24 @@ console.log(hero.titleSize)
                             }}
                         >
                             {renderContent()}
-                        </motion.div>
+                        </div>
                     </div>
                 )
         }
     }
 
     return (
-        <section
-            className={`relative w-full overflow-hidden flex items-center justify-center ${getMinHeight()}`}
+        <div
+            className={cn(`relative w-full overflow-hidden flex  justify-center ${getMinHeight()}`, hero.variant !== "SPLIT" && "items-center")}
             style={{
-                backgroundColor: !backgroundImageUrl && !hero.backgroundVideo ? hero.backgroundColor || "transparent" : "transparent",
-                backgroundImage: hero.variant !== "SPLIT" && backgroundImageUrl  ? `url(${backgroundImageUrl})` : "none",
+                backgroundColor: "#ffffff",
+                // backgroundColor: !backgroundImageUrl && !hero.backgroundVideo ? hero.backgroundColor || "transparent" : "transparent",
+                backgroundImage: hero.variant !== "SPLIT" && backgroundImageUrl ? `url(${backgroundImageUrl})` : "none",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 ...(styleOverrides as React.CSSProperties),
             }}
-            role="banner"
-            aria-label={hero.name || "Hero section"}
+  
         >
             <div className="container">
 
@@ -345,6 +389,6 @@ console.log(hero.titleSize)
                 {hero.customCSS && <style dangerouslySetInnerHTML={{ __html: hero.customCSS }} />}
             </div>
 
-        </section>
+        </div>
     )
 }

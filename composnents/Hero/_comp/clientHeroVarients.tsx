@@ -1,5 +1,4 @@
 
-"use client"
 import { ProductionHero } from '../Hero-varanices'
 import { IHero, Image } from '@/types/schema'
 

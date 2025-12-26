@@ -1,6 +1,6 @@
 "use client"
 
-import {  useCallback, useEffect, useState } from "react"
+import {  memo, useCallback, useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import type { slide } from "@/types/schema"
@@ -34,7 +34,7 @@ interface CompositionPreviewProps {
   // containerRef : RefObject<HTMLDivElement | null>
 }
 
-export function CompositionPreview({ isInViewport, interval, autoPlay, composition, slides }: CompositionPreviewProps) {
+ export const   CompositionPreview =  memo(({ isInViewport, interval, autoPlay, composition, slides }: CompositionPreviewProps) => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [[page, direction], setPage] = useState([0, 0])
   const [lightboxOpen, setLightboxOpen] = useState(false)
@@ -885,35 +885,8 @@ export function CompositionPreview({ isInViewport, interval, autoPlay, compositi
         </motion.div>
       )
   }
-}
+})
 
-// <div className="space-y-8 ">
-//   <div className="relative h-32 overflow-hidden rounded-3xl bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10">
-//     <motion.div
-//       className="flex gap-4 h-full"
-//       animate={{
-//         x: [0, -100 * slides.length],
-//         transition: {
-//           x: {
-//             duration: 10,
-//             repeat: Infinity,
-//             repeatType: "loop",
-//             ease: "linear",
-//           }
-//         }
-//       }}
-
-//     >
-//       {[...slides, ...slides].map((slide, idx) => (
-//         <motion.div
-//           key={idx}
-//           className="min-w-fit h-full aspect-video  rounded-2xl   flex-shrink-0"
-//         >
-//           <TypeToRender play={isInViewport} slide={slide} imaged={true} minmal={true} />
-//         </motion.div>
-//       ))}
-//     </motion.div>
-//   </div>
+CompositionPreview.displayName = "CompositionPreview"
 
 
-// </div>

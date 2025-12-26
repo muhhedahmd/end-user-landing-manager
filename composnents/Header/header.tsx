@@ -1,6 +1,8 @@
+
 import Link from "next/link"
 import HeaderClient from "./header-client"
 import Image from "next/image"
+import HeaderAniamtion from "./HeaderAniamtion"
 
 interface CompanyInfo {
   name: string
@@ -36,19 +38,20 @@ export default async function Header() {
   const companyInfo = await getCompanyInfo()
 
   const navItems = [
-    { label: "Services", href: "#services" },
-    { label: "Portfolio", href: "#portfolio" },
+    { label: "Services", href: "/services" },
+    // { label: "Portfolio", href: "#portfolio" },
     { label: "Team", href: "#team" },
     { label: "Blog", href: "/blogs" },
     { label: "Features", href: "#features" },
-    { label: "Pricing", href: "#pricing" },
+    // { label: "Pricing", href: "#pricing" },
     { label: "About", href: "#about" },
     { label: "Contact", href: "#contact" },
   ]
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
-      <div className="container mx-auto h-16 flex items-center justify-between px-4">
+    <HeaderAniamtion>
+
+      <div className="  h-[12vh] flex items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
           {companyInfo?.logo ? (
             <Image
@@ -57,15 +60,7 @@ export default async function Header() {
               height={8}
               alt={companyInfo.logo.alt || companyInfo.name}
               className="h-8 w-8 object-contain"
-
             />
-            // <ImageWithBlurHash 
-            // image={ { 
-            //   className: "h-8 w-8 object-contain",
-            //   alt : companyInfo.logo.alt || companyInfo.name,
-            //   ...companyInfo?.logo
-            // }}
-            // />
           ) : (
             <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold">
               {companyInfo?.name?.charAt(0) ?? "V"}
@@ -90,9 +85,9 @@ export default async function Header() {
 
         <HeaderClient navItems={navItems} />
       </div>
-    </header>
+    </HeaderAniamtion>
+
   )
 }
 
 
-// components/layout/HeaderClient.tsx

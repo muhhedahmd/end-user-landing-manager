@@ -1,10 +1,10 @@
-import React, { useLayoutEffect, useRef } from "react";
+import {  useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { slide } from "@/types/schema";
 // import { TypeToRender } from "../TypeToRender";
-import { useScrollTriggerReady } from "@/hooks/useScrollTriggerReady";
 import { TypeToRenderProd } from "../TypToRenderProd";
+import { useGSAP } from "@gsap/react";
+import ScrollTrigger from "gsap/dist/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
  const CubeComposition = ({slides} : { 
@@ -13,16 +13,14 @@ gsap.registerPlugin(ScrollTrigger);
   const rootRef = useRef<HTMLDivElement | null>(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
 
-    const isReady = useScrollTriggerReady(rootRef, [slides.length , slides  , cardsRef]);
   
    const addCardRef = (el: HTMLDivElement | null) => {
     if (el && !cardsRef.current.includes(el)) {
       cardsRef.current.push(el);
     }
   };
-  useLayoutEffect(() => {
+  useGSAP(() => {
  const cards = cardsRef.current;
- if(!isReady) return
     if (!cards.length) return;    const spacer = 20;
     const minScale = 0.8;
 
@@ -54,6 +52,7 @@ gsap.registerPlugin(ScrollTrigger);
         endTrigger: cards[cards.length - 1],
         end: `bottom top+=${200 + cards.length * spacer}`,
         pin: true,
+        markers: true,
         pinSpacing: false,
         invalidateOnRefresh: true,
         onEnter : (()=>{
@@ -67,17 +66,19 @@ gsap.registerPlugin(ScrollTrigger);
               scrub: true,
               invalidateOnRefresh: true,
             },
-            // markers: true,
+            markers: true,
           });
         })
-        // markers: true,
       });
     });
 
     return () => {
       ScrollTrigger.getAll().forEach((st) => st.kill());
     };
-  }, [ cardsRef , rootRef , isReady ]);
+  }, {
+    dependencies :[cardsRef , rootRef],
+    scope :rootRef
+  });
 
   return (
     <div
@@ -94,9 +95,9 @@ gsap.registerPlugin(ScrollTrigger);
             <div
               key={i}
               ref={addCardRef}
-              className="relative mb-12 flex h-120 w-230 items-center bg-black justify-center  shadow-lg rounded-2xl "
+              className="relative mb-12 flex lg:h-120 lg:w-230 md:w-180 md:h-100 sm:h-130 sm:w-120  h-100 w-90 items-center  justify-center  shadow-lg rounded-2xl "
             >
-              {/* <TypeToRenderProd slide={n} cube={true} /> */}
+              <TypeToRenderProd slide={n} cube={true} />
             </div>
           ))}
         </div>

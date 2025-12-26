@@ -1,74 +1,77 @@
 "use client";
 
+import { useGSAP } from "@gsap/react";
 import { useEffect, useRef, useState } from "react";
+import { useTimeLine } from "@/context/MainLoaderTimeLine";
+import { usePathname } from "next/navigation";
 
-const MainLoader = ({ duration = 6000 }: { duration?: number }) => {
-  const [progress, setProgress] = useState(0);
+const MainLoader = ({ duration = 3000 }: { duration?: number }) => {
+  const { timeline, ctx } = useTimeLine();
+  const loaderRef = useRef<HTMLDivElement | null>(null);
+  const progressRef = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(true);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const pathname = usePathname()
 
-  useEffect(() => {
-    const stepTime = duration / 100;
-
-    intervalRef.current = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          if (intervalRef.current) clearInterval(intervalRef.current);
-          return 100;
-        }
-        return prev + 1;
-      });
-    }, stepTime);
-
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [duration]);
-
-  // auto close when progress finishes
-  useEffect(() => {
-    if (progress === 100) {
-      const timeout = setTimeout(() => {
-        setVisible(false);
-      }, 1000); 
-
-      return () => clearTimeout(timeout);
-    }
-  }, [progress]);
-
-  // lock scroll
   useEffect(() => {
     if (!visible) return;
-
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [visible]);
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [])
 
-  if (!visible) return null;
+  // GSAP Timeline animation - runs ONCE
+  useGSAP(
+    () => {
+      // Run only once and when timeline/ctx are ready
+      if (!loaderRef.current || !progressRef.current || !timeline || !ctx   ) {
+        return;
+      }
+      // Add to main timeline
+      ctx.add(() => {
+        timeline
+          .to(progressRef.current, {
+            width: "100%",
+            ease: "power1.inOut",
+            duration: duration / 1000,
+          } , "+= 3.5")
+          .to(loaderRef.current, {
+            autoAlpha: 0,
+            height: 0,
+            duration: 1,
+            ease: "power2.inOut",
+            onComplete: () => {
+              setVisible(false);
+            },
+          })
+          .addLabel("loaderComplete"); // Label after loader exits
+      })
+      
+    },
+    {
+      dependencies: [timeline, ctx, duration , pathname], // Remove 'progress' from deps
+      scope: loaderRef,
+    }
+  );
 
+
+
+if(pathname === "/services" ) return
   return (
-    <div className="fixed inset-0 z-[100] bg-background flex flex-col items-center justify-center">
-      <div className="mb-8 animate-pulse">
-        <div className="w-20 h-20 rounded-2xl bg-primary flex items-center justify-center shadow-2xl">
-          <span className="text-primary-foreground font-bold text-4xl">E</span>
-        </div>
-      </div>
+    <div
 
-      <p className="text-muted-foreground mb-8">
-        Please wait while we prepare your experience
-      </p>
-
-      <div className="w-52 h-2 bg-muted rounded-full overflow-hidden">
+    key={pathname}
+      ref={loaderRef}
+      className="inset-0 z-50 h-20 w-screen bg-background flex flex-col items-center justify-center"
+    >
+      <div className=" h-20 bg-muted  w-full overflow-hidden">
         <div
-          className="h-full bg-primary transition-all duration-200 ease-out"
-          style={{ width: `${progress}%` }}
+          ref={progressRef}
+          className="h-full w-0  bg-primary transition-all   duration-200 ease-linear"
         />
+
       </div>
+
     </div>
   );
 };

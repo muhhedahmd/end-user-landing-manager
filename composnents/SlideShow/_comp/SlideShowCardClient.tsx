@@ -26,13 +26,13 @@ export const SlideshowCardClient = memo(function SlideshowCardClient({
   composition,
   autoPlay,
   interval,
-  index,
 }: SlideshowCardClientProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isInViewport, setIsInViewport] = useState(false);
   const [hasBeenVisible, setHasBeenVisible] = useState(false);
 
   useEffect(() => {
+
     const el = cardRef.current;
     if (!el) return;
 
@@ -67,8 +67,7 @@ export const SlideshowCardClient = memo(function SlideshowCardClient({
     };
   }, [hasBeenVisible]);
 
-  const isCube = composition === "CUBE"
-  const isSingle = composition === "SINGLE"
+
 
   // if (isSingle)
   //   return (
@@ -79,7 +78,7 @@ export const SlideshowCardClient = memo(function SlideshowCardClient({
 
 
     <div
-    // ref={cardRef}
+    ref={cardRef}
     // initial={{ opacity: 0, y: 20 }}
     // whileInView={{ opacity: 1, y: 0 }}
     // transition={{ duration: 0.3, delay: Math.min(index * 0.05, 0.3) }}

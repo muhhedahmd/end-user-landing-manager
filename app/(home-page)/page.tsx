@@ -4,14 +4,13 @@ import ContactForm from "@/composnents/contact/ContactForm";
 import Footer from "@/composnents/Footer/Footer";
 import HeroSection from "@/composnents/Hero/Hero";
 import LoadingHero from "@/composnents/Hero/Loading-hero";
-import MainLoader from "@/composnents/Loaders/MainLoader";
 import SlideShowsProd from "@/composnents/SlideShow/SlideShow";
 import { Suspense } from "react";
 
 export default function Home() {
   return (
 <>
-      <MainLoader/>
+      
       <Suspense fallback={<LoadingHero />}>
         <HeroSection />
       </Suspense>
@@ -21,6 +20,7 @@ export default function Home() {
       </Suspense>
       <Suspense fallback={<></>}>
         <SlideShowsProd /> 
+    
       </Suspense>
 
           <ContactForm />

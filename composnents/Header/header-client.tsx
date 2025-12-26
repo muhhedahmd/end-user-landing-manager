@@ -16,7 +16,7 @@ export default function HeaderClient({ navItems }: { navItems: NavItem[] }) {
 
   return (
     <div className="flex items-center gap-2">
-      <Button className="hidden md:inline-flex">Get Started</Button>
+      <Button className="mt-4 bg-white border-1 border-primary text-primary hover:bg-primary hover:text-secondary cursor-pointer">Get Started</Button>
 
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
@@ -37,7 +37,7 @@ export default function HeaderClient({ navItems }: { navItems: NavItem[] }) {
                 {item.label}
               </Link>
             ))}
-            <Button onClick={() => setOpen(false)} className="mt-4">
+            <Button  onClick={() => setOpen(false)} className="mt-4 bg-white border-1 border-primary text-primary">
               Get Started
             </Button>
           </nav>

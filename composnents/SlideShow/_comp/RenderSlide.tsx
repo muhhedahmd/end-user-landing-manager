@@ -23,7 +23,6 @@ function RenderSlidesManual({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [slides, setSlides] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  // const [isLoading, setIsComp] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   const hasTriggered = useRef(false);
@@ -47,13 +46,14 @@ function RenderSlidesManual({
         const transformed = response.data.slides
           .filter((item) => item.isVisible)
           .sort((a, b) => a.order - b.order)
-          .map((item) => ({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          .map((item : any) => ({
             ...item.data,
             type: item.type,
             order: item.order,
             id: item.id,
             customTitle: item.customTitle,
-            customDescription: item.customDescription,
+            customDescription: item.customDesc,
           }));
 
         setSlides(transformed);
@@ -71,14 +71,14 @@ function RenderSlidesManual({
   }, [id]);
 
 
-
-
   useEffect(() => {
+
     fetchSlides();
   }, [fetchSlides]);
 
 
   if (error) {
+
     return (
       <div className="h-96 rounded-lg bg-destructive/10 flex items-center justify-center">
         <p className="text-destructive">{error.message}</p>
