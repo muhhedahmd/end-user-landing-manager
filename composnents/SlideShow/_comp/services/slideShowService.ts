@@ -1,3 +1,4 @@
+import { Image } from "@/types/schema";
 import { successResponse } from "@/types/services";
 
 export interface Slide {
@@ -40,7 +41,6 @@ export interface PaginatedSlidesResponse {
 }
 
 import axios, { AxiosError } from "axios";
-import { Image } from "canvas";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "";
 

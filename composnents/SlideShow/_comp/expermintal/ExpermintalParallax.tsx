@@ -4,10 +4,11 @@
 import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import Image from "next/image";
 import { ProjectWithRelationsSlide } from "@/types/schema";
 import Link from "next/link";
+import BlurredImage from "@/composnents/Reusabale/ClientImageWithBlurHash";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,6 +34,7 @@ export const ProjectCardParallax = ({
             // Image parallax
             if (imageRef.current) {
                 gsap.fromTo(imageRef.current,
+
                     { y: 100, opacity: 0.8  , scale: .8},
                     {
                         y: -100,
@@ -44,6 +46,7 @@ export const ProjectCardParallax = ({
                             start: "top bottom",
                             end: "bottom top",
                             scrub: 1.5,
+                            markers: true
                         }
                     }
                 );
@@ -52,6 +55,7 @@ export const ProjectCardParallax = ({
             // Content slide in
             if (contentRef.current) {
                 gsap.fromTo(contentRef.current,
+
                     { 
                         x: position === 'left' ? -80 : 80,
                         opacity: 0 
@@ -65,6 +69,7 @@ export const ProjectCardParallax = ({
                             trigger: containerRef.current,
                             start: "top 70%",
                             toggleActions: "play none none reverse",
+                            markers: true
                         }
                     }
                 );
@@ -117,25 +122,28 @@ export const ProjectCardParallax = ({
     return (
         <div 
             ref={containerRef}
-            className=" min-h-screen  flex items-start justify-start py-4 md:py-4"
+            className=" w-full  flex items-center  justify-between py-4 md:py-4"
         >
-            <div className={`w-full max-w-[90%] mx-auto  px-4 sm:px-6 lg:px-8 flex flex-col ${isLeftLayout ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8 md:gap-12 items-center`}>
+            <div className={`w-full max-w-[90%]  flex flex-col ${isLeftLayout ? 'md:flex-row' : 'md:flex-row-reverse'} gap-8 md:gap-12 items-center`}>
                 
                 {/* Image Section */}
                 <div 
 
                     ref={imageRef}
-                    className="w-full md:w-1/2 relative h-[50vh] md:h-[70vh] rounded-2xl overflow-hidden"
+                    className="w-full md:w-1/2 relative h-[40vh] md:h-[60vh] rounded-2xl overflow-hidden"
                 >
                     {data.image ? (
-                        <Image
-                            src={data.image.url}
+                        <BlurredImage
+                            imageUrl={data.image.url}
                             alt={data.image.alt || data.title}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 50vw"
+                            height={data.image.height || 400}
+                            width={data.image.width || 600}
+                            blurhash={data.image.blurHash || ""}
+                            
+                            // priority={index === 0}
+                            className="object-cover w-full h-full"
                             quality={90}
-                            priority={index === 0}
+                        
                         />
                     ) : (
                         <div className="w-full h-full bg-neutral-900 flex items-center justify-center">

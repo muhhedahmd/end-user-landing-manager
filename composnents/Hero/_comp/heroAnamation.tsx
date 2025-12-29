@@ -18,7 +18,7 @@ const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
     // Reset animation flag when pathname changes
     useEffect(() => {
         hasAnimated.current = false;
-        
+
         // Kill the infinite scroll animation when leaving the page
         if (scrollAnimationRef.current) {
             scrollAnimationRef.current.kill();
@@ -31,10 +31,10 @@ const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
         const checkMobile = () => {
             setIsMobile(window.innerWidth < 768);
         };
-        
+
         checkMobile();
         window.addEventListener('resize', checkMobile);
-        
+
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
@@ -42,7 +42,6 @@ const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
         () => {
             // Only run animation on homepage
             if (pathname !== "/") {
-                
                 // Set static state for non-homepage
                 if (headingRef.current && contentRef.current) {
                     gsap.set(headingRef.current, {
@@ -94,7 +93,7 @@ const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
                             y: 0,
                             duration: 1,
                             padding: "0",
-                            height: isMobile ? "15vh" : "17vh",
+                            height: isMobile ? "10vh" : "17vh",
                             ease: "power4.out",
                         },
                         "headerComplete+=0"
@@ -137,11 +136,11 @@ const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
         return (
             <div>
                 <div className="overflow-hidden w-full max-w-[100vw]">
-                    <div 
-                        ref={headingRef} 
+                    <div
+                        ref={headingRef}
                         className="relative -z-10 py-8 flex items-center justify-center px-4"
                     >
-                        <h3 className="text-[7rem] md:text-[9rem] font-normal text-nowrap">
+                        <h3 className="  text-[5rem] sm:text-[7rem] md:text-[9rem] font-normal text-nowrap">
                             TECH VISION SOLUTIONS
                         </h3>
                     </div>
@@ -156,15 +155,16 @@ const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
     return (
         <div>
             <div className="overflow-hidden w-full max-w-[100vw]">
-                <div 
-                    ref={headingRef} 
-                    className="relative -z-10 h-screen pb-20 sm:pb-32 md:pb-40 flex items-end justify-center px-4"
+                <div
+                
+                    ref={headingRef}
+                    className="relative -z-10 h-screen  -md-50 md:mt-0  pb-20 sm:pb-32 md:pb-40 flex items-end justify-center px-4"
                 >
                     {[...Array(5)].map((_, i) => (
-                        <h3 
-                            key={i} 
-                            className="text-[9rem] font-normal text-nowrap"
-                        >
+                        <h3
+                        key={i}
+                            className="  text-[5rem] sm:text-[7rem] md:text-[8rem] lg:text-[9rem] xl:text-[10rem] font-normal text-nowrap">
+
                             TECH VISION SOLUTIONS
                         </h3>
                     ))}

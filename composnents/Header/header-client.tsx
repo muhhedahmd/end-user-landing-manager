@@ -1,10 +1,12 @@
 "use client"
 
-import { useState } from "react"
+import { Fragment, useRef, useState } from "react"
 import Link from "next/link"
-import { Menu, X } from "lucide-react"
+import { ArrowUpRight, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { useGSAP } from "@gsap/react"
+import gsap from "gsap"
 
 interface NavItem {
   label: string
@@ -14,35 +16,163 @@ interface NavItem {
 export default function HeaderClient({ navItems }: { navItems: NavItem[] }) {
   const [open, setOpen] = useState(false)
 
+
+  console.log({ open })
   return (
-    <div className="flex items-center gap-2">
-      <Button className="mt-4 bg-white border-1 border-primary text-primary hover:bg-primary hover:text-secondary cursor-pointer">Get Started</Button>
+    <Fragment>
 
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild>
-          <button className="md:hidden p-2" aria-label="Toggle menu">
-            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-        </SheetTrigger>
+      <div className="flex items-center  justify-center gap-2">
+        <Button className=" bg-white border-1 border-primary text-primary hover:bg-primary hover:text-secondary cursor-pointer">Get Started</Button>
+        <Button onClick={() => setOpen(true)} variant="ghost" className="  md:hidden  ">
 
-        <SheetContent side="right" className="pt-10">
-          <nav className="flex flex-col gap-3">
-            {navItems.map(item => (
-              <Link
-                key={item.href}
+          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </Button>
+
+      </div>
+      <CustomDrawer navItems={navItems} open={open} onOpenChange={setOpen} />
+    </Fragment>
+  )
+}
+
+
+
+function CustomDrawer({ 
+  open, 
+  onOpenChange, 
+  navItems 
+}: { 
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  navItems: NavItem[]
+}) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const overlayRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
+  const navItemsRef = useRef<HTMLDivElement>(null)
+
+  useGSAP(() => {
+    if (!containerRef.current || !overlayRef.current || !contentRef.current) return
+
+    if (open) {
+      // Overlay fade in
+      gsap.to(overlayRef.current, {
+        opacity: 1,
+        duration: 0.4,
+        ease: "power2.out"
+      })
+
+      // Drawer slide in with dynamic dimensions
+      gsap.to(containerRef.current, {
+        x: 0,
+        width: "100vw",
+        height: "100vh",
+        duration: 0.6,
+        ease: "power4.out"
+      })
+
+      // Stagger nav items
+      if (navItemsRef.current) {
+        const items = navItemsRef.current.querySelectorAll('.nav-item')
+        gsap.fromTo(items,
+          { opacity: 0, x: 50 },
+          { 
+            opacity: 1, 
+            x: 0, 
+            duration: 0.5,
+            stagger: 0.08,
+            delay: 0.3,
+            ease: "power3.out"
+          }
+        )
+      }
+    } else {
+      // Reverse animations
+      gsap.to(overlayRef.current, {
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.in"
+      })
+
+      gsap.to(containerRef.current, {
+        x: "100%",
+        width: 0,
+        duration: 0.4,
+        ease: "power3.in"
+      })
+    }
+  }, {
+    dependencies: [open],
+  })
+
+
+  return (
+    <>
+      {/* Overlay */}
+      <div 
+        ref={overlayRef}
+        onClick={() => onOpenChange(false)}
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 opacity-0"
+        style={{ display: open ? 'block' : 'none' }}
+      />
+
+      {/* Drawer */}
+      <div 
+        ref={containerRef}
+        className="fixed top-0 right-0 bg-background border-l border-border z-50 transform translate-x-full"
+        style={{ width: '100vw', height: '100vh' }}
+      >
+        <div ref={contentRef} className="h-full flex flex-col p-6 md:p-8 lg:p-12">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-12 md:mb-16">
+            {/* Logo */}
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                <span className="text-primary-foreground font-bold text-lg">A</span>
+              </div>
+              <span className="font-bold text-xl text-foreground">AWWWARDS</span>
+            </div>
+
+            {/* Close Button */}
+            <button 
+              onClick={() => onOpenChange(false)}
+              className="w-12 h-12 rounded-full border border-border hover:bg-accent flex items-center justify-center transition-all duration-300 hover:rotate-90"
+            >
+              <X className="h-5 w-5 text-foreground" />
+            </button>
+          </div>
+
+          {/* Navigation */}
+          <nav ref={navItemsRef} className="flex-1 flex flex-col justify-center gap-2">
+            {navItems.map((item, index) => (
+              <a
+                key={index}
                 href={item.href}
-                onClick={() => setOpen(false)}
-                className="text-sm font-medium hover:text-primary"
+                onClick={() => onOpenChange(false)}
+                className="nav-item group flex items-center justify-between py-3 md:py-4 border-b border-border opacity-0"
               >
-                {item.label}
-              </Link>
+                <span className="text-2xl md:text-3xl lg:text-4xl font-light tracking-tight text-foreground group-hover:translate-x-2 transition-transform duration-300">
+                  {item.label}
+                </span>
+                <ArrowUpRight className="h-5 w-5 md:h-6 md:w-6 text-muted-foreground opacity-0 group-hover:opacity-100 -translate-y-2 translate-x-2 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300" />
+              </a>
             ))}
-            <Button  onClick={() => setOpen(false)} className="mt-4 bg-white border-1 border-primary text-primary">
-              Get Started
-            </Button>
           </nav>
-        </SheetContent>
-      </Sheet>
-    </div>
+
+          {/* Footer */}
+          <div className="pt-6 md:pt-8 border-t border-border">
+            <button className="w-full py-3 md:py-4 bg-primary text-primary-foreground rounded-full font-medium hover:opacity-90 transition-all duration-300 hover:scale-105">
+              Get Started
+            </button>
+            
+            {/* Social Links */}
+            <div className="flex items-center justify-center gap-4 md:gap-6 mt-6 md:mt-8 text-sm text-muted-foreground">
+              <a href="#" className="hover:text-foreground transition-colors">Instagram</a>
+              <a href="#" className="hover:text-foreground transition-colors">Twitter</a>
+              <a href="#" className="hover:text-foreground transition-colors">LinkedIn</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }

@@ -51,7 +51,7 @@ export default async function Header() {
   return (
     <HeaderAniamtion>
 
-      <div className="  h-[12vh] flex items-center justify-between px-4">
+      <div className="  h-full flex items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
           {companyInfo?.logo ? (
             <Image

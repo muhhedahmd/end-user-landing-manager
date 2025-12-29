@@ -1,11 +1,10 @@
-import { Fragment, useRef, useState } from "react";
+import {  useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { slide } from "@/types/schema";
 // import { TypeToRender } from "../TypeToRender";
 import { useGSAP } from "@gsap/react";
 import { TypeToRenderProd } from "../TypToRenderProd";
-import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 // const slides = mockSlides
@@ -106,7 +105,6 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
        
       </div>
 
-      {/* Optional filler to allow scrolling */}
     </div>
   );
 };

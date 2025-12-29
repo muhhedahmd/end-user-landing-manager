@@ -71,7 +71,7 @@ export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
             case "MINIMAL":
                 return "px-4 py-8 sm:px-8 sm:py-12"
             case "SPLIT":
-                return "px-4 py-8 sm:px-16 sm:py-12"
+                return "px-1 py-2 sm:px-16 sm:py-12"
             default:
                 return "px-4 py-12 sm:px-8 sm:py-16"
         }
@@ -153,12 +153,13 @@ export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
 
     // Render variants - MATCHING HeroPreview
     const renderVariant = () => {
+
         switch (hero.variant) {
             case "SPLIT":
                 return (
                     <div className=" relative z-10 w-full  flex flex-col  md:items-enter items-start h-[70vh]">
 
-                        <div className="pl-5 flex-1 flex flex-col md:justify-center justify-start" style={{ padding: getContentPadding() }}>
+                        <div className="md:pl-5 md:mb-0 mb-5 flex-1 flex flex-col md:justify-center justify-start" style={{ padding: getContentPadding() }}>
 
                             <div
                                 className=" flex start  gap-10 items-end justify-between w-full "
@@ -196,7 +197,7 @@ export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
                                         </p>
                                     )}
                                 </div>
-                                <div className="flex justify-end items-end">
+                                <div className=" bmd:g-accent rounded-md w-max p-1  absolute bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:static  z-10 flex justify-end items-end">
 
                                     {(hero.ctaText || hero.secondaryCtaText) && (
 
@@ -236,7 +237,7 @@ export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
 
 
                             <div
-                                className=" rounded-xl p-5 flex  h-full  w-full overflow-hidden pr-5"
+                                className=" rounded-xl md:p-5 flex  h-full  w-full overflow-hidden md:pr-5"
                             >
 
                                 <BlurredImage
@@ -337,7 +338,7 @@ export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
             }}
   
         >
-            <div className="container">
+            <div className="md:container">
 
                 {/* Background Image with BlurredImage - Not for SPLIT variant */}
                 {backgroundImage && hero.variant !== "SPLIT" && (

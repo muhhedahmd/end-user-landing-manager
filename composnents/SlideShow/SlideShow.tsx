@@ -5,7 +5,7 @@ import { PaginatedResponse } from "@/types/services";
 import { SlideShow } from "@/types/slideShows";
 
 const ITEMS_PER_PAGE = 10;
-export const dynamic = "force-static"
+export const dynamic = "force-dynamic";
 
 type SlideShowResult = { status: "success" | "error"; data: PaginatedResponse<SlideShow> }
     | { status: "error" }

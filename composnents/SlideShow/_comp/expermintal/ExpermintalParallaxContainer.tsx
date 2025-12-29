@@ -2,7 +2,7 @@
 "use client"
 
 import { useGSAP } from "@gsap/react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { TypeToRenderProd } from "../TypToRenderProd";
 import { slide } from "@/types/schema";
 import gsap from "gsap"
@@ -42,6 +42,7 @@ export const ExpermintalParallaxContainer = ({ slides, isInViewport }: {
         return () => ctx.revert();
     }, [slides]);
 
+
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (window.innerWidth < 768) return; // Disable on mobile
 
@@ -53,6 +54,7 @@ export const ExpermintalParallaxContainer = ({ slides, isInViewport }: {
             duration: 0.3,
             ease: 'power2.out',
         });
+    
     };
 
     const handleTouchStart = () => {
@@ -63,7 +65,7 @@ export const ExpermintalParallaxContainer = ({ slides, isInViewport }: {
     };
 
     return (
-        <div className="space-y-4 sm:space-y-6 md:space-y-8 px-4 sm:px-6 lg:px-8">
+        <div className="">
             <div
                 ref={containerRef}
                 className="relative overflow-hidden rounded-2xl sm:rounded-3xl flex flex-col w-full h-full gap-3 sm:gap-4 md:gap-5"
@@ -76,7 +78,7 @@ export const ExpermintalParallaxContainer = ({ slides, isInViewport }: {
                         ref={(el) => {
                             if (el) slidesRef.current[idx] = el;
                         }}
-                        className="inset-0 min-h-screen space-y-6 sm:space-y-8 md:space-y-12"
+                        className="inset-0 max-h-[70vh] overflow-hidden space-y-6 sm:space-y-8 md:space-y-12"
                     >
                         <TypeToRenderProd
                             play={isInViewport}

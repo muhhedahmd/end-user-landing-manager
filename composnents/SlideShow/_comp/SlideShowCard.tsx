@@ -35,9 +35,10 @@ export function SlideshowCard({
         backgroundColor: bgColor,
         color: textColor,
       }}
-      className={cn( "rounded-lg duration-200 overflow-hidden w-full " ,!isCube && !isSingle && !isParallax &&  "container mx-auto")}
+      className={cn( "rounded-lg duration-200 overflow-hidden w-full " ,!isCube && !isSingle &&   "container mx-auto")}
     >
       {/* Server-rendered header */}
+
       <SlideHeader
         compositionType={compositionType}
         title={item.title}

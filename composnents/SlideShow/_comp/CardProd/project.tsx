@@ -9,6 +9,10 @@ import { ExternalLink, Github } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useRef } from "react"
 import gsap from "gsap"
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+import { ProjectCardParallax } from "../expermintal/ExpermintalParallax"
+gsap.registerPlugin(ScrollTrigger);
+
 
 interface ProjectCardProps {
     data: ProjectWithRelationsSlide
@@ -30,6 +34,7 @@ export const ProjectCard = ({
     }
 
     if (story) {
+
         return <ProjectCardStory data={data} />
     }
 
@@ -37,6 +42,7 @@ export const ProjectCard = ({
 }
 
 const ProjectCardDefault = ({ data }: { data: ProjectWithRelationsSlide }) => {
+    
 
     const cardRef = useRef<HTMLDivElement>(null)
 
@@ -156,16 +162,6 @@ const ProjectCardDefault = ({ data }: { data: ProjectWithRelationsSlide }) => {
         </div>
     )
 }
-
-import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
-import { ProjectCardParallax } from "../expermintal/ExpermintalParallax"
-
-gsap.registerPlugin(ScrollTrigger);
-
-
-
-
-// ProjectCardParallax Component - Full GSAP Version
 
 
 
