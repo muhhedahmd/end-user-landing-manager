@@ -12,19 +12,13 @@ import BlurredImage from "@/composnents/Reusabale/ClientImageWithBlurHash"
 // gsap.registerPlugin(ScrollTrigger);
 
 export const ClientCard = ({ data, single }: ClientCardProps) => {
-    // if (single) {
-    //     return <>
-    //     </>
-    // }
-
     return (
 
 
         <div
-
             className="group relative h-full w-full  flex lg:flex-row flex-col   rounded-2xl  border-primary bg-card  border-1  hover:border-primary/50 transition-all duration-300 overflow-hidden gap-4" 
         >
-            <div className="  lg:h-full h-1/4 lg:w-1/2 w-full  ">
+            <div className="lg:h-full h-1/4 lg:w-1/2 w-full  ">
 
 
                 {data.image && (
@@ -46,7 +40,6 @@ export const ClientCard = ({ data, single }: ClientCardProps) => {
 
             {/* Logo Section */}
             <div className="lg:h-full h-1/2 lg:w-1/2 w-full border-border bg-card">
-
 
                 {data.logo && (
                     <div className=" bg-muted/30 flex  items-center justify-start gap-4 p-4 border-b border-border">
@@ -75,14 +68,14 @@ export const ClientCard = ({ data, single }: ClientCardProps) => {
                     )}
 
                     {data.description && (
-                        <p className="  client-description lg:text-md text-sm font-semibold text-muted-foreground leading-relaxed font-inter">
+                        <p className="client-description lg:text-md text-sm font-semibold text-muted-foreground leading-relaxed font-inter">
                             {data.description}
                         </p>
                     )}
 
                     {data.richDescription && data.richDescription !== data.description && (
                         <div
-                            className="hidden md:static client-description text-sm font-bold text-muted-foreground leading-relaxed font-inter prose prose-sm dark:prose-invert"
+                            className="client-description md:line-clamp-none  line-clamp-3 text-sm font-bold text-muted-foreground leading-relaxed font-inter prose prose-sm dark:prose-invert"
                             dangerouslySetInnerHTML={{ __html: data.richDescription }}
                         />
                     )}

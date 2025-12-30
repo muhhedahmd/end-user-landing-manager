@@ -125,9 +125,9 @@ const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
             });
         },
         {
-            dependencies: [timeline, ctx, isReady, pathname, isMobile],
+            dependencies: [timeline, ctx, isReady],
             scope: contentRef,
-            revertOnUpdate: true,
+            // revertOnUpdate: true,
         }
     );
 
@@ -138,7 +138,7 @@ const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
                 <div className="overflow-hidden w-full max-w-[100vw]">
                     <div
                         ref={headingRef}
-                        className="relative -z-10 py-8 flex items-center justify-center px-4"
+                        className="relative  -z-10 py-8 flex items-center justify-center px-4"
                     >
                         <h3 className="  text-[5rem] sm:text-[7rem] md:text-[9rem] font-normal text-nowrap">
                             TECH VISION SOLUTIONS

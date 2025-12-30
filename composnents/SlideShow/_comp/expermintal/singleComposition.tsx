@@ -105,6 +105,7 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
        
       </div>
 
+      {/* Optional filler to allow scrolling */}
     </div>
   );
 };

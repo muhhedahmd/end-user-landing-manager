@@ -44,6 +44,7 @@ export const TimelineProvider: FC<TimelineProviderProps> = ({ children }) => {
 
     // Small delay to ensure DOM is ready
     const timeoutId = setTimeout(() => {
+
       const context = gsap.context(() => {
         const tl = gsap.timeline({
           paused: false,
@@ -59,7 +60,8 @@ export const TimelineProvider: FC<TimelineProviderProps> = ({ children }) => {
 
       // Store cleanup function
       cleanupRef.current = () => {
-        context.revert();
+        
+        context.kill();
         if (timeline) {
           timeline.kill();
           timeline.clear();

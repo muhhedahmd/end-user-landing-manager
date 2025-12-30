@@ -157,7 +157,7 @@ export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
         switch (hero.variant) {
             case "SPLIT":
                 return (
-                    <div className=" relative z-10 w-full  flex flex-col  md:items-enter items-start h-[70vh]">
+                    <div className=" relative z-10 w-full  flex flex-col  md:items-enter items-start xl:h-[65dvh]  md:h-[70dvh] h-[84dvh]">
 
                         <div className="md:pl-5 md:mb-0 mb-5 flex-1 flex flex-col md:justify-center justify-start" style={{ padding: getContentPadding() }}>
 

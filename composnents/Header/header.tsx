@@ -3,17 +3,8 @@ import Link from "next/link"
 import HeaderClient from "./header-client"
 import Image from "next/image"
 import HeaderAniamtion from "./HeaderAniamtion"
+import { CompanyInfo } from "@/types/schema"
 
-interface CompanyInfo {
-  name: string
-  logo?: {
-    url: string
-    alt?: string
-    height?: number,
-    width?: number
-    blurHash?: string
-  }
-}
 
 export const dynamic = "force-static"
 
@@ -83,7 +74,7 @@ export default async function Header() {
           ))}
         </nav>
 
-        <HeaderClient navItems={navItems} />
+        <HeaderClient companyInfo={companyInfo ?? null} navItems={navItems} />
       </div>
     </HeaderAniamtion>
 

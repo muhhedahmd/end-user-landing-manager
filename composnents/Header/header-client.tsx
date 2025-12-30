@@ -1,19 +1,19 @@
 "use client"
 
 import { Fragment, useRef, useState } from "react"
-import Link from "next/link"
 import { ArrowUpRight, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
+import { CompanyInfo } from "@/types/schema"
+import Image from "next/image"
 
 interface NavItem {
   label: string
   href: string
 }
 
-export default function HeaderClient({ navItems }: { navItems: NavItem[] }) {
+export default function HeaderClient({ navItems , companyInfo  }: { navItems: NavItem[] , companyInfo: CompanyInfo | null }) {
   const [open, setOpen] = useState(false)
 
 
@@ -22,14 +22,13 @@ export default function HeaderClient({ navItems }: { navItems: NavItem[] }) {
     <Fragment>
 
       <div className="flex items-center  justify-center gap-2">
-        <Button className=" bg-white border-1 border-primary text-primary hover:bg-primary hover:text-secondary cursor-pointer">Get Started</Button>
         <Button onClick={() => setOpen(true)} variant="ghost" className="  md:hidden  ">
 
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </Button>
 
       </div>
-      <CustomDrawer navItems={navItems} open={open} onOpenChange={setOpen} />
+      <CustomDrawer  companyInfo={companyInfo} navItems={navItems} open={open} onOpenChange={setOpen} />
     </Fragment>
   )
 }
@@ -39,8 +38,10 @@ export default function HeaderClient({ navItems }: { navItems: NavItem[] }) {
 function CustomDrawer({ 
   open, 
   onOpenChange, 
-  navItems 
+  navItems ,
+  companyInfo
 }: { 
+  companyInfo: CompanyInfo | null
   open: boolean
   onOpenChange: (open: boolean) => void
   navItems: NavItem[]
@@ -54,6 +55,7 @@ function CustomDrawer({
     if (!containerRef.current || !overlayRef.current || !contentRef.current) return
 
     if (open) {
+
       // Overlay fade in
       gsap.to(overlayRef.current, {
         opacity: 1,
@@ -66,6 +68,7 @@ function CustomDrawer({
         x: 0,
         width: "100vw",
         height: "100vh",
+
         duration: 0.6,
         ease: "power4.out"
       })
@@ -118,18 +121,18 @@ function CustomDrawer({
       {/* Drawer */}
       <div 
         ref={containerRef}
-        className="fixed top-0 right-0 bg-background border-l border-border z-50 transform translate-x-full"
-        style={{ width: '100vw', height: '100vh' }}
+        className="fixed  overflow-hidden top-0 right-0 bg-background border-l border-border z-50 transform translate-x-full"
+        style={{ width: 0 , height: "100dvh"}}
       >
         <div ref={contentRef} className="h-full flex flex-col p-6 md:p-8 lg:p-12">
           {/* Header */}
           <div className="flex items-center justify-between mb-12 md:mb-16">
             {/* Logo */}
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">A</span>
+              <div className="w-10 h-10 rounded-full flex items-center justify-center">
+                  <Image src={companyInfo?.logo?.url || ""} alt="logo" width={30} height={30} />
               </div>
-              <span className="font-bold text-xl text-foreground">AWWWARDS</span>
+              <span className="font-bold text-xl text-foreground">{companyInfo?.name}</span>
             </div>
 
             {/* Close Button */}

@@ -34,6 +34,7 @@ gsap.registerPlugin(ScrollTrigger);
 
       gsap.to(card, {
         scale: scaleVal,
+        scrub: true,
         ease: "none",
         scrollTrigger: {
           trigger: card,
@@ -53,6 +54,7 @@ gsap.registerPlugin(ScrollTrigger);
         end: `bottom top+=${200 + cards.length * spacer}`,
         pin: true,
         markers: true,
+        scrub: true,
         pinSpacing: false,
         invalidateOnRefresh: true,
         onEnter : (()=>{
@@ -81,31 +83,33 @@ gsap.registerPlugin(ScrollTrigger);
   });
 
   return (
-    <div
-      ref={rootRef}
-      className="min-h-screen  px-10 py-10 font-light"
-    >
-      {/* Title */}
+  <div
+  ref={rootRef}
+  className="min-h-screen px-4 sm:px-6 md:px-8 lg:px-10 py-8 sm:py-10 md:py-12 font-light"
+>
+  {/* Title */}
 
-      {/* Cards container */}
-      <div className="flex items-center justify-center pt-[10rem]">
-        <div className="cards relative flex items-center justify-center flex-col">
-            
-         {slides.map((n , i ) => (
-            <div
-              key={i}
-              ref={addCardRef}
-              className="relative mb-12 flex lg:h-120 lg:w-230 md:w-180 md:h-100 sm:h-130 sm:w-120  h-100 w-90 items-center  justify-center  shadow-lg rounded-2xl "
-            >
-              <TypeToRenderProd slide={n} cube={true} />
-            </div>
-          ))}
+  {/* Cards container */}
+  <div className="flex items-start justify-center pt-12 sm:pt-16 md:pt-24 lg:pt-32 xl:pt-40">
+    <div className="cards relative flex items-start justify-start flex-col w-full max-w-7xl">
+        
+      {slides.map((n, i) => (
+        <div
+          key={i}
+          ref={addCardRef}
+          className="relative mb-8 sm:mb-10 md:mb-12 flex w-full max-w-full 
+                     h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px]
+                     items-center justify-center shadow-lg rounded-xl sm:rounded-2xl overflow-hidden"
+        >
+          <TypeToRenderProd slide={n} cube={true} />
         </div>
-      </div>
-
-      {/* Spacer section */}
-      <div className="mt-10 h-[50vh] w-full border-t " />
+      ))}
     </div>
+  </div>
+
+  {/* Spacer section */}
+  <div className="mt-8 sm:mt-10 md:mt-12 h-[30vh] sm:h-[40vh] md:h-[50vh] w-full border-t border-border" />
+</div>
   );
 };
 

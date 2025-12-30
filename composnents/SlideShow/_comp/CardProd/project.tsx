@@ -169,6 +169,7 @@ const ProjectCardDefault = ({ data }: { data: ProjectWithRelationsSlide }) => {
 
 
 const ProjectCardStory = ({ data }: { data: ProjectWithRelationsSlide }) => {
+
     const articleRef = useRef<HTMLElement>(null)
 
     useEffect(() => {
@@ -209,89 +210,97 @@ const ProjectCardStory = ({ data }: { data: ProjectWithRelationsSlide }) => {
     }, [])
 
     return (
-        <article
-            ref={articleRef}
-            className="w-full flex flex-col md:flex-row gap-6 mx-auto px-6 py-16"
-        >
-            <div className="aspect-4/4 w-[60rem] relative mb-3 overflow-hidden group">
-                {data.image && (
-                    <div className="h-full w-full overflow-hidden bg-gray-100">
-                        <BlurredImage
-                            imageUrl={data.image.url}
-                            height={data.image.height || 400}
-                            width={data.image.width || 800}
-                            alt={data.image.alt || data.title}
-                            blurhash={data.image.blurHash || ""}
-                            quality={100}
-                            className="w-full h-full transition-transform duration-700 ease-out group-hover:scale-105"
-                        />
-                    </div>
+   <article
+    ref={articleRef}
+    className="w-full flex flex-col lg:flex-row gap-4 md:gap-6 lg:gap-8 mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 lg:py-16"
+>
+    {/* Image Container */}
+    <div className="w-full lg:w-1/2 xl:w-[60%] aspect-video lg:aspect-square relative overflow-hidden group rounded-lg">
+        {data.image && (
+            <div className="h-full w-full overflow-hidden bg-gray-100">
+                <BlurredImage
+                    imageUrl={data.image.url}
+                    height={data.image.height || 400}
+                    width={data.image.width || 800}
+                    alt={data.image.alt || data.title}
+                    blurhash={data.image.blurHash || ""}
+                    quality={100}
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+            </div>
+        )}
+    </div>
+
+    {/* Content Container */}
+    <div className="w-full lg:w-1/2 xl:w-[40%] space-y-4 md:space-y-6 lg:space-y-8">
+        {/* Title */}
+        <h1 className="story-element text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-[1.1] tracking-tight">
+            {data.title}
+        </h1>
+
+        {/* Client Info */}
+        {data.clientName && (
+            <div className="story-element flex items-center gap-2 text-sm md:text-base text-muted-foreground">
+                <span className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
+                <span className="font-medium">{data.clientName}</span>
+                {data.clientCompany && (
+                    <>
+                        <span className="text-border">•</span>
+                        <span className="truncate">{data.clientCompany}</span>
+                    </>
                 )}
             </div>
+        )}
 
-            <div className="space-y-8">
-                <h1 className="story-element text-5xl md:text-6xl font-bold text-foreground leading-[1.1] tracking-tight">
-                    {data.title}
-                </h1>
+        {/* Description */}
+        {data.description && (
+            <p className="story-element text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground leading-relaxed">
+                {data.description}
+            </p>
+        )}
 
-                {data.clientName && (
-                    <div className="story-element flex items-center gap-2 text-base text-muted-foreground">
-                        <span className="w-2 h-2 rounded-full bg-primary" />
-                        <span className="font-medium">{data.clientName}</span>
-                        {data.clientCompany && (
-                            <>
-                                <span className="text-border">•</span>
-                                <span>{data.clientCompany}</span>
-                            </>
-                        )}
-                    </div>
-                )}
-                {data.description && (
-                    <p className="story-element text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-3xl">
-                        {data.description}
-                    </p>
-                )}
+        {/* Rich Description */}
+        {data.richDescription && (
+            <div className="story-element prose prose-sm sm:prose-base md:prose-lg text-muted-foreground">
+                {data.richDescription.split("\n").map((paragraph, idx) => {
+                    return (
+                        paragraph.trim() && (
+                            <p key={idx} className="mb-3 md:mb-4">
+                                {paragraph}
+                            </p>
+                        )
+                    )
+                })}
+            </div>
+        )}
 
-                {data.richDescription && (
-                    <div className="story-element prose prose-lg max-w-3xl text-muted-foreground">
-                        {data.richDescription.split("\n").map((paragraph, idx) => {
-                            return (
-                                paragraph.trim() && (
-                                    <p key={idx} className="mb-4">
-                                        {paragraph}
-                                    </p>
-                                )
-                            )
-                        })}
-                    </div>
-                )}
+        {/* Action Links */}
+        <div className="story-element flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4 sm:gap-6 pt-4 md:pt-6 border-t border-border">
+            {data.projectUrl && (
+                <Link
+                    href={data.projectUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-2 text-sm md:text-base font-semibold text-foreground hover:text-primary transition-colors"
+                >
+                    <span>View Project</span>
+                    <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </Link>
+            )}
 
-                <div className="story-element flex flex-wrap items-center gap-6 pt-4 border-t border-border">
-                    {data.projectUrl && (
-                        <Link
-                            href={data.projectUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group inline-flex items-center gap-2 text-base font-semibold text-foreground hover:text-primary transition-colors"
-                        >
-                            <span>View Project</span>
-                            <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                        </Link>
-                    )}
-
-                    {data.githubUrl && (
-                        <Link
-                            href={data.githubUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group inline-flex items-center gap-2 text-base font-semibold text-muted-foreground hover:text-foreground transition-colors"
-                        >
-                            <Github className="w-4 h-4" />
-                            <span>View Source</span>
-                        </Link>
-                    )}
-                </div>
-            </div >
-        </article >
+            {data.githubUrl && (
+                <Link
+                    href={data.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-2 text-sm md:text-base font-semibold text-muted-foreground hover:text-foreground transition-colors"
+                >
+                    <Github className="w-4 h-4" />
+                    <span>View Source</span>
+                </Link>
+            )}
+        </div>
+    </div>
+</article>
     )
 }

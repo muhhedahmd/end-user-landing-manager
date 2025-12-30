@@ -4,7 +4,7 @@ import {  memo, useCallback, useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import type { slide } from "@/types/schema"
-import { TypeToRender } from "./TypeToRender"
+// import { TypeToRenderProd } from "./TypeToRenderProd"
 import CubeComposition from "./expermintal/cubeComposition"
 import SingleCompsotion from "./expermintal/singleComposition"
 import { TypeToRenderProd } from "./TypToRenderProd"
@@ -173,6 +173,7 @@ interface CompositionPreviewProps {
 
   switch (composition) {
     case "CAROUSEL":
+
       return (
         <div className="space-y-8 overflow-hidden">
           <div className="flex items-center  gap-3 justify-end px-8">
@@ -212,7 +213,7 @@ interface CompositionPreviewProps {
                 }}
                 className=" inset-0  rounded-3xl  "
               >
-                <TypeToRender play={isInViewport} splitcarousel={true} slide={slides[currentSlide]} />
+                <TypeToRenderProd play={isInViewport} splitcarousel={true} slide={slides[currentSlide]} />
               </motion.div>
             </AnimatePresence>
           </div>
@@ -253,7 +254,7 @@ interface CompositionPreviewProps {
               className=" rounded-3xl   overflow-hidden cursor-pointer group"
             >
               <div className=" inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <TypeToRender play={isInViewport} slide={slide} />
+              <TypeToRenderProd play={isInViewport} slide={slide} />
             </motion.div>
           ))}
         </motion.div>
@@ -271,7 +272,7 @@ interface CompositionPreviewProps {
               className=" rounded-3xl   overflow-hidden group"
             >
               <div className=" inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <TypeToRender play={isInViewport} slide={slide} />
+              <TypeToRenderProd play={isInViewport} slide={slide} />
             </motion.div>
           ))}
         </motion.div>
@@ -291,7 +292,7 @@ interface CompositionPreviewProps {
                 transition={{ duration: 0.8 }}
                 className=" inset-0   "
               >
-                <TypeToRender play={isInViewport} slide={slides[currentSlide]} />
+                <TypeToRenderProd play={isInViewport} slide={slides[currentSlide]} />
               </motion.div>
             </AnimatePresence>
           </div>
@@ -338,7 +339,7 @@ interface CompositionPreviewProps {
                 transition={{ duration: 0.5 }}
                 className="h-full  rounded-3xl  "
               >
-                <TypeToRender play={isInViewport} slide={slides[currentSlide]} />
+                <TypeToRenderProd play={isInViewport} slide={slides[currentSlide]} />
               </motion.div>
             </AnimatePresence>
           </motion.div>
@@ -395,7 +396,7 @@ interface CompositionPreviewProps {
                 transition={{ duration: 0.6, ease: "easeInOut" }}
                 className=" inset-0   "
               >
-                <TypeToRender play={isInViewport} slide={slides[currentSlide]} />
+                <TypeToRenderProd play={isInViewport} slide={slides[currentSlide]} />
               </motion.div>
             </AnimatePresence>
           </div>
@@ -447,7 +448,7 @@ interface CompositionPreviewProps {
         //                 }}
         //                 className="inset-0 min-h-screen space-y-6 sm:space-y-8 md:space-y-12"
         //             >
-        //                 <TypeToRender 
+        //                 <TypeToRenderProd 
         //                     play={isInViewport} 
         //                     slide={slide} 
         //                     split={true} 
@@ -484,7 +485,7 @@ interface CompositionPreviewProps {
                     className=" h-96 w-80  rounded-2xl  "
                     style={{ transformStyle: "preserve-3d" }}
                   >
-                    <TypeToRender play={isInViewport} slide={slide} />
+                    <TypeToRenderProd play={isInViewport} slide={slide} />
                   </motion.div>
                 )
               })}
@@ -530,7 +531,7 @@ interface CompositionPreviewProps {
                 transition={{ duration: 4, ease: "easeInOut" }}
                 className=" inset-0   "
               >
-                <TypeToRender play={isInViewport} slide={slides[currentSlide]} />
+                <TypeToRenderProd play={isInViewport} slide={slides[currentSlide]} />
               </motion.div>
             </AnimatePresence>
           </div>
@@ -577,7 +578,7 @@ interface CompositionPreviewProps {
                 className="w-full h-full  rounded-3xl  "
                 style={{ transformStyle: "preserve-3d" }}
               >
-                <TypeToRender play={isInViewport} slide={slides[currentSlide]} />
+                <TypeToRenderProd play={isInViewport} slide={slides[currentSlide]} />
               </motion.div>
             </AnimatePresence>
           </div>
@@ -625,7 +626,7 @@ interface CompositionPreviewProps {
               className=" inset-0   "
               style={{ transformStyle: "preserve-3d" }}
             >
-              <TypeToRender slide={slides[currentSlide]} />
+              <TypeToRenderProd slide={slides[currentSlide]} />
             </motion.div>
           </AnimatePresence>
         </div>
@@ -676,7 +677,7 @@ interface CompositionPreviewProps {
               className="h-64  rounded-2xl   overflow-hidden cursor-pointer group"
             >
               <div className=" inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <TypeToRender play={isInViewport} slide={slide} />
+              <TypeToRenderProd play={isInViewport} slide={slide} />
             </motion.div>
           ))}
         </motion.div>
@@ -708,7 +709,7 @@ interface CompositionPreviewProps {
                 transition={{ duration: 0.3 }}
                 className=" inset-0   h-full "
               >
-                <TypeToRender play={isInViewport} slide={slides[currentSlide]} story={true} />
+                <TypeToRenderProd play={isInViewport} slide={slides[currentSlide]} story={true} />
               </motion.div>
             </AnimatePresence>
           </div>
@@ -728,7 +729,7 @@ interface CompositionPreviewProps {
                 transition={{ duration: 0.4 }}
                 className=" inset-0   "
               >
-                <TypeToRender play={isInViewport} slide={slides[currentSlide]} />
+                <TypeToRenderProd play={isInViewport} slide={slides[currentSlide]} />
               </motion.div>
             </AnimatePresence>
           </div>
@@ -752,7 +753,7 @@ interface CompositionPreviewProps {
                   }`}
               >
                 <div className="h-full ">
-                  <TypeToRender play={isInViewport} slide={slide} imaged={true} minmal={true} />
+                  <TypeToRenderProd play={isInViewport} slide={slide} imaged={true} minmal={true} />
                 </div>
             
               </motion.button>
@@ -778,7 +779,7 @@ interface CompositionPreviewProps {
                 className="h-32 rounded-lg overflow-hidden cursor-pointer group relative"
               >
                 <div className="h-full  ">
-                  <TypeToRender play={isInViewport} slide={slide} />
+                  <TypeToRenderProd play={isInViewport} slide={slide} />
                 </div>
                 <div className=" inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
                   <motion.div initial={{ scale: 0 }} whileHover={{ scale: 1 }} className="text-white text-2xl">
@@ -806,7 +807,7 @@ interface CompositionPreviewProps {
                   className="relative  w-full max-w-2xl h-fit flex items-center justify-center rounded-3xl overflow-hidden"
                 >
                   <div className=" inset-0  ">
-                    <TypeToRender play={isInViewport} slide={slides[currentSlide]} />
+                    <TypeToRenderProd play={isInViewport} slide={slides[currentSlide]} />
                   </div>
 
                   <motion.button
@@ -851,7 +852,7 @@ interface CompositionPreviewProps {
                   key={`original-${idx}`}
                   className="min-w-fit h-full aspect-video rounded-2xl flex-shrink-0"
                 >
-                  <TypeToRender play={isInViewport} slide={slide} imaged={true} minmal={true} />
+                  <TypeToRenderProd play={isInViewport} slide={slide} imaged={true} minmal={true} />
                 </motion.div>
               ))}
 
@@ -860,7 +861,7 @@ interface CompositionPreviewProps {
                   key={`clone-${idx}`}
                   className="min-w-fit h-full aspect-video rounded-2xl flex-shrink-0"
                 >
-                  <TypeToRender play={isInViewport} slide={slide} imaged={true} minmal={true} />
+                  <TypeToRenderProd play={isInViewport} slide={slide} imaged={true} minmal={true} />
                 </motion.div>
               ))}
             </motion.div>

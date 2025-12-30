@@ -49,7 +49,7 @@ const MainLoader = ({ duration = 3000 }: { duration?: number }) => {
 
     },
     {
-      dependencies: [timeline, ctx, duration, pathname], // Remove 'progress' from deps
+      dependencies: [timeline, ctx, duration], // Remove 'progress' from deps
       scope: loaderRef,
     }
   );
@@ -60,11 +60,11 @@ const MainLoader = ({ duration = 3000 }: { duration?: number }) => {
   return (
     <div
 
-      key={pathname}
+      // key={pathname}
       ref={loaderRef}
-      className={cn("inset-0  z-50 h-20 w-screen bg-background flex flex-col items-center justify-center",isService && "hidden")  }
+      className={cn("inset-0  z-50 h-10 w-screen bg-background flex flex-col items-center justify-center",isService && "hidden")  }
     >
-      <div className=" h-20 bg-muted  w-full overflow-hidden">
+      <div className=" h-10 bg-muted  w-full overflow-hidden">
         <div
           ref={progressRef}
           className="h-full w-0  bg-primary transition-all   duration-200 ease-linear"

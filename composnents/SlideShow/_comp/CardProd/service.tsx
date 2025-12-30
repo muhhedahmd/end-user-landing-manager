@@ -120,66 +120,72 @@ export const ServiceCard = ({ data, imaged = false, splitcarousel, story }: Serv
 
     if (splitcarousel) {
         return (
-            <article
-                ref={cardRef}
-                className="group relative h-full overflow-hidden rounded-2xl flex flex-row w-full gap-4 p-2 hover:border-primary/50 transition-all duration-300"
-            >
-                {DataToRender.image && (
-                    <div className="mb-5 w-2/3 h-130 overflow-hidden rounded-md bg-muted">
-                        <BlurredImage
-                            imageUrl={DataToRender.image.url || ""}
-                            height={DataToRender.image.height || 400}
-                            width={DataToRender.image.width || 800}
-                            alt={DataToRender.image.alt || data.name}
-                            blurhash={DataToRender.image.blurHash || ""}
-                            quality={100}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                        />
-                    </div>
-                )}
+      <article
+    ref={cardRef}
+    className="group relative h-full overflow-hidden rounded-2xl flex flex-col lg:flex-row w-full gap-4 md:gap-6 p-3 sm:p-4 md:p-6 hover:border-primary/50 transition-all duration-300"
+>
+    {/* Image Container */}
+    {DataToRender.image && (
+        <div className="w-full lg:w-2/5 xl:w-1/2 h-48 sm:h-64 md:h-80 lg:h-full overflow-hidden rounded-lg bg-muted flex-shrink-0">
+            <BlurredImage
+                imageUrl={DataToRender.image.url || ""}
+                height={DataToRender.image.height || 400}
+                width={DataToRender.image.width || 800}
+                alt={DataToRender.image.alt || data.name}
+                blurhash={DataToRender.image.blurHash || ""}
+                quality={100}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+            />
+        </div>
+    )}
 
-                <div className="space-y-4 max-w-2/5 h-full">
-                    <div className="flex items-center gap-3 text-4xl">
-                        {DataToRender.icon && DataToRender?.icon?.startsWith("http") ? (
-                            <div className="w-12 h-12 rounded-xl bg-primary/10 p-2.5 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
-                                <Image
-                                    src={DataToRender.icon}
-                                    width={24}
-                                    height={24}
-                                    alt={DataToRender.name + "-icon"}
-                                    className="w-full h-full object-contain"
-                                />
-                            </div>
-                        ) : (
-                            <span>{DataToRender.icon}</span>
-                        )}
-                        <h3 className="service-title text-inherit font-bold font-sora text-foreground">
-                            {DataToRender.name}
-                        </h3>
-                    </div>
-
-                    {DataToRender.description && (
-                        <p className="service-description text-xl text-muted-foreground leading-relaxed font-inter">
-                            {DataToRender.description}
-                        </p>
-                    )}
-
-                    {DataToRender.richDescription && (
-                        <div
-                            className="service-description text-md text-muted-foreground leading-relaxed font-inter"
-                            dangerouslySetInnerHTML={{ __html: DataToRender.richDescription }}
-                        />
-                    )}
-
-                    {DataToRender.price && (
-                        <div className="service-price pt-4 border-t mt-auto border-border">
-                            <span className="text-base font-bold text-primary font-sora">
-                                {DataToRender.price}
-                            </span>
-                        </div>
-                    )}
+    {/* Content Container */}
+    <div className="flex-1 space-y-3 sm:space-y-4 md:space-y-6 flex flex-col">
+        {/* Title with Icon */}
+        <div className="flex items-center gap-2 sm:gap-3">
+            {DataToRender.icon && DataToRender?.icon?.startsWith("http") ? (
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary/10 p-2 sm:p-2.5 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300 flex-shrink-0">
+                    <Image
+                        src={DataToRender.icon}
+                        width={24}
+                        height={24}
+                        alt={DataToRender.name + "-icon"}
+                        className="w-full h-full object-contain"
+                    />
                 </div>
-            </article>
+            ) : (
+                <span className="text-2xl sm:text-3xl md:text-4xl flex-shrink-0">{DataToRender.icon}</span>
+            )}
+            <h3 className="service-title text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-sora text-foreground">
+                {DataToRender.name}
+            </h3>
+        </div>
+
+        {/* Description */}
+        {DataToRender.description && (
+            <p className="service-description text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed font-inter">
+                {DataToRender.description}
+            </p>
+        )}
+
+        {/* Rich Description */}
+        {DataToRender.richDescription && (
+            <div
+                className="service-description text-sm sm:text-base md:text-md text-muted-foreground leading-relaxed font-inter prose prose-sm sm:prose-base max-w-none"
+                dangerouslySetInnerHTML={{ __html: DataToRender.richDescription }}
+            />
+        )}
+
+        {/* Price - Push to bottom */}
+        {DataToRender.price && (
+            <div className="service-price pt-3 sm:pt-4 md:pt-6 border-t border-border mt-auto">
+                <span className="text-sm sm:text-base md:text-lg font-bold text-primary font-sora">
+                    {DataToRender.price}
+                </span>
+            </div>
+        )}
+    </div>
+</article>
         )
     }
 
