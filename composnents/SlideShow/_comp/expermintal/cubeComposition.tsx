@@ -1,163 +1,117 @@
-import {  useRef } from "react";
+import { useRef } from "react";
 import gsap from "gsap";
 import { slide } from "@/types/schema";
-// import { TypeToRender } from "../TypeToRender";
 import { TypeToRenderProd } from "../TypToRenderProd";
 import { useGSAP } from "@gsap/react";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
- const CubeComposition = ({slides} : { 
-    slides: slide[]
- }) => {
+const CubeComposition = ({ slides }: { slides: slide[] }) => {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
 
-  
-   const addCardRef = (el: HTMLDivElement | null) => {
+  const addCardRef = (el: HTMLDivElement | null) => {
     if (el && !cardsRef.current.includes(el)) {
       cardsRef.current.push(el);
     }
   };
-  useGSAP(() => {
- const cards = cardsRef.current;
-    if (!cards.length) return;    const spacer = 20;
-    const minScale = 0.8;
+  useGSAP(
+    () => {
+      const cards = cardsRef.current;
+      if (!cards.length) return;
+      const spacer = 20;
+      const minScale = 0.8;
 
-    const distributor = gsap.utils.distribute({
-      base: minScale,
-      amount: 0.2,
-    });
+      const distributor = gsap.utils.distribute({
+        base: minScale,
+        amount: 0.2,
+      });
 
-    cards.forEach((card, index) => {
-      const scaleVal = distributor(index, card, cards);
+      cards.forEach((card, index) => {
+        const scaleVal = distributor(index, card, cards);
 
-      gsap.to(card, {
-        scale: scaleVal,
-        scrub: true,
-        ease: "none",
-        scrollTrigger: {
-          trigger: card,
-          start: "top top",
+        gsap.to(card, {
+          scale: scaleVal,
           scrub: true,
+          ease: "none",
+          scrollTrigger: {
+            trigger: card,
+            start: "top top",
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+          // markers: true,
+        });
+
+        ScrollTrigger.create({
+          trigger: card,
+          start: () => `top top+=${200 + index * spacer}`,
+          endTrigger: cards[cards.length - 1],
+          end: `bottom top+=${200 + cards.length * spacer}`,
+          pin: true,
+          markers: true,
+          scrub: true,
+          pinSpacing: false,
           invalidateOnRefresh: true,
-        },
-        // markers: true,
+          onEnter: () => {
+            console.log("enter");
+            gsap.to(card, {
+              scale: 1,
+              ease: "none",
+              scrollTrigger: {
+                trigger: card,
+                start: "top top",
+                scrub: true,
+                invalidateOnRefresh: true,
+              },
+              markers: true,
+            });
+          },
+        });
       });
 
-
-
-      ScrollTrigger.create({
-        trigger: card,
-        start: () => `top top+=${200 + index * spacer}`,
-        endTrigger: cards[cards.length - 1],
-        end: `bottom top+=${200 + cards.length * spacer}`,
-        pin: true,
-        markers: true,
-        scrub: true,
-        pinSpacing: false,
-        invalidateOnRefresh: true,
-        onEnter : (()=>{
-          console.log("enter")
-          gsap.to(card, {
-            scale: 1,
-            ease: "none",
-            scrollTrigger: {
-              trigger: card,
-              start: "top top",
-              scrub: true,
-              invalidateOnRefresh: true,
-            },
-            markers: true,
-          });
-        })
-      });
-    });
-
-    return () => {
-      ScrollTrigger.getAll().forEach((st) => st.kill());
-    };
-  }, {
-    dependencies :[cardsRef , rootRef],
-    scope :rootRef
-  });
+      return () => {
+        ScrollTrigger.getAll().forEach((st) => st.kill());
+      };
+    },
+    {
+      dependencies: [cardsRef, rootRef],
+      scope: rootRef,
+    }
+  );
 
   return (
-  <div
-  ref={rootRef}
-  className="min-h-screen px-4 sm:px-6 md:px-8 lg:px-10 py-8 sm:py-10 md:py-12 font-light"
->
-  {/* Title */}
+    <div
+      ref={rootRef}
 
-  {/* Cards container */}
-  <div className="flex items-start justify-center pt-12 sm:pt-16 md:pt-24 lg:pt-32 xl:pt-40">
-    <div className="cards relative flex items-start justify-start flex-col w-full max-w-7xl">
-        
-      {slides.map((n, i) => (
-        <div
-          key={i}
-          ref={addCardRef}
-          className="relative mb-8 sm:mb-10 md:mb-12 flex w-full max-w-full 
+      className="min-h-screen px-4 sm:px-6 md:px-8 lg:px-10 py-8 sm:py-10 md:py-12 font-light"
+    >
+      {/* Title */}
+
+      {/* Cards container */}
+      <div className="flex items-start justify-center pt-12 sm:pt-16 md:pt-24 lg:pt-32 xl:pt-40">
+        <div className="cards relative flex items-start justify-start flex-col w-full max-w-7xl">
+          {slides.map((n, i) => (
+            <div
+              key={i}
+              ref={addCardRef}
+              className="relative mb-8 sm:mb-10 md:mb-12 flex w-full max-w-full 
                      h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px]
                      items-center justify-center shadow-lg rounded-xl sm:rounded-2xl overflow-hidden"
-        >
-          <TypeToRenderProd slide={n} cube={true} />
+            >
+              <TypeToRenderProd idx={i} slide={n} cube={true} />
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-  </div>
+      </div>
 
-  {/* Spacer section */}
-  <div className="mt-8 sm:mt-10 md:mt-12 h-[30vh] sm:h-[40vh] md:h-[50vh] w-full border-t border-border" />
-</div>
+      {/* Spacer section */}
+      <div className="mt-8 sm:mt-10 md:mt-12 h-[30vh] sm:h-[40vh] md:h-[50vh] w-full border-t border-border" />
+    </div>
   );
 };
 
-
-
-
-
-
-export default CubeComposition
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default CubeComposition;
 
 // "use client";
 
@@ -239,7 +193,7 @@ export default CubeComposition
 //         const progress = index / Math.max(1, slides.length - 1);
 //         gsap.to(tl, { progress, duration: 0.6, ease: "power2.out" });
 //         setActiveIndex(index);
-      
+
 //     };
 
 //     return (

@@ -2,10 +2,12 @@
 "use client"
 import { useTimeLine } from '@/context/MainLoaderTimeLine'
 import { useGSAP } from '@gsap/react'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { usePathname } from 'next/navigation'
 import { useBreakPoints } from '@/hooks/useBreakPoint'
+import { Inter } from 'next/font/google'
+import { useSectionVisibility } from '../contact/SectionVisibilityContext'
 const HeaderAniamtion = ({ children }: {
   children: React.ReactNode
 }) => {
@@ -14,20 +16,23 @@ const HeaderAniamtion = ({ children }: {
   const { timeline, ctx } = useTimeLine()
   const { BreakPoint } = useBreakPoints()
   const isSm = BreakPoint === "sm"
+  const { singleCompositionVisible } = useSectionVisibility();
+
   useGSAP(
 
     () => {
       if (!headerRef.current || !timeline || !ctx) return;
-      if(pathname === "/services") return 
+      if (pathname === "/services") return
       ctx.add(() => {
-     
+
+
         // Set initial state
         gsap.set(headerRef.current, {
-          y: -230,
+          y: -270,
           autoAlpha: 1,
 
 
-          display :"block"
+          display: "block"
         });
 
         // Add to timeline after loader
@@ -47,32 +52,55 @@ const HeaderAniamtion = ({ children }: {
       });
     },
     {
-      dependencies: [timeline, ctx, pathname , isSm],
+      dependencies: [timeline, ctx],
       scope: headerRef,
+      revertOnUpdate: true,
     }
   );
 
-  useGSAP(()=>{
-       if (pathname === "/services") {
-          gsap.to(
-            headerRef.current,
-            {
-         display :"block",
+  useGSAP(() => {
 
-              position: "sticky",
-              top: 0,
-              y: 0,
-              autoAlpha: 1,
-              duration: 0.8,
-              ease: "power2.out",
-            },
-          )
-        }
+    if (pathname === "/services") {
+      gsap.to(
+        headerRef.current,
+        {
+          display: "block",
+
+          position: "sticky",
+          top: 0,
+          y: 0,
+          autoAlpha: 1,
+          duration: 0.8,
+          ease: "power2.out",
+        },
+      )
+    }
 
 
-  } , {
-    dependencies : [pathname],
-    revertOnUpdate :true 
+  }, {
+    dependencies: [timeline, ctx, isSm, pathname],
+    scope: headerRef,
+  })
+
+  useGSAP(() => {
+    if (!headerRef.current || !timeline ) return;
+    if(!timeline.labels) return;
+    if (singleCompositionVisible) {
+      gsap.to(headerRef.current, {
+        y: -270,
+      });
+    }
+    else {
+      gsap.to(headerRef.current, {
+        y: 0,
+      });
+
+    }
+
+
+  }, {
+    dependencies: [singleCompositionVisible],
+    scope: headerRef,
   })
 
   return (

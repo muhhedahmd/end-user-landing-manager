@@ -1,5 +1,5 @@
-import { ChevronDown} from "lucide-react";
-import React, { Fragment } from "react";
+import { ChevronDown } from "lucide-react";
+import { Fragment } from "react";
 import FloatServiceDialog from "./FloatServiceDialog";
 import { ServiceWithImage } from "@/types/schema";
 import { PaginatedResponse } from "@/types/services";
@@ -24,10 +24,9 @@ const fetchServices = async ({
       Active: "true",
       isFeatured: isFeatured.toString(),
     });
- 
+
     const res = await fetch(
-      `${
-        process.env.NEXT_PUBLIC_BACKEND_URL
+      `${process.env.NEXT_PUBLIC_BACKEND_URL
       }/api/services?${params.toString()}`,
       {
         cache: "force-cache",
@@ -51,16 +50,17 @@ const ServiceTable = async () => {
   });
   return (
     <>
-      <div className=" relative w-screen flex items-center flex-col md:justify-end justify-center  h-screen md:p-20 pt-[50%] p-5">
+      <div className=" relative w-screen flex items-center flex-col md:justify-end justify-center  h-screen md:p-20 pt-[50%] p-2">
         <div className="w-full relative">
           <div className=" relativeFeat-service md:max-h-80 max-h-170 overflow-auto  flex justify-start items-center w-full flex-col">
             <div className=" sticky top-0 bg-neutral-100 border-b border-black feat-haeader w-full">
+
               <div className="flex items-center justify-between  w-full  font-bold cursor-default">
-                <h4 className="flex-1">name</h4>
+                <h4 className="flex-1">Name</h4>
 
-                <p className="text-wrap line-clamp-1 flex-2">desc</p>
+                <p className="text-wrap line-clamp-1 flex-2">Description</p>
 
-                <p className="text-wrap line-clamp-1 flex-3">richDesc</p>
+                <p className="md:block hidden  text-wrap line-clamp-1 flex-3">Content</p>
               </div>
             </div>
 
@@ -79,7 +79,7 @@ const ServiceTable = async () => {
                       {item.description}
                     </p>
 
-                    <p className="text-wrap line-clamp-1 flex-3">
+                    <p className="md:block hidden text-wrap line-clamp-1 flex-3">
                       {item.richDescription}
                     </p>
                   </FloatServiceDialog>
@@ -89,11 +89,11 @@ const ServiceTable = async () => {
             })}
           </div>
 
-          <div className=" absolute md:-bottom-14 -bottom-24 flex items-center justify-center w-full">
+          {/* <div className=" absolute md:-bottom-14 -bottom-24 flex items-center justify-center w-full">
             <button className="rounded-xl flex items-center cursor-pointer hover:bg-black hover:text-white bg-accent border-black border p-2 min-h-0 h-fit min-w-fit w-fit text-black">
               VIEW ALL <ChevronDown />
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
       {/* <FloatServiceDialog /> */}

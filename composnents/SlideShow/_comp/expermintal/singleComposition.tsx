@@ -1,10 +1,11 @@
-import {  useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { slide } from "@/types/schema";
 // import { TypeToRender } from "../TypeToRender";
 import { useGSAP } from "@gsap/react";
 import { TypeToRenderProd } from "../TypToRenderProd";
+import { useSectionVisibility } from "@/composnents/contact/SectionVisibilityContext";
 
 gsap.registerPlugin(ScrollTrigger);
 // const slides = mockSlides
@@ -18,6 +19,7 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
 
 
   useGSAP(() => {
+
 
     const wrapper = wrapperRef.current;
     const track = trackRef.current;
@@ -71,10 +73,29 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
     setActiveIndex(index);
   };
 
+  const { setSingleCompositionVisible } = useSectionVisibility();
+
+  useEffect(() => {
+    if (!wrapperRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        
+        setSingleCompositionVisible(entry.isIntersecting);
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(wrapperRef.current);
+
+    return () => observer.disconnect();
+  }, [setSingleCompositionVisible , wrapperRef]);
+
+
   return (
     <div ref={wrapperRef} className=" relative w-screen relative min-h-screen overflow-x-hidden">
       {/* Navigation bullets */}
-      <div className="absolute left-1/2 top-30 flex gap-3 -translate-x-1/2 z-50">
+      {/* <div className="absolute left-1/2  top-[10%] md:top-1/4 flex gap-3 -translate-x-1/2 z-50">
         {slides.map((_, idx) => (
           <button
             key={idx}
@@ -84,25 +105,30 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
             aria-label={`Go to slide ${idx + 1}`}
           />
         ))}
-      </div>
+      </div> */}
 
       {/* Slides container */}
-      <div ref={trackRef} className="flex justify-start gap-20 h-full will-change-transform">
-           {slides.map((slideItem, i) => (
+      <div ref={trackRef} className="flex  justify-center items-center gap-20 h-screen will-change-transform">
+        {slides.map((slideItem, i) => (
           <div
             ref={(ref) => { cardRef.current[i] = ref }}
             key={slideItem.id}
-            className="shrink-0 h-full    flex items-center justify-start"
+            className="shrink-0 h-full     flex items-end py-10 justify-start"
           >
-            <div className="pointer-events-auto md:w-220 md:h-120 w-110   overflow-hidden flex items-center justify-center" >
-              <TypeToRenderProd slide={slideItem} cube />
+            <div className=" w-0 md:w-[10rem] h-screen md:pl-10 flex items-center justify-center">
             </div>
+            {/* md:w-220 md:h-120 w-110  */}
+            <div className="pointer-events-auto  w-screen h-full   overflow-hidden flex items-center justify-center" >
+
+              <TypeToRenderProd idx={i} slide={slideItem} single={true} />
+            </div>
+
 
           </div>
 
         ))}
 
-       
+
       </div>
 
       {/* Optional filler to allow scrolling */}

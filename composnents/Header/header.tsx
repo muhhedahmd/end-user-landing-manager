@@ -67,7 +67,7 @@ export default async function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className="px-4 py-2 text-sm font-medium hover:text-primary transition"
+              className="px-4 py-2 text-md font-medium hover:text-primary transition"
             >
               {item.label}
             </Link>

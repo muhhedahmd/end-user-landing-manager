@@ -6,6 +6,7 @@ import { CompanyInfo } from "@/types/schema";
 // import MainLoader from "@/composnents/Loaders/MainLoader";
 import { TimelineProvider } from "@/context/MainLoaderTimeLine";
 import { AnalyticsProvider } from "@/providers/analytic-provider";
+import { SectionVisibilityProvider } from "@/composnents/contact/SectionVisibilityContext";
 
 
 const geistSans = Geist({
@@ -111,11 +112,14 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AnalyticsProvider>
-        <TimelineProvider>
-          <main>
-            {children}
-          </main>
-        </TimelineProvider>
+          <TimelineProvider>
+            <SectionVisibilityProvider>
+
+              <main>
+                {children}
+              </main>
+            </SectionVisibilityProvider>
+          </TimelineProvider>
         </AnalyticsProvider>
       </body>
     </html>

@@ -5,12 +5,19 @@ import { useTimeLine } from "@/context/MainLoaderTimeLine";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-const MainLoader = ({ duration = 3000 }: { duration?: number }) => {
+const MainLoader = ({ duration = 5000 }: { duration?: number }) => {
   const { timeline, ctx } = useTimeLine();
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
+  const [progress, setProgress] = useState(0);
   const [visible, setVisible] = useState(true);
   const pathname = usePathname()
+
+  useEffect(() => {
+  if ('scrollRestoration' in window.history) {
+    window.history.scrollRestoration = 'manual';
+  }
+}, []);
 
   useEffect(() => {
     if (!visible) return;
@@ -34,6 +41,10 @@ const MainLoader = ({ duration = 3000 }: { duration?: number }) => {
             width: "100%",
             ease: "power1.inOut",
             duration: duration / 1000,
+            onUpdate: function () {
+              const progressValue = this.progress() * 100;
+              setProgress(progressValue);
+            }
           }, "+= 3.5")
           .to(loaderRef.current, {
             autoAlpha: 0,
@@ -46,13 +57,14 @@ const MainLoader = ({ duration = 3000 }: { duration?: number }) => {
           })
           .addLabel("loaderComplete"); // Label after loader exits
       })
-
     },
+
     {
       dependencies: [timeline, ctx, duration], // Remove 'progress' from deps
       scope: loaderRef,
     }
   );
+
 
 
   const isService = pathname === "/services"
@@ -64,12 +76,16 @@ const MainLoader = ({ duration = 3000 }: { duration?: number }) => {
       ref={loaderRef}
       className={cn("inset-0  z-50 h-10 w-screen bg-background flex flex-col items-center justify-center",isService && "hidden")  }
     >
-      <div className=" h-10 bg-muted  w-full overflow-hidden">
+      <div className=" h-10  gap-4  w-full flex items-center justify-center overflow-hidden">
+     <div className="w-full h-10">
+
         <div
           ref={progressRef}
+
           className="h-full w-0  bg-primary transition-all   duration-200 ease-linear"
         />
-
+          </div>
+          <div className=" shrink-0 w-max mr-4 "> <span className="font-bold text-sx"> { progress.toFixed(0)} %</span> </div>
       </div>
 
     </div>

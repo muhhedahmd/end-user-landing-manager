@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import BlurredImage from "@/composnents/Reusabale/ClientImageWithBlurHash";
+import { useBreakPoints } from "@/hooks/useBreakPoint";
 import { ServiceWithImage } from "@/types/schema";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -24,11 +25,12 @@ const FloatServiceDialog = ({
     const contentRef = useRef<HTMLDivElement | null>(null);
     const [selected, setSelected] = useState<ServiceWithImage>(item);
     const [openDailog, setOpenDailog] = useState<boolean>(false);
-
+    const {  BreakPoint } = useBreakPoints()
+    const isMobile = BreakPoint === "sm"
 
     useGSAP(() => {
         gsap.set(containerRef.current, {
-            bottom: "-90vh",
+            bottom: "-100vh",
             autoAlpha: 1,
             duration: .1,
             display:"block",
@@ -42,7 +44,7 @@ const FloatServiceDialog = ({
             if (!containerRef.current) return;
             if (openDailog === false) {
                 gsap.to(containerRef.current, {
-                    bottom: "-90vh",
+                    bottom: "-100vh",
                     autoAlpha: 1,
                     duration: 1.2,
                     ease: "power4.out",
@@ -151,7 +153,7 @@ const FloatServiceDialog = ({
                     boxShadow: "rgb(204, 204, 204) 0px -8px 10px",
                 }}
                 ref={containerRef}
-                className="z-11 fixed hidden bottom-[-10vh] left-0 w-screen h-[80vh] bg-neutral-100 overflow-hidden"
+                className="z-11 fixed hidden bottom-[-10vh] left-0 w-screen h-[95vh] lg:h-[80vh] bg-neutral-100 overflow-hidden"
             >
                 {/* Header */}
                 <div className="relative w-full p-3 sm:p-4 md:p-4 justify-between items-center flex border-b border-neutral-200">
@@ -169,6 +171,7 @@ const FloatServiceDialog = ({
 
                 {/* Content - Scrollable Area */}
                 <article
+
                     ref={contentRef}
                     className="flex items-start justify-center p-4 sm:p-6 md:p-8 lg:p-10 h-[calc(100%-80px)] overflow-y-auto md:flex-row flex-col-reverse gap-6 lg:gap-0"
                 >
@@ -176,18 +179,21 @@ const FloatServiceDialog = ({
                     <div className="flex items-start justify-between flex-col gap-6 sm:gap-8 md:gap-10 md:pr-6 lg:pr-10 flex-1 w-full md:w-1/2">
                         <div className="flex items-start justify-between flex-col gap-6 sm:gap-8 md:gap-10 w-full">
                             {/* Title with Icon */}
-                            <h3 className="text-3xl sm:text-4xl md:text-5xl flex items-center gap-2 sm:gap-3">
-                                <span className="text-4xl sm:text-5xl md:text-6xl">{selected.icon}</span>
+                            <h3 className="text-xl line-clamp-1 sm:text-4xl md:text-5xl flex items-center gap-2 sm:gap-3">
+                                <span className="text-2xl  sm:text-5xl md:text-6xl">{selected.icon}</span>
+                                <span className="line-clamp-1">
+
                                 {selected.name}
+                                </span>
                             </h3>
 
                             {/* Description - Keep Big */}
-                            <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl max-w-4xl leading-snug sm:leading-normal">
+                            <p className="text-xl sm:text-3xl md:text-4xl lg:text-5xl max-w-4xl leading-snug sm:leading-normal">
                                 {selected.description}
                             </p>
 
                             {/* Rich Description */}
-                            <p className="text-lg sm:text-xl md:text-2xl font-bold">
+                            <p className="text-md sm:text-xl md:text-2xl font-bold">
                                 {selected.richDescription}
                             </p>
                         </div>
@@ -215,7 +221,8 @@ const FloatServiceDialog = ({
                 </article>
 
                 {/* Navigation Buttons - Fixed Position */}
-                <div className="absolute bottom-3 right-4 sm:right-6 md:right-8 z-30 flex flex-row sm:flex-col gap-2">
+                <div className="  absolute bottom-0 right-4 sm:right-6 md:right-8 z-30 flex flex-row sm:flex-col gap-2">
+
                     <Button
                         size={"icon-sm"}
                         disabled={currIdx <= 0}

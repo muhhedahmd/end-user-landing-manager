@@ -29,9 +29,6 @@ export const TimelineProvider: FC<TimelineProviderProps> = ({ children }) => {
   const prevPathname = useRef<string | null>(null);
   const cleanupRef = useRef<(() => void) | null>(null);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
 
   useEffect(() => {
     // Clean up previous timeline/context
@@ -60,12 +57,11 @@ export const TimelineProvider: FC<TimelineProviderProps> = ({ children }) => {
 
       // Store cleanup function
       cleanupRef.current = () => {
+        context.revert();
+        timeline?.revert();
         
-        context.kill();
-        if (timeline) {
-          timeline.kill();
-          timeline.clear();
-        }
+        
+     
       };
     }, 50);
 

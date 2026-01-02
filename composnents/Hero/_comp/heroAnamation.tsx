@@ -125,7 +125,7 @@ const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
             });
         },
         {
-            dependencies: [timeline, ctx, isReady],
+            dependencies: [timeline, ctx, isReady , pathname, isMobile],
             scope: contentRef,
             // revertOnUpdate: true,
         }

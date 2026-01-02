@@ -7,7 +7,7 @@ import { ClientCard } from "./CardProd/client"
 import { TestimonialCard } from "./CardProd/testimonals"
 import { TeamMemberCard } from "./CardProd/teamMemeber"
 
-export const TypeToRenderProd = memo(({  play ,  splitcarousel , slide, imaged, minmal, split, index, story }: {
+export const TypeToRenderProd = memo(({ idx , play  ,cube ,single ,  splitcarousel , slide, imaged, minmal, split, index, story }: {
 play ?: boolean
   slide: slide,
   splitcarousel?: boolean, 
@@ -17,7 +17,8 @@ play ?: boolean
   index?: number,
   single ?: boolean
   cube ?: boolean
-  story?: boolean
+  story?: boolean ,
+  idx : number
 }) => {
 
 
@@ -28,7 +29,7 @@ play ?: boolean
     return <ProjectCard imagePosition="left" data={slide as ProjectWithRelationsSlide} split={split} index={index || 0} story={story} />
   }
   if (slide.type === "client") {
-    return <ClientCard single={true} cube={true} data={slide as ClientWithRelationsSlide} />
+    return <ClientCard single={single} cube={cube} data={slide as ClientWithRelationsSlide}   idx={idx}/>
   }
   if (slide.type === "testimonial") {
     return <TestimonialCard  data={slide as TestimonialWithImage} minmal={minmal} />
