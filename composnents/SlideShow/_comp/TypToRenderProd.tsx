@@ -18,7 +18,7 @@ play ?: boolean
   single ?: boolean
   cube ?: boolean
   story?: boolean ,
-  idx : number
+  idx ?: number
 }) => {
 
 

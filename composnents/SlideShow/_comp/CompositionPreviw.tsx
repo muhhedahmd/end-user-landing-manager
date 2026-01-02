@@ -1,10 +1,10 @@
 "use client"
 
-import {  memo, useCallback, useEffect, useState } from "react"
+import { memo, useCallback, useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import type { slide } from "@/types/schema"
-// import { TypeToRenderProd } from "./TypeToRenderProd"
+// import { TypeToRenderProd  } from "./TypeToRenderProd "
 import CubeComposition from "./expermintal/cubeComposition"
 import SingleCompsotion from "./expermintal/singleComposition"
 import { TypeToRenderProd } from "./TypToRenderProd"
@@ -36,7 +36,7 @@ interface CompositionPreviewProps {
   // containerRef : RefObject<HTMLDivElement | null>
 }
 
- export const   CompositionPreview =  memo(({ isInViewport, interval, autoPlay, composition, slides }: CompositionPreviewProps) => {
+export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, composition, slides }: CompositionPreviewProps) => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [[page, direction], setPage] = useState([0, 0])
   const [lightboxOpen, setLightboxOpen] = useState(false)
@@ -79,7 +79,7 @@ interface CompositionPreviewProps {
   // Auto-progress effect with smooth progress bar
   useEffect(() => {
     if (!autoPlay || !slides || slides.length === 0 || interval <= 0 || isInViewport === false) {
-      (()=>{
+      (() => {
 
         setAutoProgress(0)
       })()
@@ -110,7 +110,7 @@ interface CompositionPreviewProps {
   // Reset progress when slide changes manually
   useEffect(() => {
     if (autoPlay) {
-      (()=>{
+      (() => {
 
         setAutoProgress(0)
       })()
@@ -318,10 +318,10 @@ interface CompositionPreviewProps {
     case "SINGLE":
 
 
-    return(
-      <SingleCompsotion slides={slides}/>
-    )
-    
+      return (
+        <SingleCompsotion slides={slides} />
+      )
+
       return (
         <div className="space-y-8">
           <motion.div
@@ -448,7 +448,7 @@ interface CompositionPreviewProps {
         //                 }}
         //                 className="inset-0 min-h-screen space-y-6 sm:space-y-8 md:space-y-12"
         //             >
-        //                 <TypeToRenderProd 
+        //                 <TypeToRenderProd  
         //                     play={isInViewport} 
         //                     slide={slide} 
         //                     split={true} 
@@ -612,7 +612,7 @@ interface CompositionPreviewProps {
     case "CUBE":
 
       // expemental
-      return     <CubeComposition  slides={slides}  />
+      return <CubeComposition slides={slides} />
 
       return (<div className="space-y-8">
         <div className="relative h-[500px] perspective-[1200px] flex items-center justify-center rounded-3xl overflow-hidden">
@@ -755,7 +755,7 @@ interface CompositionPreviewProps {
                 <div className="h-full ">
                   <TypeToRenderProd play={isInViewport} slide={slide} imaged={true} minmal={true} />
                 </div>
-            
+
               </motion.button>
             ))}
           </div>
