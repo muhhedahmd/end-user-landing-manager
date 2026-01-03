@@ -5,6 +5,7 @@ import { PaginatedResponse } from "@/types/services";
 
 
 export const fetchServices = async ({
+
   skip,
   take,
   isFeatured,
@@ -37,6 +38,7 @@ export const fetchServices = async ({
     return null;
   }
 };
+
 export const fetchTeamMembers = async ({
   skip,
   take,

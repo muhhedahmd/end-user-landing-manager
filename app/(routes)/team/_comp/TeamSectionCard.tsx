@@ -1,5 +1,6 @@
 "use client";
 import ContactForm from "@/composnents/contact/ContactForm";
+import { useSectionVisibility } from "@/composnents/contact/SectionVisibilityContext";
 import BlurredImage from "@/composnents/Reusabale/ClientImageWithBlurHash";
 import { TeamMemberWithImage } from "@/types/schema";
 import { PaginatedResponse } from "@/types/services";
@@ -7,20 +8,11 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { ArrowUpRight, User, Mail, Briefcase } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// const teamMembers = [
-//     { name: "Sarah Chen", role: "CEO & Founder", email: "sarah@company.com" },
-//     { name: "Marcus Rodriguez", role: "CTO", email: "marcus@company.com" },
-//     { name: "Emily Watson", role: "Design Lead", email: "emily@company.com" },
-//     { name: "James Kim", role: "Product Manager", email: "james@company.com" },
-//     { name: "Aisha Patel", role: "Engineering Lead", email: "aisha@company.com" },
-//     { name: "David Thompson", role: "Marketing Director", email: "david@company.com" },
-//     { name: "Nina Kowalski", role: "Sales Lead", email: "nina@company.com" },
-//     { name: "Omar Hassan", role: "Operations", email: "omar@company.com" },
-// ]
+
 
 const TeamSectionCard = ({
     TeamMembers,
@@ -31,6 +23,25 @@ const TeamSectionCard = ({
     const trackRef = useRef<HTMLDivElement | null>(null);
     const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
     const [progress, setProgress] = useState(0);
+
+ const { setSingleCompositionVisible } = useSectionVisibility();
+
+  useEffect(() => {
+    if (!SectionRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        
+        setSingleCompositionVisible(entry.isIntersecting);
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(SectionRef.current);
+
+    return () => observer.disconnect();
+  }, [setSingleCompositionVisible , SectionRef]);
+
 
     useGSAP(
         () => {
@@ -139,13 +150,13 @@ const TeamSectionCard = ({
                 className="min-h-screen min-w-screen bg-neutral-900 flex items-center justify-center overflow-hidden relative"
                 style={{ perspective: "2000px" }}
             >
-                <div className="absolute top-10 left-1/2 -translate-x-1/2 z-10">
+
+                <div className="absolute -z-1 top-10 left-1/2 -translate-x-1/2 ">
 
                     <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center">
                         OUR TEAM
                     </h2>
                 </div>
-
                 <div
                     ref={trackRef}
                     className="flex pl-100 items-center justify-start gap-12 sm:gap-16 md:gap-20 lg:gap-24 xl:gap-32"
