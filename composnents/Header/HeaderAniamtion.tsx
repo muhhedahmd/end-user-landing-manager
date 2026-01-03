@@ -83,11 +83,10 @@ const HeaderAniamtion = ({ children  ,border  ,title}: {
     dependencies: [timeline, ctx, isSm, pathname],
     scope: headerRef,
   })
+  console.log("Labels:", timeline?.labels);
 
   useGSAP(() => {
-    if (!headerRef.current || !timeline) return;
-    if (timeline.labels?.headerComplete) return;
-    console.log(singleCompositionVisible, timeline.labels)
+    if (!headerRef.current || timeline?.labels?.headerComplete === undefined) return;
     if (singleCompositionVisible) {
       gsap.to(headerRef.current, {
         y: -270,
@@ -99,10 +98,8 @@ const HeaderAniamtion = ({ children  ,border  ,title}: {
       });
 
     }
-
-
   }, {
-    dependencies: [singleCompositionVisible],
+    dependencies: [singleCompositionVisible ],
     scope: headerRef,
   })
 

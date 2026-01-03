@@ -1,32 +1,44 @@
+
 "use client"
 import { useGSAP } from "@gsap/react";
 import { useEffect, useRef, useState } from "react";
 import { useTimeLine } from "@/context/MainLoaderTimeLine";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-
+import { lenisRef } from "../scroll/smoothScrolling";
 const MainLoader = ({ duration = 5000 }: { duration?: number }) => {
   const { timeline, ctx } = useTimeLine();
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
   const [progress, setProgress] = useState(0);
-  const [visible, setVisible] = useState(true);
-  const pathname = usePathname()
+  const [visible, setVisible] = useState(false); // Start as true
+  const pathname = usePathname();
 
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
     setProgress(0);
-    setVisible(false);
+    setVisible(true); // Reset to visible on mount
   }, []);
 
+
+
+
+
   useEffect(() => {
-    if (!visible) return;
-    document.body.style.overflow = "hidden";
+
+    if (visible === false) {
+      lenisRef?.current?.lenis?.start()
+    } else {
+      lenisRef?.current?.lenis?.stop()
+    }
+
     return () => {
-      document.body.style.overflow = "auto";
-    };
+      lenisRef?.current?.lenis?.start()
+    }
+
+
   }, [visible]);
 
   // GSAP Timeline animation - runs ONCE
@@ -36,10 +48,9 @@ const MainLoader = ({ duration = 5000 }: { duration?: number }) => {
       if (!loaderRef.current || !progressRef.current || !timeline || !ctx) {
         return;
       }
+
       // Add to main timeline
       ctx.add(() => {
-
-
         timeline
           .to(progressRef.current, {
             width: "100%",
@@ -56,27 +67,25 @@ const MainLoader = ({ duration = 5000 }: { duration?: number }) => {
             duration: 1,
             ease: "power2.inOut",
             onComplete: () => {
-              setVisible(false);
+              setVisible(false); // This now properly unlocks scroll
             },
           })
-          .addLabel("loaderComplete"); // Label after loader exits
-      })
+          .addLabel("loaderComplete");
+      });
+
       return () => {
         setProgress(0);
-      }
-
-
+      };
     },
-
     {
-      dependencies: [timeline, ctx, duration], // Remove 'progress' from deps
+      dependencies: [timeline, ctx, duration],
       scope: loaderRef,
     }
   );
 
+  const isService = pathname === "/services";
 
-
-  const isService = pathname === "/services"
+  if (isService) return null;
   // if () return
   return (
     <div

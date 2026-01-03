@@ -14,11 +14,11 @@ export const ClientCard = ({ data, single, idx }: ClientCardProps) => {
     if (single) return <ClientCardsingle data={data} idx={idx} />
     else
     return (
-
-       <div
-            className="group relative h-fit w-full  flex lg:flex-row flex-col items-center justify-start   rounded-2xl  border-primary bg-card  border-1  hover:border-primary/50 transition-all duration-300 overflow-hidden gap-4" 
+ <div
+            className="group relative h-fit w-full  flex lg:flex-row flex-col   rounded-2xl  border-primary bg-card  border-1  hover:border-primary/50 transition-all duration-300 overflow-hidden gap-4" 
         >
-            <div className="lg:h-3/4 h-1/4 lg:w-1/2 w-full  ">
+            <div className="lg:h-full h-1/4 lg:w-1/2 w-full  ">
+
 
 
                 {data.image && (
@@ -103,6 +103,7 @@ export const ClientCard = ({ data, single, idx }: ClientCardProps) => {
 }
 
 const ClientCardsingle = ({ data, idx = 0 }: ClientCardProps) => {
+
     return (
         <div
             className="group relative h-full w-full  flex lg:flex-row flex-col  items-center justify-start  rounded-2xl  border-primary  hover:border-primary/50 transition-all duration-300 overflow-hidden gap-4"

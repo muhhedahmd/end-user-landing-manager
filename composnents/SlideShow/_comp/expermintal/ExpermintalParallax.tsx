@@ -121,112 +121,110 @@ export const ProjectCardParallax = ({
     const isLeftLayout = position === 'left';
 
     return (
-<article
-    ref={containerRef}
-    className="w-full flex items-center justify-center py-6 sm:py-8 md:py-12 lg:py-16 px-4 sm:px-6"
->
-    <div className={`w-full max-w-7xl flex flex-col ${isLeftLayout ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-6 sm:gap-8 md:gap-10 lg:gap-12 items-center`}>
-
-        {/* Image Section */}
-        <div
-            ref={imageRef}
-            className="w-full lg:w-1/2 relative h-[250px] sm:h-[350px] md:h-[450px] lg:h-[500px] xl:h-[600px] rounded-xl sm:rounded-2xl overflow-hidden"
+        <article
+            ref={containerRef}
+            className="w-full flex items-center justify-between"
         >
-            {data.image ? (
-                <BlurredImage
-                    imageUrl={data.image.url}
-                    alt={data.image.alt || data.title}
-                    height={data.image.height || 400}
-                    width={data.image.width || 600}
-                    blurhash={data.image.blurHash || ""}
-                    className="object-cover w-full h-full"
-                    quality={90}
-                />
-            ) : (
-                <div className="w-full h-full bg-muted flex items-center justify-center">
-                    <span className="text-muted-foreground text-sm">No image</span>
-                </div>
-            )}
-        </div>
-
-        {/* Content Section */}
-        <div
-            ref={contentRef}
-            className="w-full lg:w-1/2 space-y-4 sm:space-y-5 md:space-y-6"
-        >
-            {/* Status Badge */}
-            {data.status && (
-                <span className="inline-block px-3 py-1 text-xs font-medium uppercase tracking-wider border border-border rounded-full text-muted-foreground">
-                    {data.status.replace('_', ' ')}
-                </span>
-            )}
-
-            {/* Title */}
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
-                {data.title}
-            </h2>
-
-            {/* Client Info */}
-            {data.clientName && (
-                <div className="space-y-1">
-                    <p className="text-base sm:text-lg font-medium text-foreground">
-                        {data.clientName}
-                    </p>
-                    {data.clientCompany && (
-                        <p className="text-sm sm:text-base text-muted-foreground">
-                            {data.clientCompany}
-                        </p>
+            <div className={`w-full justify-between flex flex-col ${isLeftLayout ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-6 sm:gap-8 md:gap-10 lg:gap-20 items-center`}>
+                {/* Image Section */}
+                <div
+                    ref={imageRef}
+                    className="w-full lg:w-1/2 relative h-[250px] sm:h-[350px] md:h-[450px] lg:h-[500px] xl:h-[600px] rounded-xl sm:rounded-2xl overflow-hidden"
+                >
+                    {data.image ? (
+                        <BlurredImage
+                            imageUrl={data.image.url}
+                            alt={data.image.alt || data.title}
+                            height={data.image.height || 400}
+                            width={data.image.width || 600}
+                            blurhash={data.image.blurHash || ""}
+                            className="object-cover w-full h-full"
+                            quality={90}
+                        />
+                    ) : (
+                        <div className="w-full h-full bg-muted flex items-center justify-center">
+                            <span className="text-muted-foreground text-sm">No image</span>
+                        </div>
                     )}
                 </div>
-            )}
-
-            {/* Description */}
-            {data.description && (
-                <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed">
-                    {data.description}
-                </p>
-            )}
-
-            {/* Technologies */}
-            {data.technologies && data.technologies.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                    {data.technologies.slice(0, 5).map((tech: any, idx) => (
-                        <span
-                            key={idx}
-                            className="px-2.5 sm:px-3 py-1 text-xs sm:text-sm border border-border rounded-md bg-accent/50 text-foreground"
-                        >
-                            {tech.technology.name}
+                {/* Content Section */}
+                <div
+                    ref={contentRef}
+                    className="w-full lg:w-1/2 space-y-4 sm:space-y-5 md:space-y-6"
+                >
+                    {/* Status Badge */}
+                    {data.status && (
+                        <span className="inline-block px-3 py-1 text-xs font-medium uppercase tracking-wider border border-border rounded-full text-muted-foreground">
+                            {data.status.replace('_', ' ')}
                         </span>
-                    ))}
-                </div>
-            )}
+                    )}
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 pt-2 sm:pt-4">
-                {data.projectUrl && (
-                    <Link
-                        href={data.projectUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 text-sm font-medium bg-primary text-primary-foreground rounded-full hover:opacity-90 transition-all"
-                    >
-                        View Project
-                        <span>→</span>
-                    </Link>
-                )}
-                {data.githubUrl && (
-                    <Link
-                        href={data.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 text-sm font-medium border border-border rounded-full hover:bg-accent transition-all"
-                    >
-                        GitHub
-                    </Link>
-                )}
+                    {/* Title */}
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
+                        {data.title}
+                    </h2>
+
+                    {/* Client Info */}
+                    {data.clientName && (
+                        <div className="space-y-1">
+                            <p className="text-base sm:text-lg font-medium text-foreground">
+                                {data.clientName}
+                            </p>
+                            {data.clientCompany && (
+                                <p className="text-sm sm:text-base text-muted-foreground">
+                                    {data.clientCompany}
+                                </p>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Description */}
+                    {data.description && (
+                        <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed">
+                            {data.description}
+                        </p>
+                    )}
+
+                    {/* Technologies */}
+                    {data.technologies && data.technologies.length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                            {data.technologies.slice(0, 5).map((tech: any, idx) => (
+                                <span
+                                    key={idx}
+                                    className="px-2.5 sm:px-3 py-1 text-xs sm:text-sm border border-border rounded-md bg-accent/50 text-foreground"
+                                >
+                                    {tech.technology.name}
+                                </span>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Action Buttons */}
+                    <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 pt-2 sm:pt-4">
+                        {data.projectUrl && (
+                            <Link
+                                href={data.projectUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 text-sm font-medium bg-primary text-primary-foreground rounded-full hover:opacity-90 transition-all"
+                            >
+                                View Project
+                                <span>→</span>
+                            </Link>
+                        )}
+                        {data.githubUrl && (
+                            <Link
+                                href={data.githubUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 text-sm font-medium border border-border rounded-full hover:bg-accent transition-all"
+                            >
+                                GitHub
+                            </Link>
+                        )}
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</article>
+        </article>
     );
 };

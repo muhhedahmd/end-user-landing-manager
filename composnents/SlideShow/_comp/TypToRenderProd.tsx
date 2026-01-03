@@ -7,36 +7,36 @@ import { ClientCard } from "./CardProd/client"
 import { TestimonialCard } from "./CardProd/testimonals"
 import { TeamMemberCard } from "./CardProd/teamMemeber"
 
-export const TypeToRenderProd = memo(({ idx , play  ,cube ,single ,  splitcarousel , slide, imaged, minmal, split, index, story }: {
-play ?: boolean
+export const TypeToRenderProd = memo(({ idx, play, cube, single, splitcarousel, slide, imaged, minmal, split, index, story }: {
+  play?: boolean
   slide: slide,
-  splitcarousel?: boolean, 
+  splitcarousel?: boolean,
   imaged?: boolean,
   minmal?: boolean,
   split?: boolean,
   index?: number,
-  single ?: boolean
-  cube ?: boolean
-  story?: boolean ,
-  idx ?: number
+  single?: boolean
+  cube?: boolean
+  story?: boolean,
+  idx?: number
 }) => {
 
 
   if (slide?.type === "service") {
-    return <ServiceCard splitcarousel={splitcarousel} data={slide as ServiceWithImage} imaged={imaged} story={story || false} />
+    return <ServiceCard splitcarousel={splitcarousel} data={slide as ServiceWithImage} idx={idx}  imaged={imaged} story={story || false} />
   }
   if (slide?.type === "project") {
-    return <ProjectCard imagePosition="left" data={slide as ProjectWithRelationsSlide} split={split} index={index || 0} story={story} />
+    return <ProjectCard imagePosition="left" data={slide as ProjectWithRelationsSlide} idx={idx}   split={split} index={index || 0} story={story} />
   }
   if (slide.type === "client") {
-    return <ClientCard single={single} cube={cube} data={slide as ClientWithRelationsSlide}   idx={idx}/>
+    return <ClientCard single={single} cube={cube} data={slide as ClientWithRelationsSlide} idx={idx} />
   }
   if (slide.type === "testimonial") {
-    return <TestimonialCard  data={slide as TestimonialWithImage} minmal={minmal} />
+    return <TestimonialCard data={slide as TestimonialWithImage} idx={idx}  minmal={minmal} />
   }
   if (slide.type === "team") {
 
-    return <TeamMemberCard data={slide as TeamMemberWithImage} />
+    return <TeamMemberCard data={slide as TeamMemberWithImage}  idx={idx} />
   }
   return <div />
 })

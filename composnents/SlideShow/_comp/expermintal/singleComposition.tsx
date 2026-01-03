@@ -25,8 +25,13 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
     const track = trackRef.current;
     if (!wrapper || !track || slides.length === 0) return;
 
-    const scrollWidth = track.scrollWidth - wrapper.offsetWidth;
-    console.log(scrollWidth)
+    // const scrollWidth = track.scrollWidth - wrapper.offsetWidth;
+    // console.log(scrollWidth)
+
+
+    const scrollWidth =
+  cardRef.current.reduce((acc, el) => acc + (el?.offsetWidth || 0), 0)
+  - wrapper.offsetWidth;
 
     const st = gsap.to(track, {
       x: -scrollWidth,
@@ -93,7 +98,7 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
 
 
   return (
-    <div ref={wrapperRef} className=" relative w-screen relative min-h-screen overflow-x-hidden">
+    <div ref={wrapperRef} className=" relative w-screen  min-h-screen overflow-x-hidden">
       {/* Navigation bullets */}
       {/* <div className="absolute left-1/2  top-[10%] md:top-1/4 flex gap-3 -translate-x-1/2 z-50">
         {slides.map((_, idx) => (
@@ -108,19 +113,21 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
       </div> */}
 
       {/* Slides container */}
-      <div ref={trackRef} className="flex  justify-center items-center gap-20 h-screen will-change-transform">
+      <div ref={trackRef}
+      
+      className="flex pr-40  justify-start items-center gap-20 h-screen will-change-transform">
         {slides.map((slideItem, i) => (
           <div
             ref={(ref) => { cardRef.current[i] = ref }}
             key={slideItem.id}
-            className="shrink-0 h-full     flex items-end py-10 justify-start"
+            className="shrink-0 h-full  flex items-end py-10 justify-start"
           >
             <div className=" w-0 md:w-[10rem] h-screen md:pl-10 flex items-center justify-center">
             </div>
             {/* md:w-220 md:h-120 w-110  */}
             <div className="pointer-events-auto  w-screen h-full   overflow-hidden flex items-center justify-center" >
 
-              <TypeToRenderProd idx={i} slide={slideItem} single={true} />
+              <TypeToRenderProd idx={i} slide={slideItem} single={true} index={i+1} />
             </div>
 
 
