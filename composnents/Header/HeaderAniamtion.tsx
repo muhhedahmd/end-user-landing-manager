@@ -2,14 +2,16 @@
 "use client"
 import { useTimeLine } from '@/context/MainLoaderTimeLine'
 import { useGSAP } from '@gsap/react'
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import gsap from 'gsap'
 import { usePathname } from 'next/navigation'
 import { useBreakPoints } from '@/hooks/useBreakPoint'
-import { Inter } from 'next/font/google'
 import { useSectionVisibility } from '../contact/SectionVisibilityContext'
-const HeaderAniamtion = ({ children }: {
-  children: React.ReactNode
+import { cn } from '@/lib/utils'
+const HeaderAniamtion = ({ children  ,border  ,title}: {
+  title?: string ,
+  children: React.ReactNode ,
+  border?: boolean
 }) => {
   const headerRef = useRef<HTMLHeadElement | null>(null)
   const pathname = usePathname()
@@ -83,8 +85,9 @@ const HeaderAniamtion = ({ children }: {
   })
 
   useGSAP(() => {
-    if (!headerRef.current || !timeline ) return;
-    if(!timeline.labels) return;
+    if (!headerRef.current || !timeline) return;
+    if (timeline.labels?.headerComplete) return;
+    console.log(singleCompositionVisible, timeline.labels)
     if (singleCompositionVisible) {
       gsap.to(headerRef.current, {
         y: -270,
@@ -104,7 +107,7 @@ const HeaderAniamtion = ({ children }: {
   })
 
   return (
-    <header ref={headerRef} className=" h-fit md:h-[10vh] lg:h-[17vh]  z-50 w-full -translate-y-20  hidden  backdrop-blur">
+    <header ref={headerRef} className={cn(" h-fit md:h-[10vh] lg:h-[17vh]  z-50 w-full -translate-y-20  hidden  backdrop-blur" , title?.toLowerCase() ==="team" && "h-fit md:h-[10vh] lg:h-[12vh] " ,  border ? "border-b border-border bg-background/80" : "bg-transparent" )} >
       {children}
     </header>
   )

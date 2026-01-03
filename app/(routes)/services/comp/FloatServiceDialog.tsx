@@ -6,6 +6,7 @@ import { ServiceWithImage } from "@/types/schema";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ArrowRight, ChevronDown, ChevronUp, X } from "lucide-react";
+import Link from "next/link";
 import { Fragment, useEffect, useRef, useState } from "react";
 
 const FloatServiceDialog = ({
@@ -199,9 +200,9 @@ const FloatServiceDialog = ({
                         </div>
 
                         {/* Contact Button */}
-                        <button className="w-full sm:w-auto mt-8 sm:mt-20 md:mt-32 lg:mt-40 p-3 sm:p-4 border border-black flex items-center justify-center sm:justify-between gap-3 rounded-md cursor-pointer hover:bg-black hover:text-white transition-colors duration-300 text-base sm:text-lg">
+                        <Link href={"#contact"}  className="w-full sm:w-auto mt-8 sm:mt-20 md:mt-32 lg:mt-40 p-3 sm:p-4 border border-black flex items-center justify-center sm:justify-between gap-3 rounded-md cursor-pointer hover:bg-black hover:text-white transition-colors duration-300 text-base sm:text-lg">
                             Contact Now <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6" />
-                        </button>
+                        </Link>
                     </div>
 
                     {/* Image Section */}

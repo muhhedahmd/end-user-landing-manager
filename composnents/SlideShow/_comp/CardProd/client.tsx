@@ -16,9 +16,9 @@ export const ClientCard = ({ data, single, idx }: ClientCardProps) => {
     return (
 
        <div
-            className="group relative h-full w-full  flex lg:flex-row flex-col   rounded-2xl  border-primary bg-card  border-1  hover:border-primary/50 transition-all duration-300 overflow-hidden gap-4" 
+            className="group relative h-fit w-full  flex lg:flex-row flex-col items-center justify-start   rounded-2xl  border-primary bg-card  border-1  hover:border-primary/50 transition-all duration-300 overflow-hidden gap-4" 
         >
-            <div className="lg:h-full h-1/4 lg:w-1/2 w-full  ">
+            <div className="lg:h-3/4 h-1/4 lg:w-1/2 w-full  ">
 
 
                 {data.image && (
@@ -148,7 +148,7 @@ const ClientCardsingle = ({ data, idx = 0 }: ClientCardProps) => {
 
             </div>
             {/* Logo Section */}
-            <div className="  md:w-auto min-w-5/6   absolute  top-1/2 left-1/2 md:top-1/2   md:left-1/2 -translate-1/2 bg-white  p-4 shadow-xl border border-border rounded-xl space-y-4 ">
+            <div className=" z-10 md:min-w-auto md:w-auto min-w-5/6   absolute  top-1/2 left-1/2 md:top-1/2   md:left-1/2 -translate-1/2 bg-white  p-4 shadow-xl border border-border rounded-xl space-y-4 ">
 
 
                 {data.logo && (
@@ -182,7 +182,7 @@ const ClientCardsingle = ({ data, idx = 0 }: ClientCardProps) => {
 
                     {data.richDescription && data.richDescription !== data.description && (
                         <div
-                            className=" relative z-30 client-description md:line-clamp-none  line-clamp-8 lg:text-xl xl:text-2xl  text-black leading-relaxed font-inter prose prose-sm dark:prose-invert"
+                            className=" relative z-30 client-description md:line-clamp-none  line-clamp-8 lg:text-xl xl:text-xl  text-black leading-relaxed font-inter prose prose-sm dark:prose-invert"
                             dangerouslySetInnerHTML={{ __html: data.richDescription }}
                         />
                     )}

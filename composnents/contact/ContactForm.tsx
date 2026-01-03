@@ -162,10 +162,9 @@ export default function ContactForm() {
           className="text-card-foreground p-8 border-b"
         >
           <div className="text-center mb-8">
-            <h2 className="text-4xl font-bold mb-3">Ready to Work Together?</h2>
+            <h2 className=" text-2xl md:text-4xl font-bold mb-3">Ready to Work Together?</h2>
             <p className="text-muted-foreground text-lg">
-              Have a project in mind? Let&apos;s discuss how we can help transform your ideas into exceptional software
-              solutions.
+              Have a project in mind? Let&apos;s discuss.
             </p>
           </div>
 
@@ -184,6 +183,7 @@ export default function ContactForm() {
           )}
 
           <div className="space-y-6">
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium mb-2">
@@ -201,6 +201,24 @@ export default function ContactForm() {
                 />
                 {errors.name && touched.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
               </div>
+              
+            <div>
+              <label className="block text-sm font-medium mb-2">
+                Subject <span className="text-red-500">*</span>
+              </label>
+              <input
+                name="subject"
+                value={formData.subject}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={`w-full px-4 py-2.5 rounded-lg border bg-background focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all ${
+                  errors.subject && touched.subject ? "border-red-500" : ""
+                }`}
+                placeholder="What's this about?"
+              />
+              {errors.subject && touched.subject && <p className="text-red-500 text-sm mt-1">{errors.subject}</p>}
+            </div>
+
 
               <div>
                 <label className="block text-sm font-medium mb-2">
@@ -254,23 +272,7 @@ export default function ContactForm() {
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Subject <span className="text-red-500">*</span>
-              </label>
-              <input
-                name="subject"
-                value={formData.subject}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className={`w-full px-4 py-2.5 rounded-lg border bg-background focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all ${
-                  errors.subject && touched.subject ? "border-red-500" : ""
-                }`}
-                placeholder="What's this about?"
-              />
-              {errors.subject && touched.subject && <p className="text-red-500 text-sm mt-1">{errors.subject}</p>}
-            </div>
-
+{/* 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium mb-2">Budget Range</label>
@@ -306,7 +308,7 @@ export default function ContactForm() {
                   <option value="Flexible">Flexible / Not decided</option>
                 </select>
               </div>
-            </div>
+            </div> */}
 
             <div>
               <label className="block text-sm font-medium mb-2">

@@ -7,40 +7,46 @@ import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { CompanyInfo } from "@/types/schema"
 import Image from "next/image"
+import Link from "next/link"
 
 interface NavItem {
   label: string
   href: string
 }
 
-export default function HeaderClient({ navItems , companyInfo  }: { navItems: NavItem[] , companyInfo: CompanyInfo | null }) {
+export default function HeaderClient({ navItems, companyInfo }: { navItems: NavItem[], companyInfo: CompanyInfo | null }) {
   const [open, setOpen] = useState(false)
 
 
-  console.log({ open })
   return (
     <Fragment>
+      <div className=" p-1  flex-1 text-end hidden md:flex  items-end justify-end" >
+      <Link href="#contact" className=" p-1 px-2 border border-primary   w-fit  text-primary hover:text-primary/80 hover:border-primary/80 rounded-md " >
+        contact us
 
-      <div className="flex items-center  justify-center gap-2">
-        <Button onClick={() => setOpen(true)} variant="ghost" className="  md:hidden  ">
+      </Link>
+      </div>
+
+      <div className=" md:hidden  flex items-center  justify-center gap-2">
+        <Button onClick={() => setOpen(true)} variant="ghost" className="   ">
 
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </Button>
 
       </div>
-      <CustomDrawer  companyInfo={companyInfo} navItems={navItems} open={open} onOpenChange={setOpen} />
+      <CustomDrawer companyInfo={companyInfo} navItems={navItems} open={open} onOpenChange={setOpen} />
     </Fragment>
   )
 }
 
 
 
-function CustomDrawer({ 
-  open, 
-  onOpenChange, 
-  navItems ,
+function CustomDrawer({
+  open,
+  onOpenChange,
+  navItems,
   companyInfo
-}: { 
+}: {
   companyInfo: CompanyInfo | null
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -78,9 +84,9 @@ function CustomDrawer({
         const items = navItemsRef.current.querySelectorAll('.nav-item')
         gsap.fromTo(items,
           { opacity: 0, x: 50 },
-          { 
-            opacity: 1, 
-            x: 0, 
+          {
+            opacity: 1,
+            x: 0,
             duration: 0.5,
             stagger: 0.08,
             delay: 0.3,
@@ -111,7 +117,7 @@ function CustomDrawer({
   return (
     <>
       {/* Overlay */}
-      <div 
+      <div
         ref={overlayRef}
         onClick={() => onOpenChange(false)}
         className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 opacity-0"
@@ -119,10 +125,10 @@ function CustomDrawer({
       />
 
       {/* Drawer */}
-      <div 
+      <div
         ref={containerRef}
         className="fixed  overflow-hidden top-0 right-0 bg-background border-l border-border z-50 transform translate-x-full"
-        style={{ width: 0 , height: "100dvh"}}
+        style={{ width: 0, height: "100dvh" }}
       >
         <div ref={contentRef} className="h-full flex flex-col p-6 md:p-8 lg:p-12">
           {/* Header */}
@@ -130,13 +136,13 @@ function CustomDrawer({
             {/* Logo */}
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 rounded-full flex items-center justify-center">
-                  <Image src={companyInfo?.logo?.url || ""} alt="logo" width={30} height={30} />
+                <Image src={companyInfo?.logo?.url || ""} alt="logo" width={30} height={30} />
               </div>
               <span className="font-bold text-xl text-foreground">{companyInfo?.name}</span>
             </div>
 
             {/* Close Button */}
-            <button 
+            <button
               onClick={() => onOpenChange(false)}
               className="w-12 h-12 rounded-full border border-border hover:bg-accent flex items-center justify-center transition-all duration-300 hover:rotate-90"
             >
@@ -166,7 +172,7 @@ function CustomDrawer({
             <button className="w-full py-3 md:py-4 bg-primary text-primary-foreground rounded-full font-medium hover:opacity-90 transition-all duration-300 hover:scale-105">
               Get Started
             </button>
-            
+
             {/* Social Links */}
             <div className="flex items-center justify-center gap-4 md:gap-6 mt-6 md:mt-8 text-sm text-muted-foreground">
               <a href="#" className="hover:text-foreground transition-colors">Instagram</a>

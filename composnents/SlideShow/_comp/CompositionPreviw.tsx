@@ -40,7 +40,6 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
   const [currentSlide, setCurrentSlide] = useState(0)
   const [[page, direction], setPage] = useState([0, 0])
   const [lightboxOpen, setLightboxOpen] = useState(false)
-  const [scrollPosition, setScrollPosition] = useState(0)
   const [columns, setColumns] = useState(3)
   const [autoProgress, setAutoProgress] = useState(0)
 

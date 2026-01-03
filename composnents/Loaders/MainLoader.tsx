@@ -14,10 +14,12 @@ const MainLoader = ({ duration = 5000 }: { duration?: number }) => {
   const pathname = usePathname()
 
   useEffect(() => {
-  if ('scrollRestoration' in window.history) {
-    window.history.scrollRestoration = 'manual';
-  }
-}, []);
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    setProgress(0);
+    setVisible(false);
+  }, []);
 
   useEffect(() => {
     if (!visible) return;
@@ -36,6 +38,8 @@ const MainLoader = ({ duration = 5000 }: { duration?: number }) => {
       }
       // Add to main timeline
       ctx.add(() => {
+
+
         timeline
           .to(progressRef.current, {
             width: "100%",
@@ -57,6 +61,11 @@ const MainLoader = ({ duration = 5000 }: { duration?: number }) => {
           })
           .addLabel("loaderComplete"); // Label after loader exits
       })
+      return () => {
+        setProgress(0);
+      }
+
+
     },
 
     {
@@ -74,18 +83,18 @@ const MainLoader = ({ duration = 5000 }: { duration?: number }) => {
 
       // key={pathname}
       ref={loaderRef}
-      className={cn("inset-0  z-50 h-10 w-screen bg-background flex flex-col items-center justify-center",isService && "hidden")  }
+      className={cn("inset-0  z-50 h-10 w-screen bg-background flex flex-col items-center justify-center", isService && "hidden")}
     >
       <div className=" h-10  gap-4  w-full flex items-center justify-center overflow-hidden">
-     <div className="w-full h-10">
+        <div className="w-full h-10">
 
-        <div
-          ref={progressRef}
+          <div
+            ref={progressRef}
 
-          className="h-full w-0  bg-primary transition-all   duration-200 ease-linear"
-        />
-          </div>
-          <div className=" shrink-0 w-max mr-4 "> <span className="font-bold text-sx"> { progress.toFixed(0)} %</span> </div>
+            className="h-full w-0  bg-primary transition-all   duration-200 ease-linear"
+          />
+        </div>
+        <div className=" shrink-0 w-max mr-4 "> <span className="font-bold text-sx"> {progress.toFixed(0)} %</span> </div>
       </div>
 
     </div>

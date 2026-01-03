@@ -4,6 +4,7 @@ import HeaderClient from "./header-client"
 import Image from "next/image"
 import HeaderAniamtion from "./HeaderAniamtion"
 import { CompanyInfo } from "@/types/schema"
+import { cn } from "@/lib/utils"
 
 
 export const dynamic = "force-static"
@@ -25,13 +26,15 @@ async function getCompanyInfo(): Promise<CompanyInfo | null> {
   }
 }
 
-export default async function Header() {
+export default async function Header({
+  title, border }: { title?: string, border?: boolean }
+) {
   const companyInfo = await getCompanyInfo()
 
   const navItems = [
     { label: "Services", href: "/services" },
     // { label: "Portfolio", href: "#portfolio" },
-    { label: "Team", href: "#team" },
+    { label: "Team", href: "/team" },
     { label: "Blog", href: "/blogs" },
     { label: "Features", href: "#features" },
     // { label: "Pricing", href: "#pricing" },
@@ -40,10 +43,10 @@ export default async function Header() {
   ]
 
   return (
-    <HeaderAniamtion>
+    <HeaderAniamtion border={border} title={title} >
 
-      <div className="  h-full flex items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2">
+      <div className="  h-full w-full flex items-center justify-between px-8 md:px-16 lg:px-24 2xl:px-32 py-4 ">
+        <Link href="/" className="flex items-center gap-2 flex-1">
           {companyInfo?.logo ? (
             <Image
               src={companyInfo.logo.url}
@@ -62,12 +65,13 @@ export default async function Header() {
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden md:flex items-center justify-center gap-1 flex-1">
+
           {navItems.map(item => (
             <Link
               key={item.href}
               href={item.href}
-              className="px-4 py-2 text-md font-medium hover:text-primary transition"
+              className={cn("px-4 py-2 text-md font-medium hover:text-primary transition", title?.toLowerCase() === item.label.toLowerCase() ? "dark:text-orange-600" : "text-primary ")}
             >
               {item.label}
             </Link>

@@ -7,6 +7,7 @@ import { CompanyInfo } from "@/types/schema";
 import { TimelineProvider } from "@/context/MainLoaderTimeLine";
 import { AnalyticsProvider } from "@/providers/analytic-provider";
 import { SectionVisibilityProvider } from "@/composnents/contact/SectionVisibilityContext";
+import SmoothScrolling from "@/composnents/scroll/smoothScrolling";
 
 
 const geistSans = Geist({
@@ -114,10 +115,12 @@ export default function RootLayout({
         <AnalyticsProvider>
           <TimelineProvider>
             <SectionVisibilityProvider>
+              <SmoothScrolling>
 
               <main>
                 {children}
               </main>
+              </SmoothScrolling>
             </SectionVisibilityProvider>
           </TimelineProvider>
         </AnalyticsProvider>
