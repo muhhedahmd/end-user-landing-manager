@@ -27,7 +27,7 @@ export function SlideshowCard({
   // const isContainer  = compositionType && (compositionType !== "SINGLE" || compositionType !== "CUBE")
   const isCube  =  compositionType === "CUBE"
   const isSingle  = compositionType === "SINGLE"
-  const isParallax  = compositionType === "PARALLAX"
+  // const isParallax  = compositionType === "PARALLAX"
     if(isCube) return null
 
     return (
