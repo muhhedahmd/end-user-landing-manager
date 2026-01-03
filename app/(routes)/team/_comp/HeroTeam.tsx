@@ -60,7 +60,7 @@ const HeroTeam = () => {
                 {title.split(" ").map((word, index) => (
                     <span
                         key={index}
-                        ref={(el) => { if (el) { if (!wordsRef.current) { wordsRef.current = []; } wordsRef.current[index] = el; } }} className=" cursor-none inline-block text-4xl md:text-5xl lg:text-6xl"
+                        ref={(el) => { if (el) { if (!wordsRef.current) { wordsRef.current = []; } wordsRef.current[index] = el; } }} className=" cursor-none inline-block text-2xl md:text-5xl lg:text-6xl"
                     >
                         {word}&nbsp;
                     </span>

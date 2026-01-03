@@ -126,7 +126,7 @@ const AchievementsSection = async () => {
                     </header>
 
                     {/* Stats Grid */}
-                    <div className="grid items-center justify-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                    <div className="grid items-center justify-center grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                         {stats?.map((stat, index) => (
                             <StatCard
                                 key={stat.label}

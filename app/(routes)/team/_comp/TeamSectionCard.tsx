@@ -86,9 +86,7 @@ const TeamSectionCard = ({
                 const cardProgress = (progress - 0.5) * totalCards * 1.5 - index;
                 const position = cardProgress - 1; // -1 = left, 0 = center, 1 = right
 
-                // Rotation: 0° at center, 180° when off-screen
                 const rotateY = position * 90; // -90° to 90°
-                // Scale: bigger at center
                 let scale = 1;
                 if (Math.abs(position) < 1) {
                     scale = 1 + (1 - Math.abs(position)) * 0.3; // up to 1.3x at center
@@ -96,13 +94,10 @@ const TeamSectionCard = ({
                     scale = 0.85;
                 }
 
-                // Z-position for depth
                 const z = Math.abs(position) < 1 ? (1 - Math.abs(position)) * 100 : -50;
 
-                // Y-position for arc
                 const y = Math.abs(position) * 30;
 
-                // Opacity
                 const opacity = Math.abs(position) < 1.5 ? 1 : 0.3;
 
                 gsap.to(card, {
@@ -157,7 +152,7 @@ const TeamSectionCard = ({
                     style={{
                         transformStyle: "preserve-3d",
                         paddingLeft: "calc(200vw - 200px)",
-                        paddingRight: "calc(120vw - 200px)",
+                        paddingRight: "calc(40vw - 200px)",
                     }}
                 >
                     {
@@ -318,17 +313,17 @@ const TeamSectionCard = ({
 
                                                 <div className="flex items-center gap-3 sm:gap-4 bg-white/5 p-3 sm:p-4 rounded-lg">
                                                     <Briefcase className="w-5 h-5 sm:w-6 sm:h-6 text-orange-400 shrink-0" />
-                                                    <span className="text-xs sm:text-sm md:text-base">
+                                                    <span className="text-xs sm:text-sm md:text-base line-clamp-6">
                                                         {member.bio}
                                                     </span>
                                                 </div>
                                             </div>
 
-                                            <div className="mt-4 sm:mt-6">
+                                            {/* <div className="mt-4 sm:mt-6">
                                                 <button className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-colors text-sm sm:text-base">
                                                     Connect
                                                 </button>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                 </div>
