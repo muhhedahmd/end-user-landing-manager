@@ -28,8 +28,9 @@ export function SlideshowCard({
   const isCube  =  compositionType === "CUBE"
   const isSingle  = compositionType === "SINGLE"
   const isParallax  = compositionType === "PARALLAX"
-  
-  return (
+    if(isCube) return null
+
+    return (
     <div
       style={{
         backgroundColor: bgColor,

@@ -611,6 +611,7 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
     case "CUBE":
 
       // expemental
+      return null
       return <CubeComposition slides={slides} />
 
       return (<div className="space-y-8">
