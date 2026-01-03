@@ -11,7 +11,6 @@ gsap.registerPlugin(ScrollTrigger);
 // const slides = mockSlides
 
 const SingleComposition = ({ slides }: { slides: slide[] }) => {
-  console.log(slides)
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
   const cardRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -47,9 +46,9 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
           const idx = Math.round(self.progress * (slides.length - 1));
           setActiveIndex(idx);
         },
-        markers: true,
+        // markers: true,
       },
-      markers: true,
+      // markers: true,
     });
 
     return () => {
@@ -100,7 +99,7 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
   return (
     <div ref={wrapperRef} className=" relative w-screen  min-h-screen overflow-x-hidden">
       {/* Navigation bullets */}
-      {/* <div className="absolute left-1/2  top-[10%] md:top-1/4 flex gap-3 -translate-x-1/2 z-50">
+      <div className="absolute left-1/2  top-[10%] md:top-1/4 flex gap-3 -translate-x-1/2 z-50">
         {slides.map((_, idx) => (
           <button
             key={idx}
@@ -110,12 +109,13 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
             aria-label={`Go to slide ${idx + 1}`}
           />
         ))}
-      </div> */}
+      </div>
 
       {/* Slides container */}
       <div ref={trackRef}
       
       className="flex pr-40  justify-start items-center gap-20 h-screen will-change-transform">
+
         {slides.map((slideItem, i) => (
           <div
             ref={(ref) => { cardRef.current[i] = ref }}

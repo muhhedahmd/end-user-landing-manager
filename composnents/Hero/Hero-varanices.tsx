@@ -15,7 +15,7 @@ export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
     const backgroundImageUrl = backgroundImage?.url || ""
 
 
-        const getMinHeight = () => {
+    const getMinHeight = () => {
         if (hero.variant === "FULL_SCREEN") return "min-h-screen"
         if (hero.variant === "MINIMAL") return "min-h-[400px] md:min-h-[500px]"
         if (hero.variant === "SPLIT") return "min-h-[70vh]"
@@ -63,7 +63,7 @@ export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
 
     // Responsive height calculation
     console.log(hero.variant)
- 
+
 
     // Content padding based on variant
     const getContentPadding = () => {
@@ -159,7 +159,7 @@ export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
                 return (
                     <div className=" relative z-10 w-full  flex flex-col  md:items-enter items-start xl:h-[65dvh]  md:h-[70dvh] h-[84dvh]">
 
-                        <div className="md:pl-5 md:mb-0 mb-5 flex-1 flex flex-col md:justify-center justify-start" style={{ padding: getContentPadding() }}>
+                        <div className="md:pl-5 md:mb-0 mb-5 flex-1 flex flex-col md:justify-center justify-start w-full" style={{ padding: getContentPadding() }}>
 
                             <div
                                 className=" flex start  gap-10 items-end justify-between w-full "
@@ -180,7 +180,7 @@ export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
                                     {hero.subtitle && (
 
                                         <p
-                                            className="text-xl sm:text-2xl md:text-2xl  text-balance font-light" 
+                                            className="text-xl sm:text-2xl md:text-2xl  text-balance font-light"
                                             style={{ color: hero.subtitleColor || undefined, marginBottom: "1rem" }}
                                         >
                                             {hero.subtitle}
@@ -197,22 +197,14 @@ export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
                                         </p>
                                     )}
                                 </div>
-                                <div className=" bmd:g-accent rounded-md w-max p-1  absolute bottom-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:static  z-10 flex justify-end items-end">
+                                <div className=" md:g-accent rounded-md w-max p-1  gap-3  md:static  z-10 flex justify-start items-end flex-col md:flex-row">
 
                                     {(hero.ctaText || hero.secondaryCtaText) && (
 
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                gap: "1rem",
-                                                alignItems: "end",
-                                                justifyContent: alignmentMap[hero.alignment as keyof typeof alignmentMap] || "center",
-                                                width: "100%",
-                                                flexWrap: "wrap",
-                                            }}
-                                        >
+                                        <>
                                             {hero.ctaText && hero.ctaUrl && (
                                                 <Link
+                                                className="w-max"
 
                                                     href={hero.ctaUrl}>
                                                     {hero.ctaText}
@@ -220,12 +212,12 @@ export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
                                             )}
                                             {hero.secondaryCtaText && hero.secondaryCtaUrl && (
                                                 <Link
-
+                                                className="w-max"
                                                     href={hero.secondaryCtaUrl}>
                                                     {hero.secondaryCtaText}
                                                 </Link>
                                             )}
-                                        </div>
+                                        </>
                                     )}
                                 </div>
 
@@ -336,7 +328,7 @@ export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
                 backgroundPosition: "center",
                 ...(styleOverrides as React.CSSProperties),
             }}
-  
+
         >
             <div className="md:container">
 

@@ -6,7 +6,7 @@ import { useTimeLine } from "@/context/MainLoaderTimeLine";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { lenisRef } from "../scroll/smoothScrolling";
-const MainLoader = ({ duration = 7000 }: { duration?: number }) => {
+const MainLoader = ({ duration = 3000 }: { duration?: number }) => {
   const { timeline, ctx } = useTimeLine();
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);

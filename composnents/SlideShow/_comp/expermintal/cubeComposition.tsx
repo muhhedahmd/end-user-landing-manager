@@ -52,12 +52,11 @@ gsap.registerPlugin(ScrollTrigger);
         endTrigger: cards[cards.length - 1],
         end: `bottom top+=${200 + cards.length * spacer}`,
         pin: true,
-        markers: true,
+        // markers: true,
         scrub: true,
         pinSpacing: false,
         invalidateOnRefresh: true,
         onEnter : (()=>{
-          console.log("enter")
           gsap.to(card, {
             scale: 1,
             ease: "none",
@@ -67,7 +66,7 @@ gsap.registerPlugin(ScrollTrigger);
               scrub: true,
               invalidateOnRefresh: true,
             },
-            markers: true,
+            // markers: true,
           });
         })
       });
@@ -97,7 +96,6 @@ gsap.registerPlugin(ScrollTrigger);
           key={i}
           ref={addCardRef}
           className="relative mb-8 sm:mb-10 md:mb-12 flex w-full max-w-full 
-                     h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px] xl:h-[800px]
                      items-start justify-start rounded-xl sm:rounded-2xl overflow-hidden"
         >
           <TypeToRenderProd slide={n} cube={true} />
@@ -107,7 +105,7 @@ gsap.registerPlugin(ScrollTrigger);
   </div>
 
   {/* Spacer section */}
-  <div className="mt-8 sm:mt-10 md:mt-12 h-[30vh] sm:h-[40vh] md:h-[50vh] w-full border-t border-border" />
+  <div className="mt-8 sm:mt-10 md:mt-12 h-[60vh] sm:h-[40vh] md:h-[50vh] w-full border-t border-border" />
 </div>
   );
 };

@@ -1,17 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
-import { motion } from "framer-motion"
-import { useState } from "react"
+import { useGSAP } from "@gsap/react"
+import gsap from "gsap"
+import { useRef, useState } from "react"
 import { z } from "zod"
 
-// Zod validation schema
+// Zod validation schema matching backend
 const contactSchema = z.object({
   name: z.string().min(1, "Name is required").max(255, "Name must be less than 255 characters"),
   email: z.string().min(1, "Email is required").email("Invalid email address"),
   phone: z
     .string()
-    .regex(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, "Invalid phone number")
+    .regex(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, "Invalid phone number format")
     .optional()
     .or(z.literal("")),
   company: z.string().max(255, "Company name must be less than 255 characters").optional().or(z.literal("")),
@@ -20,13 +21,26 @@ const contactSchema = z.object({
     .string()
     .min(10, "Message must be at least 10 characters")
     .max(5000, "Message must be less than 5000 characters"),
-  budget: z.string(),
-  timeline: z.string(),
+  // budget: z.string().max(255).optional().or(z.literal("")),
+  // timeline: z.string().max(255).optional().or(z.literal("")),
+  category: z.enum([
+    "GENERAL_INQUIRY",
+    "SUPPORT",
+    "SALES",
+    "PARTNERSHIP",
+    "FEEDBACK",
+    "COMPLAINT",
+    "SERVICE_INQUIRY",
+    "OTHER",
+  ]).default("GENERAL_INQUIRY"),
 })
 
 type ContactFormData = z.infer<typeof contactSchema>
 
 export default function ContactForm() {
+  const formRef = useRef<HTMLDivElement>(null)
+  const successRef = useRef<HTMLDivElement>(null)
+
   const [formData, setFormData] = useState<ContactFormData>({
     name: "",
     email: "",
@@ -34,8 +48,9 @@ export default function ContactForm() {
     company: "",
     subject: "",
     message: "",
-    budget: "Not sure yet",
-    timeline: "Flexible",
+    // budget: "",
+    // timeline: "",
+    category: "GENERAL_INQUIRY",
   })
 
   const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData | "submit", string>>>({})
@@ -43,13 +58,34 @@ export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
 
+  useGSAP(() => {
+    if (formRef.current) {
+      gsap.from(formRef.current, {
+        opacity: 0,
+        y: 30,
+        duration: 0.8,
+        ease: "power2.out",
+      })
+    }
+  }, [])
+
+  useGSAP(() => {
+    if (isSuccess && successRef.current) {
+      gsap.fromTo(
+        successRef.current,
+        { opacity: 0, y: -20, scale: 0.9 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.7)" }
+      )
+    }
+  }, [isSuccess])
+
   const validateField = (name: keyof ContactFormData, value: string): string => {
     try {
       contactSchema.shape[name].parse(value)
       return ""
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        // return error.(errors as amy).[0]?.message || ""
+    } catch (error : any) {
+      if (error instanceof z.ZodError as any) {
+        return error.errors[0]?.message || ""
       }
       return ""
     }
@@ -60,14 +96,15 @@ export default function ContactForm() {
       contactSchema.parse(formData)
       setErrors({})
       return true
-    } catch (error) {
-      if (error instanceof z.ZodError) {
+    } catch (error : any) {
+      if (error instanceof z.ZodError as any  ) {
+        console.log(error)
         const newErrors: Partial<Record<keyof ContactFormData, string>> = {}
-        // error.errors.forEach((err) => {
-        //   if (err.path[0]) {
-        //     newErrors[err.path[0] as keyof ContactFormData] = err.message
-        //   }
-        // })
+        error.errors.forEach((err : any) => {
+          if (err.path[0]) {
+            newErrors[err.path[0] as keyof ContactFormData] = err.message
+          }
+        })
         setErrors(newErrors)
         return false
       }
@@ -86,7 +123,7 @@ export default function ContactForm() {
     }
   }
 
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setTouched((prev) => ({ ...prev, [name]: true }))
 
@@ -109,25 +146,35 @@ export default function ContactForm() {
     setIsSubmitting(true)
 
     try {
-      // Mock API call
-      const response = await fetch("https://api.example.com/contact", {
+      const referrer = typeof document !== "undefined" ? document.referrer || "" : ""
+      const source = typeof window !== "undefined" ? window.location.hostname : ""
+
+      // Prepare payload matching backend schema
+      const payload = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone || null,
+        company: formData.company || null,
+        subject: formData.subject,
+        message: formData.message,
+        category: formData.category,
+        // budget: formData.budget || null,
+        // timeline: formData.timeline || null,
+        status: "NEW",
+        priority: "MEDIUM",
+        source: source || null,
+        referrer: referrer || null,
+      }
+
+      const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/contacts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          ...formData,
-          phone: formData.phone || null,
-          company: formData.company || null,
-          referrer: typeof document !== "undefined" ? document.referrer || null : null,
-        }),
+        body: JSON.stringify(payload),
       })
 
-      // Simulate API delay
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      if (response.ok || true) {
-        // Mock success
+      if (response.ok) {
         setIsSuccess(true)
         setFormData({
           name: "",
@@ -136,13 +183,20 @@ export default function ContactForm() {
           company: "",
           subject: "",
           message: "",
-          budget: "Not sure yet",
-          timeline: "Flexible",
+          // budget: "",
+          // timeline: "",
+          category: "GENERAL_INQUIRY",
         })
         setErrors({})
         setTouched({})
 
         setTimeout(() => setIsSuccess(false), 5000)
+      } else {
+        const errorData = await response.json().catch(() => ({}))
+        setErrors((prev) => ({ 
+          ...prev, 
+          submit: errorData.message || "Failed to send. Please try again." 
+        }))
       }
     } catch (error) {
       console.error("Submission error:", error)
@@ -155,27 +209,21 @@ export default function ContactForm() {
   return (
     <section id="contact" className="py-20 px-4">
       <div className="max-w-3xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-card-foreground p-8 border-b"
-        >
+        <div ref={formRef} className="text-card-foreground p-8 border-b">
           <div className="text-center mb-8">
-            <h2 className=" text-2xl md:text-4xl font-bold mb-3">Ready to Work Together?</h2>
+            <h2 className="text-2xl md:text-4xl font-bold mb-3">Ready to Work Together?</h2>
             <p className="text-muted-foreground text-lg">
               Have a project in mind? Let&apos;s discuss.
             </p>
           </div>
 
           {isSuccess && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
+            <div
+              ref={successRef}
               className="mb-6 p-4 bg-green-50 border border-green-200 text-green-800 rounded-lg"
             >
               ✓ Thank you! We&apos;ll be in touch soon.
-            </motion.div>
+            </div>
           )}
 
           {errors.submit && (
@@ -183,7 +231,6 @@ export default function ContactForm() {
           )}
 
           <div className="space-y-6">
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium mb-2">
@@ -202,23 +249,22 @@ export default function ContactForm() {
                 {errors.name && touched.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
               </div>
               
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Subject <span className="text-red-500">*</span>
-              </label>
-              <input
-                name="subject"
-                value={formData.subject}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className={`w-full px-4 py-2.5 rounded-lg border bg-background focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all ${
-                  errors.subject && touched.subject ? "border-red-500" : ""
-                }`}
-                placeholder="What's this about?"
-              />
-              {errors.subject && touched.subject && <p className="text-red-500 text-sm mt-1">{errors.subject}</p>}
-            </div>
-
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Subject <span className="text-red-500">*</span>
+                </label>
+                <input
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  className={`w-full px-4 py-2.5 rounded-lg border bg-background focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all ${
+                    errors.subject && touched.subject ? "border-red-500" : ""
+                  }`}
+                  placeholder="What's this about?"
+                />
+                {errors.subject && touched.subject && <p className="text-red-500 text-sm mt-1">{errors.subject}</p>}
+              </div>
 
               <div>
                 <label className="block text-sm font-medium mb-2">
@@ -237,9 +283,7 @@ export default function ContactForm() {
                 />
                 {errors.email && touched.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
               </div>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium mb-2">Phone</label>
                 <input
@@ -255,7 +299,9 @@ export default function ContactForm() {
                 />
                 {errors.phone && touched.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
               </div>
+            </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium mb-2">Company</label>
                 <input
@@ -270,45 +316,28 @@ export default function ContactForm() {
                 />
                 {errors.company && touched.company && <p className="text-red-500 text-sm mt-1">{errors.company}</p>}
               </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">Category <span className="text-red-500">*</span></label>
+                <select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  className="w-full px-4 py-2.5 rounded-lg border bg-background focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                >
+                  <option value="GENERAL_INQUIRY">General Inquiry</option>
+                  <option value="SUPPORT">Support</option>
+                  <option value="SALES">Sales</option>
+                  <option value="PARTNERSHIP">Partnership</option>
+                  <option value="FEEDBACK">Feedback</option>
+                  <option value="COMPLAINT">Complaint</option>
+                  <option value="SERVICE_INQUIRY">Service Inquiry</option>
+                  <option value="OTHER">Other</option>
+                </select>
+              </div>
             </div>
 
-{/* 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium mb-2">Budget Range</label>
-                <select
-                  name="budget"
-                  value={formData.budget}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2.5 rounded-lg border bg-background focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-                >
-                  <option value="< $10,000">Less than $10,000</option>
-                  <option value="$10,000 - $25,000">$10,000 - $25,000</option>
-                  <option value="$25,000 - $50,000">$25,000 - $50,000</option>
-                  <option value="$50,000 - $100,000">$50,000 - $100,000</option>
-                  <option value="$100,000 - $250,000">$100,000 - $250,000</option>
-                  <option value="> $250,000">More than $250,000</option>
-                  <option value="Not sure yet">Not sure yet</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">Timeline</label>
-                <select
-                  name="timeline"
-                  value={formData.timeline}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2.5 rounded-lg border bg-background focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-                >
-                  <option value="ASAP">ASAP (Less than 1 month)</option>
-                  <option value="1-3 months">1-3 months</option>
-                  <option value="3-6 months">3-6 months</option>
-                  <option value="6-12 months">6-12 months</option>
-                  <option value="12+ months">More than 12 months</option>
-                  <option value="Flexible">Flexible / Not decided</option>
-                </select>
-              </div>
-            </div> */}
 
             <div>
               <label className="block text-sm font-medium mb-2">
@@ -338,7 +367,7 @@ export default function ContactForm() {
               {isSubmitting ? "Sending..." : "Send Inquiry"}
             </button>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   )
