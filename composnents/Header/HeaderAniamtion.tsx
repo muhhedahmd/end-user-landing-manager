@@ -62,6 +62,7 @@ const HeaderAniamtion = ({ children  ,border  ,title}: {
 
   useGSAP(() => {
 
+
     if (pathname === "/services") {
       gsap.to(
         headerRef.current,
@@ -104,7 +105,7 @@ const HeaderAniamtion = ({ children  ,border  ,title}: {
   })
 
   return (
-    <header ref={headerRef} className={cn(" h-fit md:h-[10vh] lg:h-[17vh]  z-50 w-full -translate-y-20  hidden  backdrop-blur" , title?.toLowerCase() ==="team" && "h-fit md:h-[10vh] lg:h-[12vh] " ,  border ? "border-b border-border bg-background/80" : "bg-transparent" )} >
+    <header ref={headerRef} className={cn(" h-fit md:h-[10vh] lg:h-[12vh]  z-50 w-full -translate-y-20  hidden  backdrop-blur" , title?.toLowerCase() ==="team" && "h-fit md:h-[10vh] lg:h-[12vh] " ,  border ? "border-b border-border bg-background/80" : "bg-transparent" )} >
       {children}
     </header>
   )

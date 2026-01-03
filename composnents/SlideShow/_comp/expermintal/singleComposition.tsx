@@ -99,7 +99,7 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
   return (
     <div ref={wrapperRef} className=" relative w-screen  min-h-screen overflow-x-hidden">
       {/* Navigation bullets */}
-      <div className="absolute left-1/2  top-[10%] md:top-1/4 flex gap-3 -translate-x-1/2 z-50">
+      {/* <div className="absolute left-1/2  top-[10%] md:top-1/4 flex gap-3 -translate-x-1/2 z-50">
         {slides.map((_, idx) => (
           <button
             key={idx}
@@ -109,7 +109,7 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
             aria-label={`Go to slide ${idx + 1}`}
           />
         ))}
-      </div>
+      </div> */}
 
       {/* Slides container */}
       <div ref={trackRef}

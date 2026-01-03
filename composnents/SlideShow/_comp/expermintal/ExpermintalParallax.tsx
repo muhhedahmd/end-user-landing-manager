@@ -46,7 +46,7 @@ export const ProjectCardParallax = ({
                             start: "top bottom",
                             end: "bottom top",
                             scrub: 1.5,
-                            markers: true
+                            // markers: true
                         }
                     }
                 );
@@ -69,7 +69,7 @@ export const ProjectCardParallax = ({
                             trigger: containerRef.current,
                             start: "top 70%",
                             toggleActions: "play none none reverse",
-                            markers: true
+                            // markers: true
                         }
                     }
                 );

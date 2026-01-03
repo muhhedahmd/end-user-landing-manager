@@ -93,7 +93,7 @@ const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
                             y: 0,
                             duration: 1,
                             padding: "0",
-                            height: isMobile ? "10vh" : "17vh",
+                            height: isMobile ? "10vh" : "18vh",
                             ease: "power4.out",
                         },
                         "headerComplete+=0"
@@ -138,7 +138,7 @@ const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
                 <div className="overflow-hidden w-full max-w-[100vw]">
                     <div
                         ref={headingRef}
-                        className="relative  -z-10 py-8 flex items-center justify-center px-4"
+                        className="relative  -z-10 py-8 flex items-center justify-center px-4 mt-4"
                     >
                         <h3 className="  text-[5rem] sm:text-[7rem] md:text-[9rem] font-normal text-nowrap">
                             TECH VISION SOLUTIONS

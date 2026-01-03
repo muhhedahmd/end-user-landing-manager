@@ -8,6 +8,7 @@ import  RenderSlides  from "./RenderSlide";
 
 
 
+
 interface SlideshowCardClientProps {
   id: string;
   composition: keyof typeof CompositionType;
