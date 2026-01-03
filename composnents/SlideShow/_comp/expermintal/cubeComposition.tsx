@@ -22,6 +22,7 @@ const CubeComposition = ({ slides }: { slides: slide[] }) => {
     const images = Array.from(rootRef.current?.querySelectorAll("img") || []);
     
     const loadPromises = images.map(
+      
       (img) =>
         new Promise((resolve) => {
           if (img.complete) {
@@ -36,7 +37,7 @@ const CubeComposition = ({ slides }: { slides: slide[] }) => {
     Promise.all(loadPromises).then(() => {
       setTimeout(() => {
         ScrollTrigger.refresh();
-      }, 300);
+      }, 50);
     });
   }, [slides]);
 
