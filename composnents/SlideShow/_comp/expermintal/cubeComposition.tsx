@@ -1,5 +1,5 @@
-import { useRef } from "react";
-import gsap from "gsap";
+import { useRef, useEffect } from "react";
+import gsap from "gsap/dist/gsap";
 import { slide } from "@/types/schema";
 import { TypeToRenderProd } from "../TypToRenderProd";
 import { useGSAP } from "@gsap/react";
@@ -17,6 +17,29 @@ const CubeComposition = ({ slides }: { slides: slide[] }) => {
     }
   };
 
+  // Wait for images to load before calculating ScrollTrigger positions
+  useEffect(() => {
+    const images = Array.from(rootRef.current?.querySelectorAll("img") || []);
+    
+    const loadPromises = images.map(
+      (img) =>
+        new Promise((resolve) => {
+          if (img.complete) {
+            resolve(true);
+          } else {
+            img.onload = () => resolve(true);
+            img.onerror = () => resolve(true);
+          }
+        })
+    );
+
+    Promise.all(loadPromises).then(() => {
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 300);
+    });
+  }, [slides]);
+
   useGSAP(
     () => {
       const cards = cardsRef.current;
@@ -30,66 +53,45 @@ const CubeComposition = ({ slides }: { slides: slide[] }) => {
         amount: 0.2,
       });
 
-      // Refresh ScrollTrigger after content loads
-      ScrollTrigger.refresh();
-
       cards.forEach((card, index) => {
         const scaleVal = distributor(index, card, cards);
 
-        // Pin the card
+        gsap.to(card, {
+          scale: scaleVal,
+          ease: "none",
+          scrollTrigger: {
+            trigger: card,
+            start: "top top",
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        });
+
         ScrollTrigger.create({
           trigger: card,
           start: () => `top top+=${200 + index * spacer}`,
           endTrigger: cards[cards.length - 1],
-          end: () => `bottom top+=${200 + cards.length * spacer}`,
+          end: `bottom top+=${200 + cards.length * spacer}`,
           pin: true,
           pinSpacing: false,
           scrub: true,
           invalidateOnRefresh: true,
-          onRefresh: (self) => {
-            // Recalculate positions when refreshed
-            self.vars.start = `top top+=${200 + index * spacer}`;
-            self.vars.end = `bottom top+=${200 + cards.length * spacer}`;
+          onEnter: () => {
+            gsap.to(card, {
+              scale: 1,
+              ease: "none",
+              scrollTrigger: {
+                trigger: card,
+                start: "top top",
+                scrub: true,
+                invalidateOnRefresh: true,
+              },
+            });
           },
         });
-
-        // Scale animation
-        gsap.timeline({
-          scrollTrigger: {
-            trigger: card,
-            start: () => `top top+=${200 + index * spacer}`,
-            end: () => `bottom top+=${200 + cards.length * spacer}`,
-            scrub: true,
-            invalidateOnRefresh: true,
-          },
-        })
-        .to(card, {
-          // scale: scaleVal,
-          ease: "none",
-        })
-        .to(card, {
-          scale: 1,
-          ease: "none",
-        });
-      });
-
-      // Refresh after a delay to ensure content is loaded
-      const refreshTimeout = setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 100);
-
-      // Add resize observer to refresh on content changes
-      const resizeObserver = new ResizeObserver(() => {
-        ScrollTrigger.refresh();
-      });
-
-      cards.forEach((card) => {
-        resizeObserver.observe(card);
       });
 
       return () => {
-        clearTimeout(refreshTimeout);
-        resizeObserver.disconnect();
         ScrollTrigger.getAll().forEach((st) => st.kill());
       };
     },
