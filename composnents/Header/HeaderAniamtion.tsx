@@ -44,7 +44,7 @@ const HeaderAniamtion = ({ children  ,border  ,title}: {
             autoAlpha: 1,
             duration: 0.8,
             ease: "power2.out",
-            padding: isSm ? "1rem  0 " : "0px 0px 0px 0px",
+            padding: isSm ? ".5rem  0 " : "0px 0px 0px 0px",
           },
           "loaderComplete+=.2"
         ).addLabel('headerComplete');
@@ -102,7 +102,7 @@ const HeaderAniamtion = ({ children  ,border  ,title}: {
   })
 
   return (
-    <header ref={headerRef} className={cn(" h-fit md:h-20 lg:h-24  z-50 w-full -translate-y-20  hidden  backdrop-blur" , title?.toLowerCase() ==="team" && "h-fit md:h-[10vh] lg:h-[12vh] " ,  border ? "border-b border-border bg-background/80" : "bg-transparent" )} >
+    <header ref={headerRef} className={cn("  md:h-20 lg:h-24 sm:h-16 h-10  z-50 w-full -translate-y-20  hidden  backdrop-blur " , title?.toLowerCase() ==="team" && "h-fit md:h-[10vh] lg:h-[12vh] " ,  border ? "border-b border-border bg-background/80" : "bg-transparent" )} >
       {children}
     </header>
   )

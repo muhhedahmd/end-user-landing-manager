@@ -7,7 +7,7 @@ export const dynamic = "force-static"
 const ServiceTable = async () => {
   const featServices = await fetchServices({
     skip: 0,
-    take: 20,
+    take: 15,
     isFeatured: true,
   });
   return (<>

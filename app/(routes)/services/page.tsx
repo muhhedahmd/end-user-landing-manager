@@ -12,7 +12,7 @@ const ServicePage = async () => {
     <>
       <div className=' fixed top-0 left-0 w-screen h-screen '>
 
-        <div className=" -z-2 absolute lg:top-1/4 xl:top-2/5 sm:top-2/5 top-[25%] -translate-y-1/2 flex items-start gap-2 flex-col px-2 sm:px-8 md:px-12 lg:px-20">
+        <div className=" -z-2 absolute lg:top-1/4 xl:top-2/5 sm:top-2/5 top-[15%] -translate-y-1/2 flex items-start gap-2 flex-col px-2 sm:px-8 md:px-12 lg:px-20">
 
 
           <h2 className="text-3xl sm:text-5xl lg:text-4xl xl:text-8xl max-w-3xl w-max font-bold">

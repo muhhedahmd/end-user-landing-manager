@@ -115,7 +115,7 @@ const ClientCardsingle = ({ data, idx = 0 }: ClientCardProps) => {
                 {data.image && (
 
 
-                    <div className="relative h-full   flex items-center justify-center    ">
+                    <div className="relative h-full  items-center justify-center    ">
 
                         <BlurredImage
                             imageUrl={data.image.url}
@@ -124,14 +124,14 @@ const ClientCardsingle = ({ data, idx = 0 }: ClientCardProps) => {
                             alt={data.image.alt || data.name}
                             blurhash={data.image.blurHash || ""}
                             quality={100}
-                            className="md:w-full md:h-full h-[70%] w-[90%]  object-cover  transition-transform duration-700 ease-out rounded-2xl shadow-md"
+                            className="md:w-full md:h-full sm:h-[70%] sm:w-[90%]  w-full h-full  object-cover  transition-transform duration-700 ease-out rounded-2xl shadow-md"
                         />
                     </div>
 
                 )}
             </div>
 
-            <div className="  relative  lg:h-3/4 h-1/4 lg:w-1/2 w-full  mr-10  items-center justify-center md:flex hidden ">
+            <div className="  relative  lg:h-3/4 h-1/4 lg:w-1/2 w-full  md:mr-10  items-center justify-center md:flex hidden ">
 
 
                 <h2 style={{
@@ -149,7 +149,8 @@ const ClientCardsingle = ({ data, idx = 0 }: ClientCardProps) => {
 
             </div>
             {/* Logo Section */}
-            <div className=" z-10 md:min-w-auto md:w-auto min-w-5/6   absolute  top-1/2 left-1/2 md:top-1/2   md:left-1/2 -translate-1/2 bg-white  p-4 shadow-2xl border border-border rounded-xl space-y-4 ">
+            <div className=" z-10 md:min-w-auto md:w-auto min-w-5/6 w-3/4   absolute  top-1/2 left-1/2 md:top-1/2   md:left-1/2 -translate-1/2 bg-white  p-4 shadow-2xl border border-border rounded-xl space-y-4 ">
+
 
 
                 {data.logo && (
@@ -162,10 +163,10 @@ const ClientCardsingle = ({ data, idx = 0 }: ClientCardProps) => {
                             alt={data.logo.alt || `${data.name} logo`}
                             blurhash={data.logo.blurHash || ""}
                             quality={100}
-                            className="max-w-10 max-h-10 w-10 h-10 object-contain rounded-md"
+                            className="max-w-10 max-h-10 sm:w-10 sm:h-10  object-contain rounded-md"
                         />
                         <h3
-                            className="text-2xl md:text-4xl font-bold text-foreground font-sora"
+                            className="text-2xl md:text-4xl line-clamp-1 font-bold text-foreground font-sora"
                         >
                             {data.name}
                         </h3>
@@ -183,7 +184,7 @@ const ClientCardsingle = ({ data, idx = 0 }: ClientCardProps) => {
 
                     {data.richDescription && data.richDescription !== data.description && (
                         <div
-                            className=" relative z-30 client-description md:line-clamp-none  line-clamp-8 lg:text-xl xl:text-xl  text-black leading-relaxed font-inter prose prose-sm dark:prose-invert"
+                            className=" relative z-30 client-description md:line-clamp-none  sm:line-clamp-6 line-clamp-5 lg:text-xl xl:text-xl  text-black leading-relaxed font-inter prose prose-sm dark:prose-invert"
                             dangerouslySetInnerHTML={{ __html: data.richDescription }}
                         />
                     )}

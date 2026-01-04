@@ -94,7 +94,7 @@ const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
                             y: 0,
                             duration: 1,
                             padding: "0",
-                            height: isMobile ? "10vh" : "18vh",
+                            height: isMobile ? "12vh" : "18vh",
                             ease: "power4.out",
                         },
                         "headerComplete+=0"
@@ -139,7 +139,7 @@ const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
                 <div
                 
                     ref={headingRef}
-                    className="relative -z-10 h-screen  -md-50 md:mt-0   xl-h-sm:bg-red-500 pb-20 sm:pb-32 md:pb-40 flex items-end justify-center px-4"
+                    className="relative -z-10 h-screen    md:mt-0   xl-h-sm:bg-red-500 pb-20 sm:pb-32 md:pb-40 flex items-end justify-center px-4"
                 >
                     {[...Array(5)].map((_, i) => (
                         <h3

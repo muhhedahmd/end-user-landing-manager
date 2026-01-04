@@ -113,7 +113,7 @@ export default async function AboutPage() {
                                 <AnimationWrapper
                                     key={stat.label}
                                     animation="scale"
-                                    delay={0.4 + index * 0.1}
+                                    delay={0.2}
                                     duration={0.5}
                                 >
                                     <div className="text-center p-6 bg-card border rounded-lg hover:shadow-lg transition-shadow">
@@ -131,7 +131,7 @@ export default async function AboutPage() {
                 </section>
 
                 {/* Mission */}
-                <AnimationWrapper animation="fade-right" delay={0.8}>
+                <AnimationWrapper animation="fade-right" delay={0.2}>
                     <section className="mb-16 sm:mb-20">
                         <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
                             Our Mission

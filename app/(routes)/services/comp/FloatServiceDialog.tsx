@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { useSectionVisibility } from "@/composnents/contact/SectionVisibilityContext";
 import BlurredImage from "@/composnents/Reusabale/ClientImageWithBlurHash";
 import { useBreakPoints } from "@/hooks/useBreakPoint";
 import { ServiceWithImage } from "@/types/schema";
@@ -26,21 +27,23 @@ const FloatServiceDialog = ({
     const contentRef = useRef<HTMLDivElement | null>(null);
     const [selected, setSelected] = useState<ServiceWithImage>(item);
     const [openDailog, setOpenDailog] = useState<boolean>(false);
-    const {  BreakPoint } = useBreakPoints()
-    const isMobile = BreakPoint === "sm"
+    const { setSingleCompositionVisible } = useSectionVisibility()
 
+
+    useEffect(() => {
+        setSingleCompositionVisible(openDailog)
+    }, [openDailog ,setSingleCompositionVisible])
     useGSAP(() => {
         gsap.set(containerRef.current, {
             bottom: "-100vh",
             autoAlpha: 1,
             duration: .1,
-            display:"block",
+            display: "block",
             ease: "power4.out",
         });
     }, {})
     // Dialog open/close animation
     useGSAP(
-
         () => {
             if (!containerRef.current) return;
             if (openDailog === false) {
@@ -48,6 +51,9 @@ const FloatServiceDialog = ({
                     bottom: "-100vh",
                     autoAlpha: 1,
                     duration: 1.2,
+                    onComplete: () => {
+                        // setSingleCompositionVisible(true)
+                    },
                     ease: "power4.out",
                 });
                 gsap.to(Overlay.current, {
@@ -59,6 +65,9 @@ const FloatServiceDialog = ({
                     bottom: "0",
                     autoAlpha: 1,
                     duration: 1.2,
+                    onComplete: () => {
+                        // setSingleCompositionVisible(false)
+                    },
                     ease: "power4.out",
                 });
                 gsap.to(Overlay.current, {
@@ -133,6 +142,9 @@ const FloatServiceDialog = ({
 
 
 
+
+
+
     return (
         <Fragment>
             <button
@@ -154,7 +166,7 @@ const FloatServiceDialog = ({
                     // boxShadow: "rgb(204, 204, 204) 0px -8px 10px",
                 }}
                 ref={containerRef}
-                className="z-11 fixed hidden bottom-[-10vh] left-0 w-screen h-[95vh] lg:h-[80vh] overflow-hidden bg-background  border-t-2 border-primary"
+                className="z-120 fixed hidden bottom-[-10vh] left-0 w-screen h-screen md:h-[95vh]  lg:h-[80vh] overflow-hidden bg-background  border-t-2 border-primary"
             >
                 {/* Header */}
                 <div className="relative w-full p-3 sm:p-4 md:p-4 justify-between items-center flex border-b ">
@@ -184,7 +196,7 @@ const FloatServiceDialog = ({
                                 <span className="text-2xl  sm:text-5xl md:text-6xl">{selected.icon}</span>
                                 <span className="line-clamp-1">
 
-                                {selected.name}
+                                    {selected.name}
                                 </span>
                             </h3>
 
@@ -200,7 +212,7 @@ const FloatServiceDialog = ({
                         </div>
 
                         {/* Contact Button */}
-                        <Link href={"#contact"}  className="w-full sm:w-auto mt-8 sm:mt-20 md:mt-32 lg:mt-40 p-3 sm:p-4 border border-black flex items-center justify-center sm:justify-between gap-3 rounded-md cursor-pointer hover:bg-black hover:text-white transition-colors duration-300 text-base sm:text-lg">
+                        <Link href={"#contact"} className="w-full sm:w-auto mt-0 sm:mt-20 md:mt-32 lg:mt-40 p-3 sm:p-4 border border-primary flex items-center justify-center sm:justify-between gap-3 rounded-md cursor-pointer hover:bg-black hover:text-white transition-colors duration-300 text-base sm:text-lg">
                             Contact Now <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6" />
                         </Link>
                     </div>

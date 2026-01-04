@@ -45,7 +45,7 @@ export default async function Header({
   return (
     <HeaderAniamtion border={border} title={title} >
 
-      <div className="  h-full w-full flex items-center justify-between px-8 md:px-16 lg:px-24 2xl:px-32 py-4 ">
+      <div className="  h-full w-full flex items-center justify-between sm:px-8 md:px-16 lg:px-24 2xl:px-32 sm:py-4 py-0 px-4 ">
         <Link href="/" className="flex items-center gap-2 flex-1">
           {companyInfo?.logo ? (
             <Image
