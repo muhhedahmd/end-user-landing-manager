@@ -1,6 +1,6 @@
 
 
-import { ServiceWithImage, TeamMemberWithImage } from "@/types/schema";
+import { CompanyInfo, ServiceWithImage, TeamMemberWithImage } from "@/types/schema";
 import { PaginatedResponse } from "@/types/services";
 
 
@@ -73,3 +73,24 @@ export const fetchTeamMembers = async ({
     return null;
   }
 };
+
+
+export async function getCompanyInfo(): Promise<CompanyInfo | null> {
+  try {
+    const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/company-info", {
+      cache: "force-cache",
+      next: { revalidate: 3600 }, // Revalidate every hour
+    });
+    
+    if (!res.ok) {
+      console.error("Failed to fetch company info:", res.status);
+      return null;
+    }
+    
+    const json = await res.json();
+    return json?.data ?? null;
+  } catch (error) {
+    console.error("Error fetching company info:", error);
+    return null;
+  }
+}

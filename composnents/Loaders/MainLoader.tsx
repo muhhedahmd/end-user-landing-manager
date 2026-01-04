@@ -6,6 +6,7 @@ import { useTimeLine } from "@/context/MainLoaderTimeLine";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { lenisRef } from "../scroll/smoothScrolling";
+import gsap from "gsap";
 const MainLoader = ({ duration = 5000 }: { duration?: number }) => {
   const { timeline, ctx } = useTimeLine();
   const loaderRef = useRef<HTMLDivElement | null>(null);
@@ -41,15 +42,16 @@ const MainLoader = ({ duration = 5000 }: { duration?: number }) => {
 
   }, [visible]);
 
-  // GSAP Timeline animation - runs ONCE
+
   useGSAP(
     () => {
-      // Run only once and when timeline/ctx are ready
       if (!loaderRef.current || !progressRef.current || !timeline || !ctx) {
         return;
       }
+      gsap.set(progressRef.current, {
+        width: "0%",
+      })
 
-      // Add to main timeline
       ctx.add(() => {
         timeline
           .to(progressRef.current, {
@@ -86,7 +88,6 @@ const MainLoader = ({ duration = 5000 }: { duration?: number }) => {
   const isService = pathname === "/services";
 
   if (isService) return null;
-  // if () return
   return (
     <div
 

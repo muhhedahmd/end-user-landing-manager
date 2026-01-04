@@ -12,10 +12,10 @@ const ServiceTable = async () => {
   });
   return (
 
-        <div className="w-full relative z-10 bg-neutral-100">
+        <div className="w-full relative z-10 ">
           
           <div className=" relative Feat-service md:max-h-80 max-h-170 overflow-auto  flex justify-start items-center w-full flex-col">
-            <div className=" sticky top-0 bg-neutral-100 border-b border-black feat-haeader w-full">
+            <div className=" sticky top-0  border-b border-black feat-haeader w-full">
 
 
               <div className="flex items-center justify-between  w-full  font-bold cursor-default">
@@ -28,8 +28,6 @@ const ServiceTable = async () => {
             </div>
 
             {featServices?.data.map((item, i) => {
-
-
               return (
                 <Fragment key={i}>
                   <FloatServiceDialog

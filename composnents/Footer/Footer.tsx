@@ -26,30 +26,7 @@ export default async function Footer() {
 
     const companyInf = await getCompanyInfo()
 
-    const currentYear = new Date().getFullYear()
-
-    // Loading state
-    // if (isLoading) {
-    //     return (
-    //         <footer className="w-full border-t border-border bg-background">
-    //             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    //                 <div className="py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
-    //                     {[1, 2, 3, 4].map((i) => (
-    //                         <div key={i} className="space-y-4">
-    //                             <Skeleton className="h-6 w-32" />
-    //                             <Skeleton className="h-4 w-full" />
-    //                             <Skeleton className="h-4 w-3/4" />
-    //                             <Skeleton className="h-4 w-full" />
-    //                         </div>
-    //                     ))}
-    //                 </div>
-    //             </div>
-    //         </footer>
-    //     )
-    // }
-
-    // Error or no data state
-
+    const currentYear = new Date().getFullYear() +1
 
     const companyInfo = companyInf
 
@@ -167,13 +144,9 @@ export default async function Footer() {
                                     Services
                                 </Link>
                             </li>
+                          
                             <li>
-                                <Link href="/blog" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                    Blog
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                                <Link href="#contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                                     Contact
                                 </Link>
                             </li>

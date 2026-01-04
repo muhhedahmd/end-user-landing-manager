@@ -42,6 +42,7 @@ export default function HeaderClient({ navItems, companyInfo }: { navItems: NavI
 
 
 function CustomDrawer({
+
   open,
   onOpenChange,
   navItems,
@@ -152,8 +153,18 @@ function CustomDrawer({
 
           {/* Navigation */}
           <nav ref={navItemsRef} className="flex-1 flex flex-col justify-center gap-2">
+             <Link
+                href={"/"}
+                onClick={() => onOpenChange(false)}
+                className="nav-item group flex items-center justify-between py-3 md:py-4 border-b border-border opacity-0"
+              >
+                <span className="text-2xl md:text-3xl lg:text-4xl font-light tracking-tight text-foreground group-hover:translate-x-2 transition-transform duration-300">
+                  {"Home"}
+                </span>
+                <ArrowUpRight className="h-5 w-5 md:h-6 md:w-6 text-muted-foreground opacity-0 group-hover:opacity-100 -translate-y-2 translate-x-2 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300" />
+              </Link>
             {navItems.map((item, index) => (
-              <a
+              <Link
                 key={index}
                 href={item.href}
                 onClick={() => onOpenChange(false)}
@@ -163,7 +174,7 @@ function CustomDrawer({
                   {item.label}
                 </span>
                 <ArrowUpRight className="h-5 w-5 md:h-6 md:w-6 text-muted-foreground opacity-0 group-hover:opacity-100 -translate-y-2 translate-x-2 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300" />
-              </a>
+              </Link>
             ))}
           </nav>
 

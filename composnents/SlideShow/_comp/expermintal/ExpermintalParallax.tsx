@@ -76,7 +76,6 @@ export const ProjectCardParallax = ({
             }
         });
 
-        // Mobile animations
         mm.add("(max-width: 767px)", () => {
             if (imageRef.current) {
                 gsap.fromTo(imageRef.current,
@@ -115,7 +114,7 @@ export const ProjectCardParallax = ({
         return () => mm.revert();
     }, {
         scope: containerRef, dependencies: [index, position],
-        revertOnUpdate: true
+        
     });
 
     const isLeftLayout = position === 'left';
@@ -149,6 +148,7 @@ export const ProjectCardParallax = ({
                 </div>
                 {/* Content Section */}
                 <div
+                
                     ref={contentRef}
                     className="w-full lg:w-1/2 space-y-4 sm:space-y-5 md:space-y-6"
                 >

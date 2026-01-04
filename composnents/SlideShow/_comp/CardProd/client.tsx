@@ -124,7 +124,7 @@ const ClientCardsingle = ({ data, idx = 0 }: ClientCardProps) => {
                             alt={data.image.alt || data.name}
                             blurhash={data.image.blurHash || ""}
                             quality={100}
-                            className="w-full md:h-full h-[80%] object-cover  transition-transform duration-700 ease-out rounded-2xl shadow-md"
+                            className="md:w-full md:h-full h-[70%] w-[90%]  object-cover  transition-transform duration-700 ease-out rounded-2xl shadow-md"
                         />
                     </div>
 

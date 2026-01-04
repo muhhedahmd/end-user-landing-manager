@@ -18,7 +18,7 @@ export const ExpermintalParallaxContainer = ({ slides, isInViewport }: {
         if (!containerRef.current) return;
 
         const ctx = gsap.context(() => {
-            slidesRef.current.forEach((slide, idx) => {
+            slidesRef.current.forEach((slide, ) => {
                 if (!slide) return;
 
                 // Initial animation
@@ -78,7 +78,7 @@ export const ExpermintalParallaxContainer = ({ slides, isInViewport }: {
                         ref={(el) => {
                             if (el) slidesRef.current[idx] = el;
                         }}
-                        className="inset-0 max-h-[70vh] overflow-hidden space-y-6 sm:space-y-8 md:space-y-12"
+                        className="inset-0   overflow-hidden space-y-10 sm:space-y-10 md:space-y-12"
                     >
                         <TypeToRenderProd
                             play={isInViewport}

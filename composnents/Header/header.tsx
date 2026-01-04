@@ -38,8 +38,8 @@ export default async function Header({
     // { label: "Blog", href: "/blogs" },
     // { label: "Features", href: "#features" },
     // { label: "Pricing", href: "#pricing" },
-    { label: "About", href: "#about" },
-    { label: "Contact", href: "#contact" },
+    { label: "About", href: "/about" },
+    // { label: "Contact", href: "#contact" },
   ]
 
   return (

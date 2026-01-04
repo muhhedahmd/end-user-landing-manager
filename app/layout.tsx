@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { CompanyInfo } from "@/types/schema";
 import { TimelineProvider } from "@/context/MainLoaderTimeLine";
 import { AnalyticsProvider } from "@/providers/analytic-provider";
 import { SectionVisibilityProvider } from "@/composnents/contact/SectionVisibilityContext";
 import SmoothScrolling from "@/composnents/scroll/smoothScrolling";
+import { getCompanyInfo } from "./(routes)/services/comp/Fetchers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,30 +17,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Remove this line - it's causing the issue
-// export const dynamic = "force-dynamic";
 
-async function getCompanyInfo(): Promise<CompanyInfo | null> {
-  try {
-    const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/company-info", {
-      cache: "force-cache",
-      next: { revalidate: 3600 }, // Revalidate every hour
-    });
-    
-    if (!res.ok) {
-      console.error("Failed to fetch company info:", res.status);
-      return null;
-    }
-    
-    const json = await res.json();
-    return json?.data ?? null;
-  } catch (error) {
-    console.error("Error fetching company info:", error);
-    return null;
-  }
-}
 
 export async function generateMetadata(): Promise<Metadata> {
+
   const companyInfo = await getCompanyInfo();
 
   return {

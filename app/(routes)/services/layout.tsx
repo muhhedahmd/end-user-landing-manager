@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/composnents/Header/header";
 import { Fragment } from "react";
 import { fetchServices } from "./comp/Fetchers";
+import DarkSchema from "@/composnents/DarkShema";
 
 export async function generateMetadata(): Promise<Metadata> {
   const servicesData = await fetchServices({
@@ -11,16 +12,14 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 
   const services = servicesData?.data || [];
-  
-  // Generate dynamic description with service names
+
   const serviceNames = services.slice(0, 3).map(s => s.name).join(", ");
   const remainingCount = services.length > 3 ? services.length - 3 : 0;
-  
+
   const description = services.length > 0
     ? `Discover our professional services: ${serviceNames}${remainingCount > 0 ? ` and ${remainingCount} more` : ''}. Expert solutions tailored to drive your business success and growth.`
     : "Explore our comprehensive range of professional services designed to help your business grow and succeed with innovative solutions.";
 
-  // Generate keywords from services
   const serviceKeywords = services.map(s => s.name.toLowerCase());
   const keywords = [
     "professional services",
@@ -31,7 +30,6 @@ export async function generateMetadata(): Promise<Metadata> {
     ...serviceKeywords,
   ];
 
-  // Generate structured data for rich snippets
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -47,7 +45,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "Our Services | Professional Business Solutions & Consulting",
     description: description,
     keywords: keywords,
-    
+
     openGraph: {
       type: "website",
       title: "Our Services | Professional Business Solutions & Consulting",
@@ -95,9 +93,11 @@ export default function ServicesLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Fragment>
-      <Header />
-      {children}
-    </Fragment>
+    <DarkSchema>
+      <Fragment>
+        <Header  border title="services"/>
+        {children}
+      </Fragment>
+    </DarkSchema>
   );
 }

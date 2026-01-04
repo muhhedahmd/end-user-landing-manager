@@ -33,6 +33,7 @@ export const TimelineProvider: FC<TimelineProviderProps> = ({ children }) => {
   useEffect(() => {
     // Clean up previous timeline/context
     if (cleanupRef.current) {
+
       cleanupRef.current();
       cleanupRef.current = null;
     }
@@ -71,6 +72,9 @@ export const TimelineProvider: FC<TimelineProviderProps> = ({ children }) => {
       clearTimeout(timeoutId);
       if (cleanupRef.current) {
         cleanupRef.current();
+        if(timeline) {
+          timeline.revert();
+        }
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

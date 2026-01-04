@@ -850,7 +850,7 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
               {slides.map((slide, idx) => (
                 <motion.div
                   key={`original-${idx}`}
-                  className="min-w-fit h-full aspect-video rounded-2xl flex-shrink-0"
+                  className="min-w-fit h-full aspect-video rounded-2xl shrink-0"
                 >
                   <TypeToRenderProd play={isInViewport} slide={slide} imaged={true} minmal={true} />
                 </motion.div>
@@ -859,7 +859,7 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
               {slides.map((slide, idx) => (
                 <motion.div
                   key={`clone-${idx}`}
-                  className="min-w-fit h-full aspect-video rounded-2xl flex-shrink-0"
+                  className="min-w-fit h-full aspect-video rounded-2xl shrink-0"
                 >
                   <TypeToRenderProd play={isInViewport} slide={slide} imaged={true} minmal={true} />
                 </motion.div>
