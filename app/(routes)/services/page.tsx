@@ -12,13 +12,13 @@ const ServicePage = async () => {
     <>
       <div className=' fixed top-0 left-0 w-screen h-screen '>
 
-        <div className=" -z-2 absolute lg:top-1/4 xl:top-2/5 sm:top-2/5 top-[15%] -translate-y-1/2 flex items-start gap-2 flex-col px-2 sm:px-8 md:px-12 lg:px-20">
+        <div className=" -z-2 absolute lg:top-1/5 xl:top-[15rem] md:top-1/3 sm:top-2/5 top-[20%] -translate-y-1/2 flex items-start gap-2 flex-col px-2 sm:px-8 md:px-12 lg:px-20">
 
 
-          <h2 className="text-3xl sm:text-5xl lg:text-4xl xl:text-8xl max-w-3xl w-max font-bold">
+          <h2 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-8xl max-w-3xl w-max font-bold">
             SELECT SERVICE
           </h2>
-          <h2 className="text-3xl sm:text-5xl lg:text-4xl  xl:text-8xl max-w-5xl w-max font-bold">
+          <h2 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl  xl:text-8xl max-w-5xl w-max font-bold">
             TECH VISION @ {new Date().getFullYear() + 1}
           </h2>
         </div>

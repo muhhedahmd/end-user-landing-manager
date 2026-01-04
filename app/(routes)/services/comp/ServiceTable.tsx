@@ -13,7 +13,7 @@ const ServiceTable = async () => {
   return (<>
         <div className="w-full relative z-10 ">
 
-          <div className="  z-100 relative Feat-service md:max-h-80 max-h-170 overflow-auto bg-background border-primary border p-2 reounded-md  flex justify-start items-center w-full flex-col">
+          <div className="  z-100 relative Feat-service md:max-h-80 max-h-170  overflow-auto bg-background border-primary border p-2 reounded-md  flex justify-start items-center w-full flex-col">
             <div className=" sticky top-0 py-2  border-b border-primary feat-haeader w-full">
 
 
@@ -34,15 +34,17 @@ const ServiceTable = async () => {
                     idx={i}
                     Allitems={featServices.data}
                   >
-                    <h4 className="flex-1  line-clamp-1">{item.name}</h4>
+                    <h4 className="flex-1  line-clamp-1 ">{item.name}</h4>
 
-                    <p className="text-wrap line-clamp-1 flex-2">
+                    <p className="text-wrap line-clamp-1 flex-2 ">
                       {item.description}
                     </p>
+                  <div className="flex-3 md:block hidden ">
 
-                    <p className="md:block hidden text-wrap line-clamp-1 flex-3">
+                    <p className="text-wrap wrap-anywhere line-clamp-1 ">
                       {item.richDescription}
                     </p>
+                  </div>
                   </FloatServiceDialog>
                   {/* </button> */}
                 </Fragment>
