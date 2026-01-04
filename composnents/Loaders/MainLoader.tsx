@@ -8,11 +8,10 @@ import { cn } from "@/lib/utils";
 import { lenisRef } from "../scroll/smoothScrolling";
 import gsap from "gsap";
 const MainLoader = ({ duration = 5000 }: { duration?: number }) => {
-  const { timeline, ctx } = useTimeLine();
+  const { timeline, ctx  ,visible, setVisible ,}  = useTimeLine();
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
   const [progress, setProgress] = useState(0);
-  const [visible, setVisible] = useState(false); // Start as true
   const pathname = usePathname();
 
   useEffect(() => {
@@ -24,11 +23,21 @@ const MainLoader = ({ duration = 5000 }: { duration?: number }) => {
   }, []);
 
 
+  useEffect(()=>{
+    console.log({
+      loaderComplete : timeline?.labels?.loaderComplete
+    })
+    if(timeline?.labels?.loaderComplete){
+          setVisible(true); // Reset to visible on mount
 
+    }
 
+  } , [setVisible, timeline?.labels?.loaderComplete])
+
+  
+  
 
   useEffect(() => {
-
     if (visible === false) {
       lenisRef?.current?.lenis?.start()
     } else {

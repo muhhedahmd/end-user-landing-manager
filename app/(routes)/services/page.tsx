@@ -4,6 +4,7 @@ import { Fragment } from "react/jsx-runtime";
 import ServiceTable from "./comp/ServiceTable"
 import Footer from "@/composnents/Footer/Footer";
 import ContactForm from "@/composnents/contact/ContactForm";
+import AllServices from "./comp/AllServices";
 
 const ServicePage = async () => {
 
@@ -18,7 +19,7 @@ const ServicePage = async () => {
             SELECT SERVICE
           </h2>
           <h2 className="text-3xl sm:text-5xl lg:text-4xl  xl:text-8xl max-w-5xl w-max font-bold">
-            TECH VISION @ {new Date().getFullYear() +1}
+            TECH VISION @ {new Date().getFullYear() + 1}
           </h2>
         </div>
         <div className=" relative z-10  w-screen flex items-center flex-col md:justify-end justify-center  h-screen md:p-20 pt-[50%] p-2">
@@ -27,13 +28,16 @@ const ServicePage = async () => {
         </div>
       </div>
       <div className="relative bg-transparent -z-1 h-screen w-screen">
-        
+
       </div>
+    <AllServices/>
+    
+
       <section id="contact" className="relative bg-background pt-20 w-screen">
 
-          <ContactForm/>
+        <ContactForm />
       </section>
-      
+
 
       <div className='relative z-10 '>
 

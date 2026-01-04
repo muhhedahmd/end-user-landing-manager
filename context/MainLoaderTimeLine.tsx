@@ -8,13 +8,19 @@ import { usePathname } from "next/navigation";
 interface TimelineContextType {
   timeline: GSAPTimeline | null;
   ctx: gsap.Context | null;
-  isReady: boolean;
+  isReady: boolean;  
+  visible : boolean
+setVisible : React.Dispatch<React.SetStateAction<boolean>>
+
+
 }
 
 export const TimelineContext = createContext<TimelineContextType>({
   timeline: null,
   ctx: null,
   isReady: false,
+  visible : false,
+  setVisible : () => {}
 });
 
 interface TimelineProviderProps {
@@ -28,7 +34,7 @@ export const TimelineProvider: FC<TimelineProviderProps> = ({ children }) => {
   const pathname = usePathname();
   const prevPathname = useRef<string | null>(null);
   const cleanupRef = useRef<(() => void) | null>(null);
-
+  const [visible , setVisible]  = useState(false);
 
   useEffect(() => {
     // Clean up previous timeline/context
@@ -72,16 +78,16 @@ export const TimelineProvider: FC<TimelineProviderProps> = ({ children }) => {
       clearTimeout(timeoutId);
       if (cleanupRef.current) {
         cleanupRef.current();
-        if(timeline) {
-          timeline.revert();
-        }
+        // if(timeline) {
+        //   timeline.revert();
+        // }
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]); // Only depend on pathname
+  }, []); // Only depend on pathname
 
   return (
-    <TimelineContext.Provider value={{ timeline, ctx, isReady }}>
+    <TimelineContext.Provider value={{ timeline, ctx, isReady, visible ,setVisible }}>
       {children}
     </TimelineContext.Provider>
   );

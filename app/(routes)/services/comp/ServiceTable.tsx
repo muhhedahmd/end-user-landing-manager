@@ -10,12 +10,11 @@ const ServiceTable = async () => {
     take: 20,
     isFeatured: true,
   });
-  return (
-
+  return (<>
         <div className="w-full relative z-10 ">
-          
-          <div className=" relative Feat-service md:max-h-80 max-h-170 overflow-auto  flex justify-start items-center w-full flex-col">
-            <div className=" sticky top-0  border-b border-black feat-haeader w-full">
+
+          <div className="  z-100 relative Feat-service md:max-h-80 max-h-170 overflow-auto bg-background border-primary border p-2 reounded-md  flex justify-start items-center w-full flex-col">
+            <div className=" sticky top-0 py-2  border-b border-primary feat-haeader w-full">
 
 
               <div className="flex items-center justify-between  w-full  font-bold cursor-default">
@@ -51,10 +50,13 @@ const ServiceTable = async () => {
             })}
           </div>
 
+          
+
          
         </div>
       
 
+                    </>
 
   );
 };

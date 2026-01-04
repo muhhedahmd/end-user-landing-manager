@@ -14,11 +14,11 @@ interface Props {
   className: string
   alt: string
   quality: number
-  blurhash?: string ,
-  style ?: React.CSSProperties
+  blurhash?: string,
+  style?: React.CSSProperties
 }
 
-const BlurredImage =  memo<Props>(({ style,  imageUrl, width, height, className, alt, quality, blurhash }: Props) => {
+const BlurredImage = memo<Props>(({ style, imageUrl, width, height, className, alt, quality, blurhash }: Props) => {
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -42,17 +42,16 @@ const BlurredImage =  memo<Props>(({ style,  imageUrl, width, height, className,
           <BlurhashCanvas hash={blurhash} className="w-full h-full" />
         </div>
       )}
-      
-  
+
+
       <Image
         alt={alt}
         src={imageUrl || "/placeholder.svg"}
         quality={100}
         width={width}
         height={height}
-        className={`w-full h-full object-cover transition-opacity duration-300 ${
-          isLoading ? "opacity-0" : "opacity-100"
-        }`}
+        className={`w-full h-full object-cover transition-opacity duration-300 ${isLoading ? "opacity-0" : "opacity-100"
+          }`}
         onLoad={() => setIsLoading(false)}
         onError={() => {
           setIsError(true)

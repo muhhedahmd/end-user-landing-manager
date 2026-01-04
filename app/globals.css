@@ -3,6 +3,8 @@
 
 @custom-variant dark (&:is(.dark *));
 
+
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -142,3 +144,29 @@ body{
   overflow-x: hidden;
    max-width: 100vw;
 }
+html{
+  scroll-behavior:  smooth;
+}
+
+
+@media (max-width: 1200px), (max-height: 800px) {
+  html {
+      font-size: 13px; /* Adjust font size for smaller screens or shorter heights */
+  }
+}
+
+@media (max-width: 768px), (max-height: 600px) {
+  html {
+    font-size: 12px; /* Smaller font size for smaller viewports */
+  }
+}
+
+@media (max-width: 480px), (max-height: 400px) {
+  html {
+      font-size: 15px; /* For very small screens or very short heights */
+  }
+}
+
+
+
+ 

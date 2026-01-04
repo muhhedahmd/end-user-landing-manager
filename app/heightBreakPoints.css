@@ -1,0 +1,7 @@
+
+
+@variant h-sm (min-height: 640px);
+@variant h-md (min-height: 768px);
+@variant h-lg (min-height: 900px);
+@variant h-xl (min-height: 1080px);
+

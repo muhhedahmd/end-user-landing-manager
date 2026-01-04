@@ -151,13 +151,13 @@ const FloatServiceDialog = ({
 
             <div
                 style={{
-                    boxShadow: "rgb(204, 204, 204) 0px -8px 10px",
+                    // boxShadow: "rgb(204, 204, 204) 0px -8px 10px",
                 }}
                 ref={containerRef}
-                className="z-11 fixed hidden bottom-[-10vh] left-0 w-screen h-[95vh] lg:h-[80vh] bg-neutral-100 overflow-hidden"
+                className="z-11 fixed hidden bottom-[-10vh] left-0 w-screen h-[95vh] lg:h-[80vh] overflow-hidden bg-background  border-t-2 border-primary"
             >
                 {/* Header */}
-                <div className="relative w-full p-3 sm:p-4 md:p-4 justify-between items-center flex border-b border-neutral-200">
+                <div className="relative w-full p-3 sm:p-4 md:p-4 justify-between items-center flex border-b ">
                     <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold truncate pr-2">
                         {selected.name}
                     </h2>

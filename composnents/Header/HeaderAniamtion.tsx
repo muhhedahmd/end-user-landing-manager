@@ -24,10 +24,7 @@ const HeaderAniamtion = ({ children  ,border  ,title}: {
 
     () => {
       if (!headerRef.current || !timeline || !ctx) return;
-      if (pathname === "/services") return
       ctx.add(() => {
-
-
         // Set initial state
         gsap.set(headerRef.current, {
           y: -270,
@@ -56,7 +53,6 @@ const HeaderAniamtion = ({ children  ,border  ,title}: {
     {
       dependencies: [timeline, ctx],
       scope: headerRef,
-      revertOnUpdate: true,
     }
   );
 
@@ -89,6 +85,7 @@ const HeaderAniamtion = ({ children  ,border  ,title}: {
   useGSAP(() => {
     if (!headerRef.current || timeline?.labels?.headerComplete === undefined) return;
     if (singleCompositionVisible) {
+
       gsap.to(headerRef.current, {
         y: -270,
       });
@@ -105,7 +102,7 @@ const HeaderAniamtion = ({ children  ,border  ,title}: {
   })
 
   return (
-    <header ref={headerRef} className={cn(" h-fit md:h-[10vh] lg:h-[12vh]  z-50 w-full -translate-y-20  hidden  backdrop-blur" , title?.toLowerCase() ==="team" && "h-fit md:h-[10vh] lg:h-[12vh] " ,  border ? "border-b border-border bg-background/80" : "bg-transparent" )} >
+    <header ref={headerRef} className={cn(" h-fit md:h-20 lg:h-24  z-50 w-full -translate-y-20  hidden  backdrop-blur" , title?.toLowerCase() ==="team" && "h-fit md:h-[10vh] lg:h-[12vh] " ,  border ? "border-b border-border bg-background/80" : "bg-transparent" )} >
       {children}
     </header>
   )

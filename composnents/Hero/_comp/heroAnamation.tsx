@@ -11,20 +11,21 @@ const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
     const contentRef = useRef<HTMLDivElement>(null);
     const headingRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
-    const hasAnimated = useRef(false);
+    // const hasAnimated = useRef(false);
     const scrollAnimationRef = useRef<gsap.core.Tween | null>(null);
     const [isMobile, setIsMobile] = useState(false);
 
     // Reset animation flag when pathname changes
-    useEffect(() => {
-        hasAnimated.current = false;
+    // useEffect(() => {
+        
+    //     hasAnimated.current = false;
 
-        // Kill the infinite scroll animation when leaving the page
-        if (scrollAnimationRef.current) {
-            scrollAnimationRef.current.kill();
-            scrollAnimationRef.current = null;
-        }
-    }, [pathname]);
+    //     // Kill the infinite scroll animation when leaving the page
+    //     if (scrollAnimationRef.current) {
+    //         scrollAnimationRef.current.kill();
+    //         scrollAnimationRef.current = null;
+    //     }
+    // }, [pathname]);
 
     // Detect screen size
     useEffect(() => {
@@ -41,33 +42,33 @@ const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
     useGSAP(
         () => {
             // Only run animation on homepage
-            if (pathname !== "/") {
-                // Set static state for non-homepage
-                if (headingRef.current && contentRef.current) {
-                    gsap.set(headingRef.current, {
-                        height: "auto",
-                        padding: "0",
-                        y: 0,
-                    });
-                    gsap.set(contentRef.current, {
-                        y: 0,
-                        autoAlpha: 1,
-                    });
-                }
-                return;
-            }
+            // if (pathname !== "/") {
+            //     // Set static state for non-homepage
+            //     if (headingRef.current && contentRef.current) {
+            //         gsap.set(headingRef.current, {
+            //             height: "auto",
+            //             padding: "0",
+            //             y: 0,
+            //         });
+            //         gsap.set(contentRef.current, {
+            //             y: 0,
+            //             autoAlpha: 1,
+            //         });
+            //     }
+            //     return;
+            // }
 
             if (
                 !contentRef.current ||
                 !headingRef.current ||
                 !timeline ||
                 !ctx ||
-                !isReady ||
-                hasAnimated.current
+                !isReady 
+                // hasAnimated.current
             )
                 return;
 
-            hasAnimated.current = true;
+            // hasAnimated.current = true;
             const width = headingRef.current.scrollWidth / 2;
 
             ctx.add(() => {
@@ -125,45 +126,25 @@ const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
             });
         },
         {
-            dependencies: [timeline, ctx, isReady , pathname, isMobile],
-            scope: contentRef,
+            dependencies: [timeline, ctx],
             // revertOnUpdate: true,
         }
     );
 
-    // If not homepage, render simple static version
-    if (pathname !== "/") {
-        return (
-            <div>
-                <div className="overflow-hidden w-full max-w-[100vw]">
-                    <div
-                        ref={headingRef}
-                        className="relative  -z-10 py-8 flex items-center justify-center px-4 mt-4"
-                    >
-                        <h3 className="  text-[5rem] sm:text-[7rem] md:text-[9rem] font-normal text-nowrap">
-                            TECH VISION SOLUTIONS
-                        </h3>
-                    </div>
-                </div>
-                <div ref={contentRef} className="px-4 sm:px-6 md:px-8 lg:px-12">
-                    {children}
-                </div>
-            </div>
-        );
-    }
 
     return (
         <div>
             <div className="overflow-hidden w-full max-w-[100vw]">
+
                 <div
                 
                     ref={headingRef}
-                    className="relative -z-10 h-screen  -md-50 md:mt-0  pb-20 sm:pb-32 md:pb-40 flex items-end justify-center px-4"
+                    className="relative -z-10 h-screen  -md-50 md:mt-0   xl-h-sm:bg-red-500 pb-20 sm:pb-32 md:pb-40 flex items-end justify-center px-4"
                 >
                     {[...Array(5)].map((_, i) => (
                         <h3
                         key={i}
-                            className="  text-[5rem] sm:text-[7rem] md:text-[8rem] lg:text-[9rem] xl:text-[10rem] font-normal text-nowrap">
+                            className="  text-[5rem] sm:text-[7rem] md:text-[8rem] h-lg:bg-red-500  xl:text-[5rem] min-xl:text-[10rem] font-normal text-nowrap">
 
                             TECH VISION SOLUTIONS
                         </h3>

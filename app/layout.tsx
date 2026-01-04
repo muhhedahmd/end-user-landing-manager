@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "./heightBreakPoints.css";
 import { TimelineProvider } from "@/context/MainLoaderTimeLine";
 import { AnalyticsProvider } from "@/providers/analytic-provider";
 import { SectionVisibilityProvider } from "@/composnents/contact/SectionVisibilityContext";
@@ -86,6 +87,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+    
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
