@@ -19,11 +19,12 @@ interface ProjectCardProps {
     split?: boolean
     index?: number
     imagePosition?: string
-    story?: boolean
+    story?: boolean ,
+    imaged?: boolean
 }
 
 export const ProjectCard = ({
-
+    imaged = false,
     data,
     split,
     index = 0,
@@ -36,6 +37,26 @@ export const ProjectCard = ({
     if (story) {
         return <ProjectCardStory data={data} />
     }
+  if (imaged) {
+        return (
+            <>
+                {data.image && (
+                    <div className="mb-5 h-full w-full overflow-hidden rounded-xl bg-muted">
+                        <BlurredImage
+                            imageUrl={data.image.url || ""}
+                            height={data.image.height || 400}
+                            width={data.image.width || 800}
+                            alt={data.image.alt || data.clientName || ""}
+                            blurhash={data.image.blurHash || ""}
+                            quality={100}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                        />
+                    </div>
+                )}
+            </>
+        )
+    }
+
 
     return <ProjectCardDefault data={data} />
 }

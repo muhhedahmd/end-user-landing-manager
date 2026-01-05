@@ -7,7 +7,7 @@ import { ClientCard } from "./CardProd/client"
 import { TestimonialCard } from "./CardProd/testimonals"
 import { TeamMemberCard } from "./CardProd/teamMemeber"
 
-export const TypeToRenderProd = memo(({ idx, play, cube, single, splitcarousel, slide, imaged, minmal, split, index, story }: {
+export const TypeToRenderProd = memo(({  lightOpen ,light, idx, play, cube, single, splitcarousel, slide, imaged, minmal, split, index, story }: {
   play?: boolean
   slide: slide,
   splitcarousel?: boolean,
@@ -18,21 +18,23 @@ export const TypeToRenderProd = memo(({ idx, play, cube, single, splitcarousel, 
   single?: boolean
   cube?: boolean
   story?: boolean,
-  idx?: number
+  idx?: number,
+  light?: boolean , 
+  lightOpen ?: boolean 
 }) => {
 
 
   if (slide?.type === "service") {
-    return <ServiceCard splitcarousel={splitcarousel} data={slide as ServiceWithImage}   imaged={imaged} story={story || false} />
+    return <ServiceCard lightOpen={lightOpen} splitcarousel={splitcarousel} data={slide as ServiceWithImage}   imaged={imaged} story={story || false} />
   }
   if (slide?.type === "project") {
-    return <ProjectCard imagePosition="left" data={slide as ProjectWithRelationsSlide}    split={split} index={index || 0} story={story} />
+    return <ProjectCard   imaged={imaged}   imagePosition="left" data={slide as ProjectWithRelationsSlide}    split={split} index={index || 0} story={story} />
   }
   if (slide.type === "client") {
-    return <ClientCard single={single} cube={cube} data={slide as ClientWithRelationsSlide} idx={idx} />
+    return <ClientCard  imaged={imaged}  story={story}  lightOpen={lightOpen} light={light} single={single} cube={cube} data={slide as ClientWithRelationsSlide} idx={idx} />
   }
   if (slide.type === "testimonial") {
-    return <TestimonialCard data={slide as TestimonialWithImage}  minmal={minmal} />
+    return <TestimonialCard light={light} data={slide as TestimonialWithImage}  minmal={minmal} />
   }
   if (slide.type === "team") {
 

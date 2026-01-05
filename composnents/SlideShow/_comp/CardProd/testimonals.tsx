@@ -4,9 +4,11 @@ import { useEffect, useRef } from "react"
 import gsap from "gsap"
 interface TestimonialCardProps {
     data: TestimonialWithImage
-    minmal?: boolean
+    minmal?: boolean,
+    light?: boolean
 }
-export const TestimonialCard = ({ data, minmal }: TestimonialCardProps) => {
+export const TestimonialCard = ({ data, minmal, light }: TestimonialCardProps) => {
+
     const cardRef = useRef<HTMLDivElement>(null)
     useEffect(() => {
         const card = cardRef.current
@@ -74,6 +76,7 @@ export const TestimonialCard = ({ data, minmal }: TestimonialCardProps) => {
         })
     }, [minmal])
     if (minmal) {
+
         return (
             <div ref={cardRef} className="h-full w-full flex gap-4 items-center justify-center">
                 <div>
@@ -112,7 +115,46 @@ export const TestimonialCard = ({ data, minmal }: TestimonialCardProps) => {
             </div>
         )
     }
-    return (
+if (light) {
+           return (
+            <div ref={cardRef} className="h-full w-full flex gap-4 border border-border p-2 rounded-xl shadow-lg items-center justify-start w-full">
+                <div>
+                    {data.avatar && (
+                        <BlurredImage
+                            imageUrl={data.avatar.url || ""}
+                            height={data.avatar.height || 400}
+                            width={data.avatar.width || 800}
+                            alt={data.avatar.alt || data.clientName}
+                            blurhash={data.avatar.blurHash || ""}
+                            quality={100}
+                            className="w-12 h-12 rounded-full object-cover border-2 border-primary/20"
+                        />
+                    )}
+                </div>
+                <div>
+                    <div className="flex gap-1">
+                        {[...Array(data.rating)].map((_, i) => (
+                            <span key={i} className="text-yellow-500 text-lg">
+                                ★
+                            </span>
+                        ))}
+                    </div>
+
+                    <div className="flex flex-col">
+                        <div className="font-semibold text-foreground text-sm font-sora">
+                            {data.clientPosition && (
+                                <p className="text-xs text-muted-foreground font-inter max-w-40 text-wrap wrap-anywhere line-clamp-1">
+                                    {data.clientPosition}
+                                </p>
+                            )}
+                            <strong>{data.clientName}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+}
+    else return (
         <div
             ref={cardRef}
             className="group relative h-full rounded-2xl overflow-hidden bg-card border border-border p-6 hover:border-primary/50 transition-all duration-300"

@@ -9,6 +9,7 @@ import CubeComposition from "./expermintal/cubeComposition"
 import SingleCompsotion from "./expermintal/singleComposition"
 import { TypeToRenderProd } from "./TypToRenderProd"
 import { ExpermintalParallaxContainer } from "./expermintal/ExpermintalParallaxContainer"
+import FilmStrip from "./CardProd/generic/filmStrap"
 
 interface CompositionPreviewProps {
   composition:
@@ -44,6 +45,7 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
   const [autoProgress, setAutoProgress] = useState(0)
 
   useEffect(() => {
+
     const handleResize = () => {
       if (window.innerWidth < 640) setColumns(1)
       else if (window.innerWidth < 1024) setColumns(2)
@@ -56,7 +58,8 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
 
   // Memoize paginate to avoid recreating it on every render
   const paginate = useCallback((newDirection: number) => {
-    if (!slides || slides.length === 0) return
+    if (!slides || slides.length === 0) 
+      if(composition === "LIGHTBOX") return
 
     const nextIndex = currentSlide + newDirection
 
@@ -73,10 +76,12 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
     setPage([newPage, newDirection])
     setCurrentSlide(newPage)
 
-  }, [currentSlide, slides])
+  }, [composition, currentSlide, slides])
 
   // Auto-progress effect with smooth progress bar
   useEffect(() => {
+
+    if(composition === "LIGHTBOX") return
     if (!autoPlay || !slides || slides.length === 0 || interval <= 0 || isInViewport === false) {
       (() => {
 
@@ -196,7 +201,7 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
               <ChevronRight className="w-5 h-5 relative z-10" />
             </motion.button>
           </div>
-          <div className="relative h-[500px] perspective-[1000px]">
+          <div className="relative ">
 
             <AnimatePresence initial={false} custom={direction} mode="wait">
               <motion.div
@@ -280,7 +285,7 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
     case "FADE":
       return (
         <div className="space-y-8">
-          <div className="relative h-[500px] rounded-3xl overflow-hidden">
+          <div className="relative  rounded-3xl overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentSlide}
@@ -288,7 +293,7 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
                 initial="enter"
                 animate="center"
                 exit="exit"
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 0.1, ease: "easeInOut" }}
                 className=" inset-0   "
               >
                 <TypeToRenderProd play={isInViewport} slide={slides[currentSlide]} />
@@ -385,45 +390,50 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
     case "ZOOM":
       return (
         <div className="space-y-8">
-          <div className="relative h-[500px] overflow-hidden rounded-3xl">
+          <div className="relative  overflow-hidden rounded-3xl">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentSlide}
                 initial={{ scale: 0.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 1.2, opacity: 0 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-                className=" inset-0   "
+                transition={{ duration: 0.2, ease: "easeInOut" }}
+                className=" inset-0  flex w-full justify-center items-center gap-4 "
               >
+                <motion.button
+
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => paginate(-1)}
+                  className="px-3 py-3 rounded-full  border border-primary/90  text-primary font-semibold "
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </motion.button>
                 <TypeToRenderProd play={isInViewport} slide={slides[currentSlide]} />
+                <motion.button
+
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => paginate(1)}
+                  className="px-3 py-3 rounded-full  border border-primary/90  text-primary font-semibold "
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </motion.button>
               </motion.div>
             </AnimatePresence>
           </div>
 
           <div className="flex gap-4 justify-center items-center">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => paginate(-1)}
-              className="px-6 py-2 rounded-lg bg-primary/90 text-primary-foreground font-semibold "
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </motion.button>
+
             {slides.map((_, idx) => (
+
               <motion.button
                 key={idx}
                 onClick={() => setCurrentSlide(idx)}
-                className={`h-2 rounded-full transition-all ${idx === currentSlide ? "w-12 bg-primary" : "w-2 bg-muted-foreground/30"}`}
+                className={`h-2 rounded-full transition-all ${idx === currentSlide ? "w-4 bg-primary" : "w-2 bg-muted-foreground/30"}`}
               />
             ))}
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => paginate(1)}
-              className="px-6 py-2 rounded-lg bg-primary/90 text-primary-foreground font-semibold "
-            >
-              <ChevronRight className="w-5 h-5" />
-            </motion.button>
+
           </div>
         </div>
       )
@@ -520,45 +530,49 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
     case "KEN_BURNS":
       return (
         <div className="space-y-8">
-          <div className="relative h-[500px] overflow-hidden rounded-3xl">
+          <div className="relative  overflow-hidden rounded-3xl">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentSlide}
                 initial={{ scale: 1.3, x: -40, y: -40, opacity: 0 }}
                 animate={{ scale: 1, x: 0, y: 0, opacity: 1 }}
                 exit={{ scale: 1.3, x: 40, y: 40, opacity: 0 }}
-                transition={{ duration: 4, ease: "easeInOut" }}
+                transition={{ duration: .5, ease: "easeInOut" }}
                 className=" inset-0   "
               >
                 <TypeToRenderProd play={isInViewport} slide={slides[currentSlide]} />
               </motion.div>
             </AnimatePresence>
           </div>
-
-          <div className="flex gap-3 justify-center items-center">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
+          <div className="flex items-center justify-center gap-4">
+            {/* Previous Button */}
+            <button
               onClick={() => paginate(-1)}
-              className="px-6 py-2 rounded-lg bg-primary/90 text-primary-foreground font-semibold "
+              className="group relative px-4 py-2.5 rounded-xl bg-background border-2 border-border hover:border-primary transition-all duration-200 hover:shadow-lg hover:scale-105"
             >
-              <ChevronLeft className="w-5 h-5" />
-            </motion.button>
-            <div className="flex gap-2">
+              <ChevronLeft className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+            </button>
+
+            {/* Dot Indicators */}
+            <div className="flex items-center gap-2 px-4">
               {slides.map((_, idx) => (
-                <motion.div
+                <button
                   key={idx}
                   onClick={() => setCurrentSlide(idx)}
-                  className={`h-2 rounded-full cursor-pointer transition-all ${idx === currentSlide ? "w-8 bg-primary" : "w-2 bg-muted-foreground/30"}`}
+                  className={`rounded-full transition-all duration-300 hover:scale-110 ${idx === currentSlide
+                    ? "w-10 h-3 bg-primary shadow-lg shadow-primary/30"
+                    : "w-3 h-3 bg-muted-foreground/20 hover:bg-muted-foreground/40"
+                    }`}
                 />
               ))}
             </div>
-            <motion.button
-              whileHover={{ scale: 1.1 }}
+            {/* Next Button */}
+            <button
               onClick={() => paginate(1)}
-              className="px-6 py-2 rounded-lg bg-primary/90 text-primary-foreground font-semibold "
+              className="group relative px-4 py-2.5 rounded-xl bg-background border-2 border-border hover:border-primary transition-all duration-200 hover:shadow-lg hover:scale-105"
             >
-              <ChevronRight className="w-5 h-5" />
-            </motion.button>
+              <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+            </button>
           </div>
         </div>
       )
@@ -684,6 +698,7 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
       )
 
     case "STORY":
+
       return (
         <div className="space-y-4">
           <div className="flex gap-1">
@@ -717,6 +732,7 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
       )
 
     case "FILMSTRIP":
+        return <FilmStrip slides={slides} isInViewport={isInViewport} />
       return (
         <div className="space-y-6" >
           <div className="relative h-max rounded-3xl overflow-hidden">
@@ -729,7 +745,7 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
                 transition={{ duration: 0.4 }}
                 className=" inset-0   "
               >
-                <TypeToRenderProd play={isInViewport} slide={slides[currentSlide]} />
+                <TypeToRenderProd light={true} play={isInViewport} slide={slides[currentSlide]} />
               </motion.div>
             </AnimatePresence>
           </div>
@@ -763,6 +779,8 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
       )
 
     case "LIGHTBOX":
+
+      
       return (
         <div className="space-y-6">
           <motion.div className="grid grid-cols-2 md:grid-cols-3 gap-4" initial="hidden" animate="visible">
@@ -779,7 +797,7 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
                 className="h-32 rounded-lg overflow-hidden cursor-pointer group relative"
               >
                 <div className="h-full  ">
-                  <TypeToRenderProd play={isInViewport} slide={slide} />
+                  <TypeToRenderProd light={true} play={isInViewport} slide={slide} />
                 </div>
                 <div className=" inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
                   <motion.div initial={{ scale: 0 }} whileHover={{ scale: 1 }} className="text-white text-2xl">
@@ -806,8 +824,8 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
                   onClick={(e) => e.stopPropagation()}
                   className="relative  w-full max-w-2xl h-fit flex items-center justify-center rounded-3xl overflow-hidden"
                 >
-                  <div className=" inset-0  ">
-                    <TypeToRenderProd play={isInViewport} slide={slides[currentSlide]} />
+                  <div className=" inset-0  h-full w-full ">
+                    <TypeToRenderProd lightOpen={true}  play={isInViewport} slide={slides[currentSlide]} />
                   </div>
 
                   <motion.button
@@ -828,7 +846,9 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
 
 
     case "MARQUEE":
+
       return (
+        
 
         <div className="space-y-8">
           <div className="relative h-32 overflow-hidden rounded-3xl bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10">

@@ -6,6 +6,7 @@ import { slide } from "@/types/schema";
 import { useGSAP } from "@gsap/react";
 import { TypeToRenderProd } from "../TypToRenderProd";
 import { useSectionVisibility } from "@/composnents/contact/SectionVisibilityContext";
+import GenricSingle from "../CardProd/generic/Single";
 
 gsap.registerPlugin(ScrollTrigger);
 // const slides = mockSlides
@@ -127,7 +128,7 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
             {/* md:w-220 md:h-120 w-110  */}
             <div className="pointer-events-auto  w-screen h-full   overflow-hidden flex items-center justify-center" >
 
-              <TypeToRenderProd idx={i} slide={slideItem} single={true} index={i+1} />
+              <GenricSingle idx={i} data={slideItem}  />
             </div>
 
 

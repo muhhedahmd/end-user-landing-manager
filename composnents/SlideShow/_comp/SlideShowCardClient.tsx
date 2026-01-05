@@ -29,11 +29,13 @@ export const SlideshowCardClient = memo(function SlideshowCardClient({
 
   useEffect(() => {
 
+
     const el = cardRef.current;
     if (!el) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
+
         const entry = entries[0];
         if (!entry) return;
 
@@ -62,13 +64,6 @@ export const SlideshowCardClient = memo(function SlideshowCardClient({
       observer.disconnect();
     };
   }, [hasBeenVisible]);
-
-
-
-  // if (isSingle)
-  //   return (
-  //     <SingleCompositionTest />
-  //   )
 
   return (
 

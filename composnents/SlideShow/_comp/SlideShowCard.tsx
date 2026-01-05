@@ -27,6 +27,7 @@ export function SlideshowCard({
   // const isContainer  = compositionType && (compositionType !== "SINGLE" || compositionType !== "CUBE")
   const isCube  =  compositionType === "CUBE"
   const isSingle  = compositionType === "SINGLE"
+  const isFilmStrip  = compositionType === "FILMSTRIP"
   // const isParallax  = compositionType === "PARALLAX"
     if(isCube) return null
 
@@ -36,12 +37,12 @@ export function SlideshowCard({
         backgroundColor: bgColor,
         color: textColor,
       }}
-      className={cn( "rounded-lg duration-200 overflow-hidden w-full " ,!isCube && !isSingle &&   "container mx-auto")}
+      className={cn( "rounded-lg duration-200 overflow-hidden w-full " ,!isCube && !isSingle && !isFilmStrip &&   "container mx-auto")}
     >
       {/* Server-rendered header */}
 
       <SlideHeader
-        compositionType={compositionType}
+        compositionType={compositionType === "FILMSTRIP" ? (CompositionType.PARALLAX as CompositionType) : compositionType}
         title={item.title}
         description={item.description || ""}
         slideShowType={slideShowType}

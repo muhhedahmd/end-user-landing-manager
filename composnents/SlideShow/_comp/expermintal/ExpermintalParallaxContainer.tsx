@@ -6,6 +6,8 @@ import { useRef } from "react";
 import { TypeToRenderProd } from "../TypToRenderProd";
 import { slide } from "@/types/schema";
 import gsap from "gsap"
+import { GenericCardParallax } from "../CardProd/generic/Parallax";
+import { data } from "framer-motion/client";
 
 export const ExpermintalParallaxContainer = ({ slides, isInViewport }: {
     slides: slide[],
@@ -80,12 +82,16 @@ export const ExpermintalParallaxContainer = ({ slides, isInViewport }: {
                         }}
                         className="inset-0   overflow-hidden space-y-10 sm:space-y-10 md:space-y-12"
                     >
-                        <TypeToRenderProd
+                        <GenericCardParallax 
+                        data={slide} 
+                        index={idx}
+                        />
+                        {/* <TypeToRenderProd
                             play={isInViewport}
                             slide={slide}
                             split={true}
                             index={idx}
-                        />
+                        /> */}
                     </div>
                 ))}
             </div>
