@@ -28,8 +28,14 @@ export function SlideshowCard({
   const isCube  =  compositionType === "CUBE"
   const isSingle  = compositionType === "SINGLE"
   const isFilmStrip  = compositionType === "FILMSTRIP"
+  const COVERFLOW= compositionType === ( "COVERFLOW" as keyof typeof CompositionType)
+  const FILMSTRAP= compositionType === ( "FILMSTRIP" as keyof typeof CompositionType)
   // const isParallax  = compositionType === "PARALLAX"
     if(isCube) return null
+
+
+
+    // if(! FILMSTRAP) return null
 
     return (
     <div
@@ -37,7 +43,7 @@ export function SlideshowCard({
         backgroundColor: bgColor,
         color: textColor,
       }}
-      className={cn( "rounded-lg duration-200 overflow-hidden w-full " ,!isCube && !isSingle && !isFilmStrip &&   "container mx-auto")}
+      className={cn( "rounded-lg duration-200 overflow-hidden w-full " ,!isCube && !isSingle && !isFilmStrip && !COVERFLOW &&    "container mx-auto")}
     >
       {/* Server-rendered header */}
 
@@ -50,7 +56,7 @@ export function SlideshowCard({
     
 
 
-      <div className="mt-5" />
+      <div className="mt-10" />
 
       {/* Client component for interactive parts */}
       <SlideshowCardClient

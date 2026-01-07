@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, {  useMemo, useRef } from "react";
 import gsap from "gsap";
 import BlurredImage from "@/composnents/Reusabale/ClientImageWithBlurHash";
+import { useGSAP } from "@gsap/react";
 
 interface FilmStripProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -19,18 +20,19 @@ const FilmStrip = ({ slides, isInViewport }: FilmStripProps) => {
   const perfsBottomRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
-  // Create frames from slides with proper image/avatar/logo extraction
-  const filmFrames = slides.map((slide, idx) => ({
+  
+
+  // Duplicate frames for seamless loop
+  const duplicatedFrames =  useMemo(() => { 
+    const filmFrames = slides.map((slide, idx) => ({
     id: idx,
     image: slide?.image?.url || slide?.avatar?.url || slide?.logo?.url || slide?.image || slide?.avatar || slide?.logo,
     title: slide?.name || slide?.title || slide?.clientName || slide?.customTitle || `Scene ${String(idx + 1).padStart(2, '0')}`,
     alt: slide?.image?.alt || slide?.avatar?.alt || slide?.logo?.alt || `Scene ${idx + 1}`
   }));
+    return [...filmFrames , ...filmFrames] }, [slides]) 
+  useGSAP(() => {
 
-  // Duplicate frames for seamless loop
-  const duplicatedFrames = [...filmFrames, ...filmFrames];
-
-  useEffect(() => {
     if (!stripRef.current || !containerRef.current || !isInViewport) return;
 
     const strip = stripRef.current;
@@ -45,7 +47,7 @@ const FilmStrip = ({ slides, isInViewport }: FilmStripProps) => {
     
     tl.to([strip, perfsTop, perfsBottom], {
       x: -totalWidth,
-      duration: 20,
+      duration: 30,
       ease: "none",
     });
 
@@ -66,10 +68,11 @@ const FilmStrip = ({ slides, isInViewport }: FilmStripProps) => {
       container?.removeEventListener("mouseenter", handleMouseEnter);
       container?.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [isInViewport, filmFrames.length]);
+  }, { 
+    dependencies :[isInViewport]
+  });
 
-  // Pause animation when not in viewport
-  useEffect(() => {
+  useGSAP(() => {
     if (timelineRef.current) {
       if (isInViewport) {
         timelineRef.current.play();
@@ -85,7 +88,7 @@ const FilmStrip = ({ slides, isInViewport }: FilmStripProps) => {
       className="relative overflow-hidden py-8 cinema-glow cursor-pointer"
     >
       {/* Film strip container */}
-      <div className="film-strip py-8 relative">
+      <div className="bg-linear-30 from-10% from-muted to-muted-foreground/30   py-8 relative">
         {/* Top perforations row */}
         <div className="absolute top-3 left-0 overflow-hidden w-full">
           <div ref={perfsTopRef} className="flex">
@@ -149,7 +152,7 @@ const FilmStrip = ({ slides, isInViewport }: FilmStripProps) => {
 
       <style jsx>{`
         .cinema-glow {
-          background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.1), transparent);
+          background: linear-gradient(to bottom, transparent,, transparent);
         }
         
         .film-perforation {

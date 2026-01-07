@@ -25,16 +25,14 @@ export const SlideshowCardClient = memo(function SlideshowCardClient({
 }: SlideshowCardClientProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isInViewport, setIsInViewport] = useState(false);
-  const [hasBeenVisible, setHasBeenVisible] = useState(false);
 
   useEffect(() => {
-
-
     const el = cardRef.current;
     if (!el) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
+
 
         const entry = entries[0];
         if (!entry) return;
@@ -43,9 +41,7 @@ export const SlideshowCardClient = memo(function SlideshowCardClient({
         const visible = entry.isIntersecting && entry.intersectionRatio >= 0.4;
 
         // Mark as seen once visible
-        if (visible && !hasBeenVisible) {
-          setHasBeenVisible(true);
-        }
+      
 
         // Update viewport status
         requestAnimationFrame(() => {
@@ -63,7 +59,7 @@ export const SlideshowCardClient = memo(function SlideshowCardClient({
     return () => {
       observer.disconnect();
     };
-  }, [hasBeenVisible]);
+  }, []);
 
   return (
 

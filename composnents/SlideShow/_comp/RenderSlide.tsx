@@ -1,7 +1,7 @@
 "use client";
 
 import { CompositionType } from "@/types/schema";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, memo } from "react";
 import { slidesService } from "./services/slideShowService";
 import { CompositionPreview } from "./CompositionPreviw";
 
@@ -13,13 +13,13 @@ interface RenderSlidesProps {
   autoPlay: boolean;
   composition: CompositionType;
 }
-function RenderSlidesManual({
+const  RenderSlidesManual = memo(({
   isInViewport,
   id,
   interval = 5000,
   autoPlay,
   composition,
-}: RenderSlidesProps) {
+}: RenderSlidesProps) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [slides, setSlides] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -104,7 +104,7 @@ function RenderSlidesManual({
     </>
   );
 
-}
+})
 
-
+RenderSlidesManual.displayName = "RenderSlidesManual"
 export default RenderSlidesManual

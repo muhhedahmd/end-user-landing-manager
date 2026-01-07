@@ -10,6 +10,7 @@ import SingleCompsotion from "./expermintal/singleComposition"
 import { TypeToRenderProd } from "./TypToRenderProd"
 import { ExpermintalParallaxContainer } from "./expermintal/ExpermintalParallaxContainer"
 import FilmStrip from "./CardProd/generic/filmStrap"
+import CoverflowComposition from "./expermintal/coverflowComposition"
 
 interface CompositionPreviewProps {
   composition:
@@ -470,6 +471,7 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
       )
 
     case "COVERFLOW":
+      return <CoverflowComposition slides={slides} isInViewport={isInViewport}  />
       return (
         <div className="space-y-8">
           <div className="relative h-[500px] perspective-[1000px] flex items-center justify-center">

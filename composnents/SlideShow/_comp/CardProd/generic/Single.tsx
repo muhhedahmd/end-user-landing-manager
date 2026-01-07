@@ -37,15 +37,15 @@ const GenricSingle = ({ data, idx = 0 }: { data: any, idx?: number }) => {
 
             <div className="relative lg:h-3/4 h-1/4 lg:w-1/2 w-full md:mr-10 items-center justify-center md:flex hidden">
                 <h2 
-                    style={{ textShadow: "0 0 3px black" }} 
-                    className={cn("z-5 cursor-default lg:text-[50rem] xl:text-[60rem] text-white")}
+                    // style={{ textShadow: "0 0 3px black" }} 
+                    className={cn("z-5 cursor-default text-shadow-primary  text-shadow-2xs text-background lg:text-[50rem] xl:text-[50rem] ")}
                 > 
                     {idx + 1}
                 </h2>
                 {data.industry && (
                     <span
-                        style={{ textShadow: "0 0 2px black" }}
-                        className="w-max z-10 absolute -top-20 left-1/2 -translate-x-1/2 text-8xl font-bold text-white font-sora"
+                        // style={{ textShadow: "0 0 2px black" }}
+                        className="w-max z-10 absolute -top-20 left-1/2 text-shadow-primary  text-shadow-2xs text-background  -translate-x-1/2 text-8xl font-bold  font-sora"
                     >
                         {data.industry}
                     </span>
@@ -53,7 +53,7 @@ const GenricSingle = ({ data, idx = 0 }: { data: any, idx?: number }) => {
             </div>
 
             {/* Logo Section */}
-            <div className="z-10 md:min-w-auto md:w-auto min-w-5/6 w-3/4 absolute top-1/2 left-1/2 md:top-1/2 md:left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-4 shadow-2xl border border-border rounded-xl space-y-4">
+            <div className="z-10 md:min-w-auto md:w-auto min-w-5/6 w-3/4 absolute top-1/2 left-1/2 md:top-1/2 md:left-1/2 -translate-x-1/2 -translate-y-1/2 bg-background p-4 shadow-2xl border border-border rounded-xl space-y-4">
                 {data.logo && (
                     <div className="bg-muted/30 flex items-center justify-start gap-4 p-4">
                         <BlurredImage
@@ -80,7 +80,7 @@ const GenricSingle = ({ data, idx = 0 }: { data: any, idx?: number }) => {
 
                     {richDescription && richDescription !== description && (
                         <div
-                            className="relative z-30 client-description md:line-clamp-none sm:line-clamp-6 line-clamp-5 lg:text-xl xl:text-xl text-black leading-relaxed font-inter prose prose-sm dark:prose-invert"
+                            className="relative z-30 client-description md:line-clamp-none sm:line-clamp-6 line-clamp-5 lg:text-xl xl:text-xl text-muted-foreground leading-relaxed font-inter prose prose-sm dark:prose-invert"
                             dangerouslySetInnerHTML={{ __html: richDescription }}
                         />
                     )}

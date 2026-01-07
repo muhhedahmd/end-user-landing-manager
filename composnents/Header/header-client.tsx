@@ -8,6 +8,7 @@ import gsap from "gsap"
 import { CompanyInfo } from "@/types/schema"
 import Image from "next/image"
 import Link from "next/link"
+import { ThemeToggle } from "../toggleTheme"
 
 interface NavItem {
   label: string
@@ -20,11 +21,15 @@ export default function HeaderClient({ navItems, companyInfo }: { navItems: NavI
 
   return (
     <Fragment>
-      <div className=" p-1  flex-1 text-end hidden md:flex  items-end justify-end" >
-      <Link href="#contact" className=" p-1 px-2 border border-primary   w-fit  text-primary hover:text-primary/80 hover:border-primary/80 rounded-md " >
-        contact us
+      <div className=" p-1  flex-1 text-end  hidden md:flex  items-center  gap-3 justify-end" >
+        <Link href="#contact" className=" p-1 px-2 border border-primary   w-fit  text-primary hover:text-primary/80 hover:border-primary/80 rounded-md " >
+          contact us
 
-      </Link>
+        </Link>
+        <div className="border border-primary px-2 py-1 rounded-md">
+
+          <ThemeToggle />
+        </div>
       </div>
 
       <div className=" md:hidden  flex items-center  justify-center gap-2">
@@ -153,16 +158,16 @@ function CustomDrawer({
 
           {/* Navigation */}
           <nav ref={navItemsRef} className="flex-1 flex flex-col justify-center gap-2">
-             <Link
-                href={"/"}
-                onClick={() => onOpenChange(false)}
-                className="nav-item group flex items-center justify-between py-3 md:py-4 border-b border-border opacity-0"
-              >
-                <span className="text-2xl md:text-3xl lg:text-4xl font-light tracking-tight text-foreground group-hover:translate-x-2 transition-transform duration-300">
-                  {"Home"}
-                </span>
-                <ArrowUpRight className="h-5 w-5 md:h-6 md:w-6 text-muted-foreground opacity-0 group-hover:opacity-100 -translate-y-2 translate-x-2 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300" />
-              </Link>
+            <Link
+              href={"/"}
+              onClick={() => onOpenChange(false)}
+              className="nav-item group flex items-center justify-between py-3 md:py-4 border-b border-border opacity-0"
+            >
+              <span className="text-2xl md:text-3xl lg:text-4xl font-light tracking-tight text-foreground group-hover:translate-x-2 transition-transform duration-300">
+                {"Home"}
+              </span>
+              <ArrowUpRight className="h-5 w-5 md:h-6 md:w-6 text-muted-foreground opacity-0 group-hover:opacity-100 -translate-y-2 translate-x-2 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300" />
+            </Link>
             {navItems.map((item, index) => (
               <Link
                 key={index}
@@ -184,11 +189,13 @@ function CustomDrawer({
               Get Started
             </button>
 
+        
             {/* Social Links */}
             <div className="flex items-center justify-center gap-4 md:gap-6 mt-6 md:mt-8 text-sm text-muted-foreground">
               <a href="#" className="hover:text-foreground transition-colors">Instagram</a>
               <a href="#" className="hover:text-foreground transition-colors">Twitter</a>
               <a href="#" className="hover:text-foreground transition-colors">LinkedIn</a>
+                      <ThemeToggle />      
             </div>
           </div>
         </div>
