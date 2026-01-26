@@ -59,13 +59,13 @@ export default async function Header({
         </Link>
               </div>
 
-        <nav className="hidden md:flex items-center justify-center gap-1 flex-1">
+        <nav className="hidden md:flex items-center justify-center gap-1 flex-1 w-max">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                "px-4 py-2 text-md font-medium hover:text-primary transition",
+                "px-4 py-2 text-md font-medium hover:text-primary transition w-max",
                 title?.toLowerCase() === item.label.toLowerCase()
                   ? "dark:text-orange-600"
                   : "text-primary ",

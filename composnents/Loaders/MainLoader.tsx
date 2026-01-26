@@ -1,7 +1,7 @@
 
 "use client"
 import { useGSAP } from "@gsap/react";
-import { useEffect, useRef,  } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTimeLine } from "@/context/MainLoaderTimeLine";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -11,12 +11,14 @@ const MainLoader = ({ duration = 3000 }: { duration?: number }) => {
   const { timeline, ctx  ,visible, setVisible ,}  = useTimeLine();
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
+  const [_, setProgress] = useState(0);
   const pathname = usePathname();
 
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
+    setProgress(0);
     setVisible(true); // Reset to visible on mount
   }, []);
 
@@ -63,7 +65,10 @@ const MainLoader = ({ duration = 3000 }: { duration?: number }) => {
             width: "100%",
             ease: "power1.inOut",
             duration: duration / 1000,
-      
+            onUpdate: function () {
+              const progressValue = this.progress() * 100;
+              setProgress(progressValue);
+            }
           }, "+= 3.5")
           .to(loaderRef.current, {
             autoAlpha: 0,
@@ -77,7 +82,9 @@ const MainLoader = ({ duration = 3000 }: { duration?: number }) => {
           .addLabel("loaderComplete");
       });
 
-  
+      return () => {
+        setProgress(0);
+      };
     },
     {
       dependencies: [timeline, ctx, duration],

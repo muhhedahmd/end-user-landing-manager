@@ -2,7 +2,6 @@
 
 import { Fragment, useRef, useState } from "react"
 import { ArrowUpRight, Menu, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { CompanyInfo } from "@/types/schema"
@@ -12,7 +11,6 @@ import { ThemeToggle } from "../toggleTheme"
 import { getDictionary } from "@/lib/i18n"
 import SwitchLang from "../locale/switchLang"
 import { cn } from "@/lib/utils"
-import { lenisRef } from "../scroll/smoothScrolling"
 import { useRouter } from "next/navigation"
 
 interface NavItem {
@@ -31,7 +29,7 @@ export default function HeaderClient({ locale, dictionary, navItems, companyInfo
   return (
     <Fragment>
       <div className=" p-1  flex-1 text-end  hidden md:flex  items-center  gap-3 justify-end" >
-        <Link href="#contact" className=" p-1 px-2 border border-primary   w-fit  text-primary hover:text-primary/80 hover:border-primary/80 rounded-md " >
+        <Link href="#contact" className=" w-max p-1 px-2 border border-primary    text-primary hover:text-primary/80 hover:border-primary/80 rounded-md " >
           {dictionary.header.contact}
 
         </Link>
@@ -85,7 +83,7 @@ function CustomDrawer({
     if (!containerRef.current || !overlayRef.current || !contentRef.current) return
 
     if (open) {
-      lenisRef?.current?.lenis?.stop()
+      // lenisRef?.current?.lenis?.stop()
 
       // window.document.body.style.overflow = "hidden"
       // window.document.body.style.maxHeight = "100vh"
@@ -125,7 +123,7 @@ function CustomDrawer({
         )
       }
     } else {
-      lenisRef?.current?.lenis?.start()
+      // lenisRef?.current?.lenis?.start()
 
       // window.document.body.style.overflow = "auto"
       // window.document.body.style.maxHeight = "auto"
@@ -144,10 +142,10 @@ function CustomDrawer({
       })
 
     }
-    return () => {
-      lenisRef?.current?.lenis?.start()
+    // return () => {
+    //   lenisRef?.current?.lenis?.start()
 
-    }
+    // }
 
   }, {
     dependencies: [open, dir],
