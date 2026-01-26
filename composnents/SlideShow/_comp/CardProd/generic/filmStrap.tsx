@@ -1,7 +1,9 @@
-import React, {  useMemo, useRef } from "react";
+"use client";
+import React, {  memo, useMemo, useRef } from "react";
 import gsap from "gsap";
 import BlurredImage from "@/composnents/Reusabale/ClientImageWithBlurHash";
 import { useGSAP } from "@gsap/react";
+import { usePathname } from "next/navigation";
 
 interface FilmStripProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -13,7 +15,12 @@ const Perforation = ({ className }: { className?: string }) => (
   <div className={`film-perforation ${className || ""}`} />
 );
 
-const FilmStrip = ({ slides, isInViewport }: FilmStripProps) => {
+const FilmStrip = memo(({ slides, isInViewport }: FilmStripProps) => {
+
+  const currentRTL = slides?.[0]?.lang === "AR" ? "RTL" :"LTR" 
+  const isRTL = currentRTL === "RTL"
+
+
   const stripRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const perfsTopRef = useRef<HTMLDivElement>(null);
@@ -46,8 +53,8 @@ const FilmStrip = ({ slides, isInViewport }: FilmStripProps) => {
     timelineRef.current = tl;
     
     tl.to([strip, perfsTop, perfsBottom], {
-      x: -totalWidth,
-      duration: 30,
+      x: isRTL ? totalWidth : -totalWidth,
+      duration: 40,
       ease: "none",
     });
 
@@ -177,6 +184,7 @@ const FilmStrip = ({ slides, isInViewport }: FilmStripProps) => {
       `}</style>
     </div>
   );
-};
+})
 
+FilmStrip.displayName = "FilmStrip";
 export default FilmStrip;

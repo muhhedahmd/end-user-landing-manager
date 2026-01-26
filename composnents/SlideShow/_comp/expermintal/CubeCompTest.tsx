@@ -56,7 +56,6 @@ const slides = mockSlides
         pinSpacing: false,
         invalidateOnRefresh: true,
         onEnter : (()=>{
-          console.log("enter")
           gsap.to(card, {
             scale: 1,
             ease: "none",

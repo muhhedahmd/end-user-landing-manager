@@ -1,32 +1,28 @@
 
 "use client"
 import { useGSAP } from "@gsap/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef,  } from "react";
 import { useTimeLine } from "@/context/MainLoaderTimeLine";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { lenisRef } from "../scroll/smoothScrolling";
 import gsap from "gsap";
-const MainLoader = ({ duration = 5000 }: { duration?: number }) => {
+const MainLoader = ({ duration = 3000 }: { duration?: number }) => {
   const { timeline, ctx  ,visible, setVisible ,}  = useTimeLine();
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
-  const [progress, setProgress] = useState(0);
   const pathname = usePathname();
 
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
-    setProgress(0);
     setVisible(true); // Reset to visible on mount
   }, []);
 
 
   useEffect(()=>{
-    console.log({
-      loaderComplete : timeline?.labels?.loaderComplete
-    })
+
     if(timeline?.labels?.loaderComplete){
           setVisible(true); // Reset to visible on mount
 
@@ -67,10 +63,7 @@ const MainLoader = ({ duration = 5000 }: { duration?: number }) => {
             width: "100%",
             ease: "power1.inOut",
             duration: duration / 1000,
-            onUpdate: function () {
-              const progressValue = this.progress() * 100;
-              setProgress(progressValue);
-            }
+      
           }, "+= 3.5")
           .to(loaderRef.current, {
             autoAlpha: 0,
@@ -84,9 +77,7 @@ const MainLoader = ({ duration = 5000 }: { duration?: number }) => {
           .addLabel("loaderComplete");
       });
 
-      return () => {
-        setProgress(0);
-      };
+  
     },
     {
       dependencies: [timeline, ctx, duration],
@@ -113,7 +104,6 @@ const MainLoader = ({ duration = 5000 }: { duration?: number }) => {
             className="h-full w-0  bg-primary transition-all   duration-200 ease-linear"
           />
         </div>
-        <div className=" shrink-0 w-max mr-4 "> <span className="font-bold text-sx"> {progress.toFixed(0)} %</span> </div>
       </div>
 
     </div>

@@ -1,11 +1,18 @@
 import { Fragment } from "react";
 import FloatServiceDialog from "./FloatServiceDialog";
 import { fetchServices } from "./Fetchers";
+import { DictionaryShape } from "@/composnents/contact/ContactForm";
 
 export const dynamic = "force-static"
 
-const ServiceTable = async () => {
+const ServiceTable = async ({ locale,dictionary}:{
+  locale: "en" | "ar";
+  dictionary :DictionaryShape
+
+}) => {
   const featServices = await fetchServices({
+
+    langEnd : locale?.toUpperCase() as "EN" |"AR"  || "EN",
     skip: 0,
     take: 15,
     isFeatured: true,
@@ -18,11 +25,11 @@ const ServiceTable = async () => {
 
 
               <div className="flex items-center justify-between  w-full  font-bold cursor-default">
-                <h4 className="flex-1">Name</h4>
+                <h4 className="flex-1">{dictionary.servicePage.table.name}</h4>
 
-                <p className="text-wrap line-clamp-1 flex-2">Description</p>
+                <p className="text-wrap line-clamp-1 flex-2">{dictionary.servicePage.table.description}</p>
 
-                <p className="md:block hidden  text-wrap line-clamp-1 flex-3">Content</p>
+                <p className="md:block hidden  text-wrap line-clamp-1 flex-3">{dictionary.servicePage.table.description}</p>
               </div>
             </div>
 

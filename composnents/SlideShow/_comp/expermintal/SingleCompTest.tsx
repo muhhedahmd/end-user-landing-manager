@@ -16,17 +16,14 @@ const SingleCompositionTest = () => {
   
   const isReady = useScrollTriggerReady(wrapperRef, [slides.length , slides  , trackRef]);
 
-  console.log({isReady})
   useLayoutEffect(() => {
 
     if(!isReady) return
-    console.log({isReady2 : isReady})
     const wrapper = wrapperRef.current;
     const track = trackRef.current;
     if (!wrapper || !track || slides.length === 0) return;
 
     const scrollWidth = track.scrollWidth - wrapper.offsetWidth;
-console.log(scrollWidth)
 
     const st = gsap.to(track, {
       x: -scrollWidth,

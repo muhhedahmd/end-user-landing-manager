@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import ContactForm from "@/composnents/contact/ContactForm";
+import ContactForm, { DictionaryShape } from "@/composnents/contact/ContactForm";
 import { useSectionVisibility } from "@/composnents/contact/SectionVisibilityContext";
 import BlurredImage from "@/composnents/Reusabale/ClientImageWithBlurHash";
 import { TeamMemberWithImage } from "@/types/schema";
@@ -7,17 +8,22 @@ import { PaginatedResponse } from "@/types/services";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import { ArrowUpRight, User, Mail, Briefcase } from "lucide-react";
+import { ArrowUpRight,  Mail, Briefcase } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { teamMemberResponse } from "../../services/comp/Fetchers";
 
 gsap.registerPlugin(ScrollTrigger);
 
 
 
 const TeamSectionCard = ({
+    locale ,
     TeamMembers,
+    dictionary
 }: {
-    TeamMembers: PaginatedResponse<TeamMemberWithImage> | null;
+    locale: "en" | "ar";
+    dictionary : DictionaryShape
+    TeamMembers: PaginatedResponse<teamMemberResponse> | null;
 }) => {
     const SectionRef = useRef<HTMLDivElement | null>(null);
     const trackRef = useRef<HTMLDivElement | null>(null);
@@ -27,6 +33,7 @@ const TeamSectionCard = ({
  const { setSingleCompositionVisible } = useSectionVisibility();
 
   useEffect(() => {
+
     if (!SectionRef.current) return;
 
     const observer = new IntersectionObserver(
@@ -107,9 +114,9 @@ const TeamSectionCard = ({
 
                 const z = Math.abs(position) < 1 ? (1 - Math.abs(position)) * 100 : -50;
 
-                const y = Math.abs(position) * 30;
+                // const y = Math.abs(position) * 30;
 
-                const opacity = Math.abs(position) < 1.5 ? 1 : 0.3;
+                // const opacity = Math.abs(position) < 1.5 ? 1 : 0.3;
 
                 gsap.to(card, {
                     rotateY: rotateY,
@@ -127,7 +134,17 @@ const TeamSectionCard = ({
         }
     );
 
-    const data = TeamMembers?.data
+    const data = TeamMembers?.data.map((member : any) => {{
+        (member)
+        const t = member?.translation?.find((t:any) => t.lang.toUpperCase() === locale.toUpperCase());
+      return { 
+        ...member?.teamMember, 
+        image : member?.image,
+        ...t
+
+
+      }  
+    }})
         .concat({
             id: "Dump",
             name: "Dump",
@@ -147,14 +164,14 @@ const TeamSectionCard = ({
         <section className="w-auto h-auto ">
             <div
                 ref={SectionRef}
-                className="min-h-screen min-w-screen bg-neutral-900 flex items-center justify-center overflow-hidden relative"
+                className="min-h-screen min-w-screen bg-background flex items-center justify-center overflow-hidden relative"
                 style={{ perspective: "2000px" }}
             >
 
                 <div className="absolute -z-1 top-10 left-1/2 -translate-x-1/2 ">
 
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center">
-                        OUR TEAM
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold dark:text-white text-center">
+                        {dictionary.teamPage.title}
                     </h2>
                 </div>
                 <div
@@ -168,7 +185,9 @@ const TeamSectionCard = ({
                 >
                     {
                         data && data.map((member, index) => {
+
                             if (member.name === "Dump") {
+
                                 return (
                                     <div
                                         ref={(el) => {
@@ -191,48 +210,49 @@ const TeamSectionCard = ({
                                             }}
                                         >
                                             {/* Animated background effect */}
-                                            <div className="absolute inset-0 opacity-30">
-                                                <div className="absolute top-0 left-0 w-40 h-40 bg-orange-700 rounded-full blur-3xl animate-pulse" />
-                                                <div className="absolute bottom-0 right-0 w-60 h-60 bg-orange-500 rounded-full blur-3xl animate-pulse delay-700" />
+                                            <div className="absolute inset-0 opacity-30 dark:text-white text-neutral-900">
+                                                <div className="absolute top-0 left-0 w-40 h-40 dark:bg-orange-700 bg-orange-500 rounded-full blur-3xl animate-pulse" />
+                                                <div className="absolute bottom-0 right-0 w-60 h-60 dark:bg-orange-500 bg-orange-300 rounded-full blur-3xl animate-pulse delay-700" />
                                             </div>
 
                                             <div className="flex justify-end w-full relative z-10">
                                                 <ArrowUpRight className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 animate-bounce" />
                                             </div>
 
-                                            <div className="flex-1 flex flex-col justify-center items-center text-center gap-4 relative z-10">
-                                                <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 bg-white/30 rounded-full flex items-center justify-center backdrop-blur-sm border-4 border-white/50 animate-pulse">
-                                                    <Mail className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 text-white" />
+                                            <div className="flex-1 flex flex-col justify-center items-center text-center gap-4 relative z-10 dark:text-white text-neutral-900">
+                                                <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 dark:bg-white/30 rounded-full flex items-center justify-center backdrop-blur-sm border-4 border-white/50 animate-pulse">
+                                                    <Mail className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 darLtext-white" />
                                                 </div>
-                                                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold drop-shadow-lg">
-                                                    Get In Touch
+                                                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold drop-shadow-lg dark:text-white text-neutral-900">
+                                                    {dictionary.teamPage.ctaCard.title}
                                                 </h3>
-                                                <p className="text-base sm:text-lg md:text-xl opacity-90 drop-shadow-md">
-                                                    Let&apos;s Work Together
+                                                <p className="text-base sm:text-lg md:text-xl opacity-90 drop-shadow-md dark:text-white text-neutral-900">
+                                                    {dictionary.teamPage.ctaCard.subtitle}
                                                 </p>
-                                                <div className="mt-4 px-6 py-2 bg-white/20 backdrop-blur-md rounded-full border border-white/40">
-                                                    <span className="text-sm sm:text-base font-semibold">We&lsquo;re Hiring!</span>
+                                                <div className="mt-4 px-6 py-2 bg-white/20 backdrop-blur-md rounded-full border dark:border-white/40">
+                                                    <span className="text-sm sm:text-base font-semibold">{dictionary.teamPage.ctaCard.hiring}</span>
                                                 </div>
                                             </div>
 
                                             <div className="relative z-10">
-                                                <button className=" cursor-pointer px-6 sm:px-8 py-3 sm:py-4 border-orange-500 border-1 text-orange-600 font-bold rounded-full hover:scale-105 transition-transform shadow-xl text-sm sm:text-base">
-                                                    Contact Us Now
+                                                <button className=" cursor-pointer px-6 sm:px-8 py-3 sm:py-4 border-orange-500 border text-orange-600 font-bold rounded-full hover:scale-105 transition-transform shadow-xl text-sm sm:text-base">
+                                                    {dictionary.teamPage.ctaCard.button}
+                                                    
                                                 </button>
                                             </div>
                                         </div>
 
                                         {/* Back Side - Company Name */}
                                         <div
-                                            className="card-back absolute inset-0 flex items-center justify-center text-white p-6 sm:p-8 rounded-2xl shadow-2xl"
+                                            className="card-back absolute inset-0 flex items-center justify-center dark:text-white p-6 sm:p-8 rounded-2xl shadow-2xl"
                                             style={{
                                                 backfaceVisibility: "hidden",
                                                 transform: "rotateY(180deg)",
                                                 transformStyle: "preserve-3d",
                                             }}
                                         >
-                                            <h2 className="text-4xl flex flex-col justify-center items-center sm:text-5xl md:text-6xl lg:text-7xl font-black text-center">
-                                                TECH VISION
+                                            <h2 className="text-4xl flex flex-col justify-center items-center sm:text-5xl md:text-6xl lg:text-7xl font-black text-center dark:text-white">
+                                                {dictionary.teamPage.brand.name}
                                                 <span className="text-orange-500 ">
 
                                                     @{new Date().getFullYear() + 1}
@@ -260,7 +280,7 @@ const TeamSectionCard = ({
                                     {/* Front Side */}
                                     <div
 
-                                        className="card-front absolute inset-0 flex flex-col justify-between items-center  text-white p-6 sm:p-8 rounded-2xl shadow-2xl"
+                                        className="card-front absolute inset-0 flex flex-col justify-between items-center   p-6 sm:p-8 rounded-2xl shadow-2xl"
                                         style={{
                                             backfaceVisibility: "hidden",
                                             transformStyle: "preserve-3d",
@@ -271,7 +291,7 @@ const TeamSectionCard = ({
                                         </div>
 
                                         <div className="flex-1 flex flex-col justify-center items-center text-center gap-4">
-                                            <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                                            <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 dark:bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
                                                 <BlurredImage
                                                     imageUrl={member.image?.url || ""}
                                                     blurhash={member.image?.blurHash || ""}
@@ -297,7 +317,7 @@ const TeamSectionCard = ({
 
                                     {/* Back Side */}
                                     <div
-                                        className="card-back absolute inset-0 flex flex-col justify-center items-center bg-gradient-to-br from-neutral-800 to-neutral-900 text-white p-6 sm:p-8 rounded-2xl shadow-2xl"
+                                        className="card-back absolute inset-0 flex flex-col justify-center items-center bg-linear-to-br dark:from-neutral-800 dark:to-neutral-900 from-neutral-100 to-neutral-100   dark:text-white  p-6 sm:p-8 rounded-2xl shadow-2xl"
                                         style={{
                                             backfaceVisibility: "hidden",
                                             transform: "rotateY(180deg)",
@@ -330,11 +350,6 @@ const TeamSectionCard = ({
                                                 </div>
                                             </div>
 
-                                            {/* <div className="mt-4 sm:mt-6">
-                                                <button className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-colors text-sm sm:text-base">
-                                                    Connect
-                                                </button>
-                                            </div> */}
                                         </div>
                                     </div>
                                 </div>
@@ -344,8 +359,8 @@ const TeamSectionCard = ({
 
                 {/* Scroll Indicator */}
             </div>
-            <div className="h-auto w-screen bg-neutral-900 relative z-1" >
-                <ContactForm/>
+            <div className="h-auto w-screen bg-background relative z-1" >
+                <ContactForm dictionary={dictionary}/>
             </div>
             {/* <div className="h-screen w-screen bg-amber-300"/> */}
         </section>

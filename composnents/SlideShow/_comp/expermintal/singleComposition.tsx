@@ -4,7 +4,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { slide } from "@/types/schema";
 // import { TypeToRender } from "../TypeToRender";
 import { useGSAP } from "@gsap/react";
-import { TypeToRenderProd } from "../TypToRenderProd";
 import { useSectionVisibility } from "@/composnents/contact/SectionVisibilityContext";
 import GenricSingle from "../CardProd/generic/Single";
 
@@ -15,18 +14,16 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
   const cardRef = useRef<(HTMLDivElement | null)[]>([]);
-  const [activeIndex, setActiveIndex] = useState(0);
+  
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const currentRTL = (slides as any )?.[0]?.lang === "AR" ? "RTL" :"LTR"
+  const isRTL = currentRTL === "RTL"
 
 
   useGSAP(() => {
-
-
     const wrapper = wrapperRef.current;
     const track = trackRef.current;
     if (!wrapper || !track || slides.length === 0) return;
-
-    // const scrollWidth = track.scrollWidth - wrapper.offsetWidth;
-    // console.log(scrollWidth)
 
 
     const scrollWidth =
@@ -34,19 +31,16 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
   - wrapper.offsetWidth;
 
     const st = gsap.to(track, {
-      x: -scrollWidth,
+      x: isRTL ? scrollWidth +300 :-scrollWidth -300,
       ease: "none",
       scrollTrigger: {
         trigger: wrapper,
         start: "top top",
-        end: () => `+=${scrollWidth}`,
+        end: () => `+=${scrollWidth +300}`,
         scrub: 1,
         pin: true,
         snap: 1 / (slides.length - 1),
-        onUpdate: (self) => {
-          const idx = Math.round(self.progress * (slides.length - 1));
-          setActiveIndex(idx);
-        },
+      
         // markers: true,
       },
       // markers: true,
@@ -57,26 +51,26 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
       st.kill();
     };
   }, {
-    dependencies: [slides.length],
+    dependencies: [slides.length , isRTL],
     scope: wrapperRef
   });
 
-  const goToIndex = (index: number) => {
-    const wrapper = wrapperRef.current;
-    const track = trackRef.current;
-    if (!wrapper || !track) return;
+  // const goToIndex = (index: number) => {
+  //   const wrapper = wrapperRef.current;
+  //   const track = trackRef.current;
+  //   if (!wrapper || !track) return;
 
-    const scrollWidth = track.scrollWidth - wrapper.offsetWidth;
-    const progress = index / Math.max(1, slides.length - 1);
+  //   const scrollWidth = track.scrollWidth - wrapper.offsetWidth;
+  //   const progress = index / Math.max(1, slides.length - 1);
 
-    gsap.to(track, {
-      x: -scrollWidth * progress,
-      duration: 0.6,
-      ease: "power2.out",
-    });
+  //   gsap.to(track, {
+  //     x: -scrollWidth * progress,
+  //     duration: 0.6,
+  //     ease: "power2.out",
+  //   });
 
-    setActiveIndex(index);
-  };
+  //   setActiveIndex(index);
+  // };
 
   const { setSingleCompositionVisible } = useSectionVisibility();
 
@@ -99,20 +93,7 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
 
   return (
     <div ref={wrapperRef} className=" relative w-screen  min-h-screen overflow-x-hidden">
-      {/* Navigation bullets */}
-      {/* <div className="absolute left-1/2  top-[10%] md:top-1/4 flex gap-3 -translate-x-1/2 z-50">
-        {slides.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => goToIndex(idx)}
-            className={`w-3 h-3 rounded-full transition-transform duration-300 ${activeIndex === idx ? "bg-black scale-125" : "bg-black/30 hover:bg-black/50"
-              }`}
-            aria-label={`Go to slide ${idx + 1}`}
-          />
-        ))}
-      </div> */}
-
-      {/* Slides container */}
+     
       <div ref={trackRef}
       
       className="flex pr-40  justify-start items-center gap-20 h-screen will-change-transform">

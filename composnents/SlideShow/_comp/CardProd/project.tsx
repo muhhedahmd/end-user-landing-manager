@@ -1,8 +1,3 @@
-
-// ============================================================================
-// PROJECT CARD
-// ============================================================================
-
 import BlurredImage from "@/composnents/Reusabale/ClientImageWithBlurHash"
 import { ProjectWithRelationsSlide } from "@/types/schema"
 import { ExternalLink, Github } from "lucide-react"
@@ -23,6 +18,7 @@ interface ProjectCardProps {
     imaged?: boolean
 }
 
+
 export const ProjectCard = ({
     imaged = false,
     data,
@@ -33,7 +29,6 @@ export const ProjectCard = ({
     if (split) {
         return <ProjectCardParallax data={data} index={index} />
     }
-
     if (story) {
         return <ProjectCardStory data={data} />
     }

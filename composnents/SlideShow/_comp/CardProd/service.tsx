@@ -22,8 +22,10 @@ interface ServiceCardProps {
 
 export const ServiceCard = ({ lightOpen ,data, imaged = false, splitcarousel, story }: ServiceCardProps) => {
 
+
     const cardRef = useRef<HTMLElement>(null)
     const DataToRender = data?.name ? data : data.data
+
 
     useEffect(() => {
         const card = cardRef.current
@@ -47,7 +49,7 @@ export const ServiceCard = ({ lightOpen ,data, imaged = false, splitcarousel, st
         // Animate children
         const title = card.querySelector(".service-title")
         const description = card.querySelector(".service-description")
-        const price = card.querySelector(".service-price")
+        // const price = card.querySelector(".service-price")
 
         if (title) {
             gsap.fromTo(
@@ -82,28 +84,13 @@ export const ServiceCard = ({ lightOpen ,data, imaged = false, splitcarousel, st
             )
         }
 
-        if (price) {
-            gsap.fromTo(
-                price,
-                { opacity: 0, y: 10 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.5,
-                    delay: 0.3,
-                    scrollTrigger: {
-                        trigger: card,
-                        start: "top 90%"
-                    }
-                }
-            )
-        }
+   
     }, [])
 
     if (imaged) {
         return (
             <>
-                {DataToRender.image && (
+                {DataToRender?.image && (
                     <div className="mb-5 h-full w-full overflow-hidden rounded-xl bg-muted">
                         <BlurredImage
                             imageUrl={DataToRender.image.url || ""}
@@ -127,7 +114,7 @@ export const ServiceCard = ({ lightOpen ,data, imaged = false, splitcarousel, st
                 className="group relative h-full overflow-hidden rounded-2xl flex flex-col lg:flex-row w-full gap-4 md:gap-6 p-3 sm:p-4 md:p-6 hover:border-primary/50 transition-all duration-300"
             >
                 {/* Image Container */}
-                {DataToRender.image && (
+                {DataToRender?.image && (
                     <div className="w-full lg:w-2/5 xl:w-1/2 h-48 sm:h-64 md:h-80 lg:h-full overflow-hidden rounded-lg bg-muted flex-shrink-0">
                         <BlurredImage
                             imageUrl={DataToRender.image.url || ""}
@@ -145,47 +132,41 @@ export const ServiceCard = ({ lightOpen ,data, imaged = false, splitcarousel, st
                 <div className="flex-1 space-y-3 sm:space-y-4 md:space-y-6 flex flex-col">
                     {/* Title with Icon */}
                     <div className="flex items-center gap-2 sm:gap-3">
-                        {DataToRender.icon && DataToRender?.icon?.startsWith("http") ? (
+                        {DataToRender?.icon && DataToRender?.icon?.startsWith("http") ? (
                             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary/10 p-2 sm:p-2.5 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300 flex-shrink-0">
                                 <Image
-                                    src={DataToRender.icon}
+                                    src={DataToRender?.icon}
                                     width={24}
                                     height={24}
-                                    alt={DataToRender.name + "-icon"}
+                                    alt={DataToRender?.name + "-icon"}
                                     className="w-full h-full object-contain"
                                 />
                             </div>
                         ) : (
-                            <span className="text-2xl sm:text-3xl md:text-4xl flex-shrink-0">{DataToRender.icon}</span>
+                            <span className="text-2xl sm:text-3xl md:text-4xl flex-shrink-0">{DataToRender?.icon}</span>
                         )}
                         <h3 className="service-title text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-sora text-foreground">
-                            {DataToRender.name}
+                            {DataToRender?.name}
                         </h3>
                     </div>
 
                     {/* Description */}
-                    {DataToRender.description && (
+                    {DataToRender?.description && (
                         <p className="service-description text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed font-inter">
-                            {DataToRender.description}
+                            {DataToRender?.description}
                         </p>
                     )}
 
                     {/* Rich Description */}
-                    {DataToRender.richDescription && (
+                    {DataToRender?.richDescription && (
                         <div
                             className="service-description text-sm sm:text-base md:text-md text-muted-foreground leading-relaxed font-inter prose prose-sm sm:prose-base max-w-none"
-                            dangerouslySetInnerHTML={{ __html: DataToRender.richDescription }}
+                            dangerouslySetInnerHTML={{ __html: DataToRender?.richDescription }}
                         />
                     )}
 
                     {/* Price - Push to bottom */}
-                    {DataToRender.price && (
-                        <div className="service-price pt-3 sm:pt-4 md:pt-6 border-t border-border mt-auto">
-                            <span className="text-sm sm:text-base md:text-lg font-bold text-primary font-sora">
-                                {DataToRender.price}
-                            </span>
-                        </div>
-                    )}
+                  
                 </div>
             </article>
         )
@@ -203,7 +184,7 @@ export const ServiceCard = ({ lightOpen ,data, imaged = false, splitcarousel, st
         )}
     >
         {/* Image Section */}
-        {DataToRender.image && (
+        {DataToRender?.image && (
             <div 
                 className={cn(
                     "overflow-hidden rounded-md bg-muted",
@@ -213,11 +194,11 @@ export const ServiceCard = ({ lightOpen ,data, imaged = false, splitcarousel, st
                 )}
             >
                 <BlurredImage
-                    imageUrl={DataToRender.image.url || ""}
-                    height={DataToRender.image.height || 400}
-                    width={DataToRender.image.width || 800}
-                    alt={DataToRender.image.alt || data.name}
-                    blurhash={DataToRender.image.blurHash || ""}
+                    imageUrl={DataToRender?.image.url || ""}
+                    height={DataToRender?.image.height || 400}
+                    width={DataToRender?.image.width || 800}
+                    alt={DataToRender?.image.alt || data.name}
+                    blurhash={DataToRender?.image.blurHash || ""}
                     quality={100}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
@@ -235,10 +216,10 @@ export const ServiceCard = ({ lightOpen ,data, imaged = false, splitcarousel, st
         >
             {/* Icon & Title */}
             <div className="flex items-center gap-3">
-                {DataToRender.icon && DataToRender?.icon?.startsWith("http") ? (
+                {DataToRender?.icon && DataToRender?.icon?.startsWith("http") ? (
                     <div className="w-12 h-12 rounded-xl bg-primary/10 p-2.5 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
                         <Image
-                            src={DataToRender.icon}
+                            src={DataToRender?.icon}
                             width={24}
                             height={24}
                             alt={DataToRender.name + "-icon"}
@@ -246,7 +227,7 @@ export const ServiceCard = ({ lightOpen ,data, imaged = false, splitcarousel, st
                         />
                     </div>
                 ) : (
-                    <span className="text-2xl">{DataToRender.icon}</span>
+                    <span className="text-2xl">{DataToRender?.icon}</span>
                 )}
                 <h3 
                     className={cn(
@@ -254,19 +235,19 @@ export const ServiceCard = ({ lightOpen ,data, imaged = false, splitcarousel, st
                         lightOpen ? "text-2xl" : "text-xl"
                     )}
                 >
-                    {DataToRender.name}
+                    {DataToRender?.name}
                 </h3>
             </div>
 
             {/* Description */}
-            {DataToRender.description && (
+            {DataToRender?.description && (
                 <p 
                     className={cn(
                         "service-description text-muted-foreground leading-relaxed font-inter",
                         lightOpen ? "text-base" : "text-sm"
                     )}
                 >
-                    {DataToRender.description}
+                    {DataToRender?.description}
                 </p>
             )}
 
@@ -279,7 +260,7 @@ export const ServiceCard = ({ lightOpen ,data, imaged = false, splitcarousel, st
                             ? "text-base line-clamp-none prose-base" 
                             : "text-sm line-clamp-4"
                     )}
-                    dangerouslySetInnerHTML={{ __html: DataToRender.richDescription }}
+                    dangerouslySetInnerHTML={{ __html: DataToRender?.richDescription }}
                 />
             )}
         </div>

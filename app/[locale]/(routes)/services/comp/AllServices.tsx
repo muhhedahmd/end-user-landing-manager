@@ -5,9 +5,10 @@ import ServiceHoverCard from "./ServiceHoverCard"
 
 
 
-const AllServices = async () => {
+const AllServices = async ({ locale}: {locale: "en" | "ar" }) => {
     const skip = 0
     const result = await fetchServices({
+        langEnd: locale?.toUpperCase() as "EN" | "AR" || "EN",
         skip,
         take: 100,
         isFeatured: true,
@@ -26,7 +27,7 @@ const AllServices = async () => {
                     result?.data.map((item, i) => {
                         return (
 
-                            <ServiceHoverCard item={item} key={i} idx={i} >
+                            <ServiceHoverCard item={item} key={i}  >
 
 
                              <div className="flex justify-start items-start  gap-2  ">

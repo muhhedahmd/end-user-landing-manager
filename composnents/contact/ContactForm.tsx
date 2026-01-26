@@ -1,43 +1,70 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
+import { getDictionary } from "@/lib/i18n"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { useRef, useState } from "react"
 import { z } from "zod"
 
-// Zod validation schema matching backend
-const contactSchema = z.object({
-  name: z.string().min(1, "Name is required").max(255, "Name must be less than 255 characters"),
-  email: z.string().min(1, "Email is required").email("Invalid email address"),
-  phone: z
-    .string()
-    .regex(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, "Invalid phone number format")
-    .optional()
-    .or(z.literal("")),
-  company: z.string().max(255, "Company name must be less than 255 characters").optional().or(z.literal("")),
-  subject: z.string().min(1, "Subject is required").max(255, "Subject must be less than 255 characters"),
-  message: z
-    .string()
-    .min(10, "Message must be at least 10 characters")
-    .max(5000, "Message must be less than 5000 characters"),
-  // budget: z.string().max(255).optional().or(z.literal("")),
-  // timeline: z.string().max(255).optional().or(z.literal("")),
-  category: z.enum([
-    "GENERAL_INQUIRY",
-    "SUPPORT",
-    "SALES",
-    "PARTNERSHIP",
-    "FEEDBACK",
-    "COMPLAINT",
-    "SERVICE_INQUIRY",
-    "OTHER",
-  ]).default("GENERAL_INQUIRY"),
-})
+export type DictionaryShape = Awaited<ReturnType<typeof getDictionary>>
 
-type ContactFormData = z.infer<typeof contactSchema>
+const createContactSchema = (t: DictionaryShape["contact"]) => {
+  const e = t.errors ?? {}
+  const msg = (key: string, fallback: string) => e[key as keyof typeof e] ?? fallback
 
-export default function ContactForm() {
+  return z.object({
+    name: z
+      .string()
+      .min(1, msg("required", "This field is required"))
+      .max(255, msg("maxName", "Name must be less than 255 characters")),
+    email: z
+      .string()
+      .min(1, msg("required", "This field is required"))
+      .email(msg("email", "Invalid email address")),
+    phone: z
+      .string()
+      .regex(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, msg("phone", "Invalid phone number format"))
+      .optional()
+      .or(z.literal("")),
+    company: z
+      .string()
+      .max(255, msg("maxCompany", "Company name must be less than 255 characters"))
+      .optional()
+      .or(z.literal("")),
+    subject: z
+      .string()
+      .min(1, msg("required", "This field is required"))
+      .max(255, msg("maxSubject", "Subject must be less than 255 characters")),
+    message: z
+      .string()
+      .min(10, msg("minMessage", "Message must be at least 10 characters"))
+      .max(5000, msg("maxMessage", "Message must be less than 5000 characters")),
+    category: z
+      .enum([
+        "GENERAL_INQUIRY",
+        "SUPPORT",
+        "SALES",
+        "PARTNERSHIP",
+        "FEEDBACK",
+        "COMPLAINT",
+        "SERVICE_INQUIRY",
+        "OTHER",
+      ])
+      .default("GENERAL_INQUIRY"),
+  })
+}
+
+type ContactFormData = z.infer<ReturnType<typeof createContactSchema>>
+
+export default function ContactForm({
+  dictionary,
+}: {
+  dictionary: DictionaryShape
+}) {
+  const t = dictionary.contact
+  const schema = createContactSchema(t)
+
   const formRef = useRef<HTMLDivElement>(null)
   const successRef = useRef<HTMLDivElement>(null)
 
@@ -48,8 +75,6 @@ export default function ContactForm() {
     company: "",
     subject: "",
     message: "",
-    // budget: "",
-    // timeline: "",
     category: "GENERAL_INQUIRY",
   })
 
@@ -81,7 +106,7 @@ export default function ContactForm() {
 
   const validateField = (name: keyof ContactFormData, value: string): string => {
     try {
-      contactSchema.shape[name].parse(value)
+      createContactSchema(t).shape[name].parse(value)
       return ""
     } catch (error : any) {
       if (error instanceof z.ZodError as any) {
@@ -90,15 +115,13 @@ export default function ContactForm() {
       return ""
     }
   }
-
   const validateForm = (): boolean => {
     try {
-      contactSchema.parse(formData)
+      createContactSchema(t).parse(formData)
       setErrors({})
       return true
     } catch (error : any) {
       if (error instanceof z.ZodError as any  ) {
-        console.log(error)
         const newErrors: Partial<Record<keyof ContactFormData, string>> = {}
         error.errors.forEach((err : any) => {
           if (err.path[0]) {
@@ -111,10 +134,9 @@ export default function ContactForm() {
       return false
     }
   }
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    setFormData((prev) => ({ ...prev, [name]: value } as ContactFormData))
 
     // Real-time validation
     if (touched[name as keyof ContactFormData]) {
@@ -126,7 +148,6 @@ export default function ContactForm() {
   const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setTouched((prev) => ({ ...prev, [name]: true }))
-
     const error = validateField(name as keyof ContactFormData, value)
     setErrors((prev) => ({ ...prev, [name]: error }))
   }
@@ -149,7 +170,6 @@ export default function ContactForm() {
       const referrer = typeof document !== "undefined" ? document.referrer || "" : ""
       const source = typeof window !== "undefined" ? window.location.hostname : ""
 
-      // Prepare payload matching backend schema
       const payload = {
         name: formData.name,
         email: formData.email,
@@ -158,8 +178,6 @@ export default function ContactForm() {
         subject: formData.subject,
         message: formData.message,
         category: formData.category,
-        // budget: formData.budget || null,
-        // timeline: formData.timeline || null,
         status: "NEW",
         priority: "MEDIUM",
         source: source || null,
@@ -183,8 +201,6 @@ export default function ContactForm() {
           company: "",
           subject: "",
           message: "",
-          // budget: "",
-          // timeline: "",
           category: "GENERAL_INQUIRY",
         })
         setErrors({})
@@ -193,48 +209,63 @@ export default function ContactForm() {
         setTimeout(() => setIsSuccess(false), 5000)
       } else {
         const errorData = await response.json().catch(() => ({}))
-        setErrors((prev) => ({ 
-          ...prev, 
-          submit: errorData.message || "Failed to send. Please try again." 
+        setErrors((prev) => ({
+          ...prev,
+          submit: (errorData?.message as string) || t.errors?.submit || "Failed to send. Please try again.",
         }))
       }
     } catch (error) {
       console.error("Submission error:", error)
-      setErrors((prev) => ({ ...prev, submit: "Failed to send. Please try again." }))
+      setErrors((prev) => ({ ...prev, submit: t.errors?.submit || "Failed to send. Please try again." }))
     } finally {
       setIsSubmitting(false)
     }
   }
+
+  // categories from dictionary, with fallback order-preserving default
+  const categoryOptions = Object.keys(t.categories ?? {}).length
+    ? Object.entries(t.categories)
+    : [
+        ["GENERAL_INQUIRY", "General Inquiry"],
+        ["SUPPORT", "Support"],
+        ["SALES", "Sales"],
+        ["PARTNERSHIP", "Partnership"],
+        ["FEEDBACK", "Feedback"],
+        ["COMPLAINT", "Complaint"],
+        ["SERVICE_INQUIRY", "Service Inquiry"],
+        ["OTHER", "Other"],
+      ]
 
   return (
     <section id="contact" className="py-20 px-4">
       <div className="max-w-3xl mx-auto">
         <div ref={formRef} className="text-card-foreground p-8 border-b">
           <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-4xl font-bold mb-3">Ready to Work Together?</h2>
-            <p className="text-muted-foreground text-lg">
-              Have a project in mind? Let&apos;s discuss.
-            </p>
+            <h2 className="text-2xl md:text-4xl font-bold mb-3">{t.title}</h2>
+            <p className="text-muted-foreground text-lg">{t.subtitle}</p>
           </div>
 
           {isSuccess && (
             <div
               ref={successRef}
               className="mb-6 p-4 bg-green-50 border border-green-200 text-green-800 rounded-lg"
+              role="status"
             >
-              ✓ Thank you! We&apos;ll be in touch soon.
+              ✓ {t.success}
             </div>
           )}
 
           {errors.submit && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-800 rounded-lg">{errors.submit}</div>
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-800 rounded-lg" role="alert">
+              {errors.submit}
+            </div>
           )}
 
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Full Name <span className="text-red-500">*</span>
+                  {t.fields.name} <span className="text-red-500">*</span>
                 </label>
                 <input
                   name="name"
@@ -244,14 +275,20 @@ export default function ContactForm() {
                   className={`w-full px-4 py-2.5 rounded-lg border bg-background focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all ${
                     errors.name && touched.name ? "border-red-500" : ""
                   }`}
-                  placeholder="John Doe"
+                  placeholder={t.placeholders.name}
+                  aria-invalid={!!errors.name}
+                  aria-describedby={errors.name && touched.name ? "err-name" : undefined}
                 />
-                {errors.name && touched.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                {errors.name && touched.name && (
+                  <p id="err-name" className="text-red-500 text-sm mt-1">
+                    {errors.name}
+                  </p>
+                )}
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Subject <span className="text-red-500">*</span>
+                  {t.fields.subject} <span className="text-red-500">*</span>
                 </label>
                 <input
                   name="subject"
@@ -261,14 +298,20 @@ export default function ContactForm() {
                   className={`w-full px-4 py-2.5 rounded-lg border bg-background focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all ${
                     errors.subject && touched.subject ? "border-red-500" : ""
                   }`}
-                  placeholder="What's this about?"
+                  placeholder={t.placeholders.subject}
+                  aria-invalid={!!errors.subject}
+                  aria-describedby={errors.subject && touched.subject ? "err-subject" : undefined}
                 />
-                {errors.subject && touched.subject && <p className="text-red-500 text-sm mt-1">{errors.subject}</p>}
+                {errors.subject && touched.subject && (
+                  <p id="err-subject" className="text-red-500 text-sm mt-1">
+                    {errors.subject}
+                  </p>
+                )}
               </div>
 
               <div>
                 <label className="block text-sm font-medium mb-2">
-                  Work Email <span className="text-red-500">*</span>
+                  {t.fields.email} <span className="text-red-500">*</span>
                 </label>
                 <input
                   name="email"
@@ -279,13 +322,19 @@ export default function ContactForm() {
                   className={`w-full px-4 py-2.5 rounded-lg border bg-background focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all ${
                     errors.email && touched.email ? "border-red-500" : ""
                   }`}
-                  placeholder="john@company.com"
+                  placeholder={t.placeholders.email}
+                  aria-invalid={!!errors.email}
+                  aria-describedby={errors.email && touched.email ? "err-email" : undefined}
                 />
-                {errors.email && touched.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                {errors.email && touched.email && (
+                  <p id="err-email" className="text-red-500 text-sm mt-1">
+                    {errors.email}
+                  </p>
+                )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Phone</label>
+                <label className="block text-sm font-medium mb-2">{t.fields.phone}</label>
                 <input
                   name="phone"
                   type="tel"
@@ -295,15 +344,21 @@ export default function ContactForm() {
                   className={`w-full px-4 py-2.5 rounded-lg border bg-background focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all ${
                     errors.phone && touched.phone ? "border-red-500" : ""
                   }`}
-                  placeholder="+1 (555) 123-4567"
+                  placeholder={t.placeholders.phone}
+                  aria-invalid={!!errors.phone}
+                  aria-describedby={errors.phone && touched.phone ? "err-phone" : undefined}
                 />
-                {errors.phone && touched.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+                {errors.phone && touched.phone && (
+                  <p id="err-phone" className="text-red-500 text-sm mt-1">
+                    {errors.phone}
+                  </p>
+                )}
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium mb-2">Company</label>
+                <label className="block text-sm font-medium mb-2">{t.fields.company}</label>
                 <input
                   name="company"
                   value={formData.company}
@@ -312,36 +367,41 @@ export default function ContactForm() {
                   className={`w-full px-4 py-2.5 rounded-lg border bg-background focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all ${
                     errors.company && touched.company ? "border-red-500" : ""
                   }`}
-                  placeholder="Your Company Inc."
+                  placeholder={t.placeholders.company}
+                  aria-invalid={!!errors.company}
+                  aria-describedby={errors.company && touched.company ? "err-company" : undefined}
                 />
-                {errors.company && touched.company && <p className="text-red-500 text-sm mt-1">{errors.company}</p>}
+                {errors.company && touched.company && (
+                  <p id="err-company" className="text-red-500 text-sm mt-1">
+                    {errors.company}
+                  </p>
+                )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Category <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium mb-2">
+                  {t.fields.category} <span className="text-red-500">*</span>
+                </label>
                 <select
                   name="category"
                   value={formData.category}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   className="w-full px-4 py-2.5 rounded-lg border bg-background focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                  aria-invalid={!!errors.category}
                 >
-                  <option value="GENERAL_INQUIRY">General Inquiry</option>
-                  <option value="SUPPORT">Support</option>
-                  <option value="SALES">Sales</option>
-                  <option value="PARTNERSHIP">Partnership</option>
-                  <option value="FEEDBACK">Feedback</option>
-                  <option value="COMPLAINT">Complaint</option>
-                  <option value="SERVICE_INQUIRY">Service Inquiry</option>
-                  <option value="OTHER">Other</option>
+                  {categoryOptions.map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
 
-
             <div>
               <label className="block text-sm font-medium mb-2">
-                Project Details <span className="text-red-500">*</span>
+                {t.fields.message} <span className="text-red-500">*</span>
               </label>
               <textarea
                 name="message"
@@ -352,10 +412,18 @@ export default function ContactForm() {
                 className={`w-full px-4 py-2.5 rounded-lg border bg-background focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all resize-none ${
                   errors.message && touched.message ? "border-red-500" : ""
                 }`}
-                placeholder="Tell us about your project..."
+                placeholder={t.placeholders.message}
+                aria-invalid={!!errors.message}
+                aria-describedby={errors.message && touched.message ? "err-message" : undefined}
               />
-              {errors.message && touched.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
-              <p className="text-xs text-muted-foreground mt-1">{formData.message.length}/5000 characters</p>
+              {errors.message && touched.message && (
+                <p id="err-message" className="text-red-500 text-sm mt-1">
+                  {errors.message}
+                </p>
+              )}
+              <p className="text-xs text-muted-foreground mt-1">
+                {formData.message.length}/5000
+              </p>
             </div>
 
             <button
@@ -364,7 +432,7 @@ export default function ContactForm() {
               disabled={isSubmitting}
               className="w-full px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 disabled:opacity-50 transition-all hover:shadow-lg"
             >
-              {isSubmitting ? "Sending..." : "Send Inquiry"}
+              {isSubmitting ? t.sending : t.submit}
             </button>
           </div>
         </div>

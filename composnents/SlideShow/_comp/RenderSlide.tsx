@@ -1,19 +1,25 @@
 "use client";
 
 import { CompositionType } from "@/types/schema";
-import { useState, useEffect, useCallback, useRef, memo } from "react";
+import { useState, useEffect, useCallback, useRef, memo, JSX } from "react";
 import { slidesService } from "./services/slideShowService";
 import { CompositionPreview } from "./CompositionPreviw";
+import { CompositionLoader } from "./SlidesLoader";
 
 
 interface RenderSlidesProps {
+  locale: "en" | "ar"
   isInViewport: boolean;
   id: string;
   interval?: number;
   autoPlay: boolean;
   composition: CompositionType;
+    HeaderSlideShow ?: JSX.Element | null
+  
 }
-const  RenderSlidesManual = memo(({
+const RenderSlidesManual = memo(({
+  HeaderSlideShow ,
+  locale,
   isInViewport,
   id,
   interval = 5000,
@@ -28,7 +34,6 @@ const  RenderSlidesManual = memo(({
   const hasTriggered = useRef(false);
 
   const fetchSlides = useCallback(async () => {
-
     if (hasTriggered.current) return;
 
     hasTriggered.current = true;
@@ -52,6 +57,8 @@ const  RenderSlidesManual = memo(({
             type: item.type,
             order: item.order,
             id: item.id,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ...item.translation.find((t : any) => t.lang.toUpperCase() === locale.toUpperCase()),
             customTitle: item.customTitle,
             customDescription: item.customDesc,
           }));
@@ -68,7 +75,7 @@ const  RenderSlidesManual = memo(({
     } finally {
       setIsLoading(false);
     }
-  }, [id]);
+  }, [id , locale]);
 
 
   useEffect(() => {
@@ -76,6 +83,13 @@ const  RenderSlidesManual = memo(({
     fetchSlides();
   }, [fetchSlides]);
 
+
+
+  if (isLoading) {
+    return (
+      <CompositionLoader composition={composition} locale="en"/>
+    );
+  }
 
   if (error) {
 
@@ -87,11 +101,13 @@ const  RenderSlidesManual = memo(({
   }
 
 
+
   else return (
     <>
 
-      {!isLoading && !error &&  (
+      {!isLoading && !error && (
         <CompositionPreview
+        HeaderSlideShow={HeaderSlideShow}
           interval={interval}
           autoPlay={autoPlay}
           isInViewport={isInViewport}
@@ -100,7 +116,7 @@ const  RenderSlidesManual = memo(({
         />
       )}
 
-     
+
     </>
   );
 

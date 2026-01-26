@@ -11,10 +11,8 @@ import { cn } from '@/lib/utils'
 const ServiceHoverCard = ({
     children,
     item,
-    idx
 }: {
     item: ServiceWithImage,
-    idx: number
     children: React.ReactNode
 }) => {
     const [HoverId, setHoverId] = useState<null | string>(null);

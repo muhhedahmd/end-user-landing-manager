@@ -3,6 +3,7 @@
 import { ReactLenis } from 'lenis/react'
 import { ReactNode } from 'react'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const lenisRef = { current: null as any }
 interface SmoothScrollingProps {
   children: ReactNode
@@ -16,6 +17,7 @@ export default function SmoothScrolling({ children }: SmoothScrollingProps) {
         lerp: 0.1,
         duration: 1.5,
         smoothWheel: true,
+        wheelMultiplier: .7,
 
       }}
       ref={(instance) => {

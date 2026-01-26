@@ -9,17 +9,19 @@ import Link from "next/link"
 import { useEffect, useRef } from "react"
 import gsap from "gsap"
 import ScrollTrigger from "gsap/dist/ScrollTrigger"
+import { useGSAP } from "@gsap/react"
 
 gsap.registerPlugin(ScrollTrigger)
 
 interface TeamMemberCardProps {
   data: TeamMemberWithImage
+  splitcarousel?: boolean,
 }
 
-export const TeamMemberCard = ({ data }: TeamMemberCardProps) => {
+export const TeamMemberCard = ({ splitcarousel, data }: TeamMemberCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
+  useGSAP(() => {
     const card = cardRef.current
     if (!card) return
 
@@ -82,6 +84,7 @@ export const TeamMemberCard = ({ data }: TeamMemberCardProps) => {
     }
   }, [])
 
+  if (SplitcarouselTeam) return <SplitcarouselTeam data={data} />
   return (
     <div
       ref={cardRef}
@@ -124,8 +127,8 @@ export const TeamMemberCard = ({ data }: TeamMemberCardProps) => {
         {/* Social Links */}
         <div className="member-social flex gap-2 pt-3 border-t border-border">
           {data.linkedin && (
-              <Link
-            
+            <Link
+
               href={data.linkedin}
               target="_blank"
               rel="noopener noreferrer"
@@ -137,18 +140,18 @@ export const TeamMemberCard = ({ data }: TeamMemberCardProps) => {
           )}
           {data.github && (
             <Link
-            href={data.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center text-xs font-bold hover:bg-primary hover:text-primary-foreground transition-all duration-200"
-            aria-label="GitHub"
+              href={data.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center text-xs font-bold hover:bg-primary hover:text-primary-foreground transition-all duration-200"
+              aria-label="GitHub"
             >
               gh
             </Link>
           )}
           {data.twitter && (
-              
-              <Link
+
+            <Link
               href={data.twitter}
               target="_blank"
               rel="noopener noreferrer"
@@ -172,3 +175,110 @@ export const TeamMemberCard = ({ data }: TeamMemberCardProps) => {
     </div>
   )
 }
+
+
+const SplitcarouselTeam = ({ data }: { data: TeamMemberWithImage }) => {
+  const cardRef = useRef<HTMLDivElement>(null)
+
+  return (
+    <div
+      ref={cardRef}
+      className="group relative h-full  flex items-start justify-start overflow-hidden rounded-2xl md:flex-row flex-col  hover:border-primary/50 transition-all duration-300"
+    >
+      {/* Image Section */}
+      <div className="relative h-120 w-220 overflow-hidden bg-muted flex-2">
+
+        {data.image && (
+          <BlurredImage
+            imageUrl={data.image.url || ""}
+            height={data.image.height || 400}
+            width={data.image.width || 800}
+            alt={data.image.alt || data.name}
+            blurhash={data.image.blurHash || ""}
+            quality={100}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+          />
+        )}
+      </div>
+
+      {/* Content Section */}
+      <div className="p-6 space-y-4  flex-4 flex flex-col h-120 gap-3">
+
+
+        {/* Name & Position */}
+        <div className="mb-10  ">
+
+          <h3 className="member-title text-xl font-bold text-foreground font-sora">
+            {data.name}
+          </h3>
+          <p className="member-position text-md font-semibold text-primary font-inter">
+            {data.position}
+          </p>
+          <div className="w-full border-t mt-2" />
+
+        </div>
+
+        {/* Bio */}
+        {data.bio && (
+
+          <p className="member-bio text-md font-bold text-muted-foreground leading-relaxed font-inter">
+            {data.bio}
+          </p>
+        )}
+
+        {/* Social Links */}
+        <div className="member-social flex-3 gap-2 pt-3 flex-col flex w-full border-border justify-end items-end">
+          <div className="w-full border-t " />
+          <div className="flex justify-start items-end gap-3">
+
+            {data.linkedin && (
+              <Link
+
+                href={data.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center text-xs font-bold hover:bg-primary hover:text-primary-foreground transition-all duration-200"
+                aria-label="LinkedIn"
+              >
+                in
+              </Link>
+            )}
+            {data.github && (
+              <Link
+                href={data.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center text-xs font-bold hover:bg-primary hover:text-primary-foreground transition-all duration-200"
+                aria-label="GitHub"
+              >
+                gh
+              </Link>
+            )}
+            {data.twitter && (
+
+              <Link
+                href={data.twitter}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center text-xs font-bold hover:bg-primary hover:text-primary-foreground transition-all duration-200"
+                aria-label="Twitter"
+              >
+                𝕏
+              </Link>
+            )}
+            {data.email && (
+              <Link
+                href={`mailto:${data.email}`}
+                className="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center text-xs hover:bg-primary hover:text-primary-foreground transition-all duration-200"
+                aria-label="Email"
+              >
+                ✉️
+              </Link>
+            )}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  )
+} 

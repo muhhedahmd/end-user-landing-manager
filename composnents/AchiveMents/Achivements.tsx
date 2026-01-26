@@ -3,6 +3,7 @@ import {
     TrendingUp,
 } from "lucide-react";
 import StatCard, { iconComponents } from "./AchiveCard";
+import { DictionaryShape } from "../contact/ContactForm";
 
 type IconVariant = "warm" | "cool" | "success" | "purple" | "rose" | "teal";
 
@@ -66,14 +67,18 @@ async function fetchAchivement(): Promise<AchivementResult> {
 }
 
 
-const AchievementsSection = async () => {
-    //   const [isVisible, setIsVisible] = useState(false);
-    //   const sectionRef = useRef<HTMLDivElement>(null);
+const AchievementsSection = async ( {
+    locale,
+dictionary
+} : { 
+    dictionary : DictionaryShape
+
+    locale: "en" | "ar"
+}) => {
+
     const isVisible = true;
-    //   const { data } = useGetAchivementsQuery();
     const data = await fetchAchivement();
     if (data.status === "error") return null
-
 
 
 
@@ -111,17 +116,17 @@ const AchievementsSection = async () => {
                         <div className="mb-6 flex justify-center w-full items-center">
                             <span className="section-badge w-fit flex items-center p-2 shadow-md rounded-xl gap-2">
                                 <TrendingUp className="w-4 h-4" />
-                                <span>Our Journey</span>
+                                <span>{dictionary.achievements.title}</span>
                             </span>
                         </div>
 
                         <h2 className="section-title mb-6">
-                            Our <span className="text-gradient italic">Achievements</span>
+
+                            {dictionary.achievements.subtitle} 
                         </h2>
 
                         <p className="section-subtitle">
-                            Celebrating milestones and the meaningful impact we&apos;ve created
-                            together
+                          {dictionary.achievements.badge}
                         </p>
                     </header>
 
@@ -130,7 +135,8 @@ const AchievementsSection = async () => {
                         {stats?.map((stat, index) => (
                             <StatCard
                                 key={stat.label}
-                                label={stat.label}
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                label={dictionary.achievements.stats[stat.label as keyof typeof dictionary.achievements.stats] || stat.label}
                                 value={stat.value}
                                 icon={stat.icon}
                                 variant={stat.variant}

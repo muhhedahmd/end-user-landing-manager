@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useRef, useState, useEffect } from "react";
+import { memo, useRef, useState, useEffect, JSX } from "react";
 import { CompositionType } from "@/types/schema";
 
 import  RenderSlides  from "./RenderSlide";
@@ -11,6 +11,7 @@ import  RenderSlides  from "./RenderSlide";
 
 interface SlideshowCardClientProps {
   id: string;
+  locale : "en" | "ar";
   composition: keyof typeof CompositionType;
   autoPlay: boolean;
   interval: number;
@@ -18,6 +19,7 @@ interface SlideshowCardClientProps {
 }
 
 export const SlideshowCardClient = memo(function SlideshowCardClient({
+  locale,
   id,
   composition,
   autoPlay,
@@ -27,6 +29,7 @@ export const SlideshowCardClient = memo(function SlideshowCardClient({
   const [isInViewport, setIsInViewport] = useState(false);
 
   useEffect(() => {
+
     const el = cardRef.current;
     if (!el) return;
 
@@ -40,10 +43,6 @@ export const SlideshowCardClient = memo(function SlideshowCardClient({
         // Use intersectionRatio for more stable detection
         const visible = entry.isIntersecting && entry.intersectionRatio >= 0.4;
 
-        // Mark as seen once visible
-      
-
-        // Update viewport status
         requestAnimationFrame(() => {
           setIsInViewport((prev) => (prev === visible ? prev : visible));
         });
@@ -62,18 +61,15 @@ export const SlideshowCardClient = memo(function SlideshowCardClient({
   }, []);
 
   return (
-
-
     <div
     ref={cardRef}
-    // initial={{ opacity: 0, y: 20 }}
-    // whileInView={{ opacity: 1, y: 0 }}
-    // transition={{ duration: 0.3, delay: Math.min(index * 0.05, 0.3) }}
-    // viewport={{ once: true, margin: "100px" }}
+
     >
-      {/* Only render slides after component has been visible at least once */}
-      {/* {hasBeenVisible && ( */}
+
+     
       <RenderSlides
+
+      locale={locale}
         isInViewport={isInViewport}
         autoPlay={autoPlay}
         interval={interval}

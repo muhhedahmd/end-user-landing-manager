@@ -4,8 +4,10 @@ import { Fragment } from "react";
 import { fetchServices } from "./comp/Fetchers";
 import DarkSchema from "@/composnents/DarkShema";
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const _locale : string = (await params).locale 
   const servicesData = await fetchServices({
+    langEnd: _locale?.toUpperCase() as "EN" |"AR" || "EN",
     skip: 0,
     take: 5,
     isFeatured: true,
@@ -87,17 +89,21 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function ServicesLayout({
+export default async function ServicesLayout({
   children,
+  params
 }: {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>
 }) {
+
+    const _locale  = (await params).locale  as "en" | "ar" || "en"
   return (
-    <DarkSchema>
+    // <DarkSchema>
       <Fragment>
-        <Header  border title="services"/>
+        <Header locale={_locale} border title="services"/>
         {children}
       </Fragment>
-    </DarkSchema>
+    // </DarkSchema>
   );
 }

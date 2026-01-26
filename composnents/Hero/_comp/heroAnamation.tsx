@@ -7,27 +7,15 @@ import gsap from "gsap";
 import { usePathname } from "next/navigation";
 
 const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
+    const pathname = usePathname();
+    const isRTL  = pathname.startsWith("/ar");
     const { timeline, ctx, isReady } = useTimeLine();
     const contentRef = useRef<HTMLDivElement>(null);
     const headingRef = useRef<HTMLDivElement>(null);
-    const pathname = usePathname();
-    // const hasAnimated = useRef(false);
     const scrollAnimationRef = useRef<gsap.core.Tween | null>(null);
     const [isMobile, setIsMobile] = useState(false);
 
-    // Reset animation flag when pathname changes
-    // useEffect(() => {
-        
-    //     hasAnimated.current = false;
-
-    //     // Kill the infinite scroll animation when leaving the page
-    //     if (scrollAnimationRef.current) {
-    //         scrollAnimationRef.current.kill();
-    //         scrollAnimationRef.current = null;
-    //     }
-    // }, [pathname]);
-
-    // Detect screen size
+  
     useEffect(() => {
         const checkMobile = () => {
             setIsMobile(window.innerWidth < 768);
@@ -41,23 +29,7 @@ const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
 
     useGSAP(
         () => {
-            // Only run animation on homepage
-            // if (pathname !== "/") {
-            //     // Set static state for non-homepage
-            //     if (headingRef.current && contentRef.current) {
-            //         gsap.set(headingRef.current, {
-            //             height: "auto",
-            //             padding: "0",
-            //             y: 0,
-            //         });
-            //         gsap.set(contentRef.current, {
-            //             y: 0,
-            //             autoAlpha: 1,
-            //         });
-            //     }
-            //     return;
-            // }
-
+          
             if (
                 !contentRef.current ||
                 !headingRef.current ||
@@ -117,7 +89,13 @@ const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
                         duration: isMobile ? 30 : 23,
                         ease: "none",
                         repeat: -1,
-                        x: gsap.utils.wrap([width, -width]),
+                        x: isRTL ?  gsap.utils.wrap([-width /2 ,  width /2, ]) : gsap.utils.wrap([ width /2, -width/2]),
+                        onRepeat: () => {
+                            gsap.set(headingRef.current, {
+                                x:0
+                            })
+                            
+                        }
                     }
                 );
 

@@ -1,16 +1,15 @@
-import React, { useEffect, useRef } from "react";
-import gsap from "gsap";
+import  {  useRef } from "react";
 import BlurredImage from "@/composnents/Reusabale/ClientImageWithBlurHash";
 import { Star } from "lucide-react";
 
 interface MarqueeProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   slides: any[];
   isInViewport: boolean;
 }
 
-const Marquee = ({ slides, isInViewport }: MarqueeProps) => {
+const Marquee = ({ slides,  }: MarqueeProps) => {
   const marqueeRef = useRef<HTMLDivElement>(null);
-  const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
   // Create items from slides with all data extraction
   const marqueeItems = slides.map((slide, idx) => {
@@ -36,38 +35,6 @@ const Marquee = ({ slides, isInViewport }: MarqueeProps) => {
   // Duplicate items for seamless loop
   const duplicatedItems = [...marqueeItems, ...marqueeItems];
 
-  useEffect(() => {
-    if (!marqueeRef.current || !isInViewport) return;
-
-    const marquee = marqueeRef.current;
-    const totalWidth = marquee.scrollWidth / 2;
-
-    gsap.set(marquee, { x: 0 });
-
-    const tl = gsap.timeline({ repeat: -1 });
-    timelineRef.current = tl;
-    
-    tl.to(marquee, {
-      x: -totalWidth,
-      duration: slides.length * 3,
-      ease: "none",
-    });
-
-    return () => {
-      tl.kill();
-    };
-  }, [isInViewport, slides.length]);
-
-  // Pause animation when not in viewport
-  useEffect(() => {
-    if (timelineRef.current) {
-      if (isInViewport) {
-        timelineRef.current.play();
-      } else {
-        timelineRef.current.pause();
-      }
-    }
-  }, [isInViewport]);
 
   return (
     <div className="space-y-8">

@@ -1,13 +1,16 @@
-import { useRef, useEffect } from "react";
+import { JSX, useRef } from "react";
 import gsap from "gsap/dist/gsap";
 import { slide } from "@/types/schema";
-import { TypeToRenderProd } from "../TypToRenderProd";
 import { useGSAP } from "@gsap/react";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
+import Cube from "../CardProd/generic/cube";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const CubeComposition = ({ slides }: { slides: slide[] }) => {
+const CubeComposition = ({ slides, HeaderSlideShow }: {
+  HeaderSlideShow?: JSX.Element | null
+  , slides: slide[]
+}) => {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
 
@@ -18,28 +21,28 @@ const CubeComposition = ({ slides }: { slides: slide[] }) => {
   };
 
   // Wait for images to load before calculating ScrollTrigger positions
-  useEffect(() => {
-    const images = Array.from(rootRef.current?.querySelectorAll("img") || []);
-    
-    const loadPromises = images.map(
-      
-      (img) =>
-        new Promise((resolve) => {
-          if (img.complete) {
-            resolve(true);
-          } else {
-            img.onload = () => resolve(true);
-            img.onerror = () => resolve(true);
-          }
-        })
-    );
+  // useEffect(() => {
+  //   const images = Array.from(rootRef.current?.querySelectorAll("img") || []);
 
-    Promise.all(loadPromises).then(() => {
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 50);
-    });
-  }, [slides]);
+  //   const loadPromises = images.map(
+
+  //     (img) =>
+  //       new Promise((resolve) => {
+  //         if (img.complete) {
+  //           resolve(true);
+  //         } else {
+  //           img.onload = () => resolve(true);
+  //           img.onerror = () => resolve(true);
+  //         }
+  //       })
+  //   );
+
+  //   Promise.all(loadPromises).then(() => {
+  //     setTimeout(() => {
+  //       ScrollTrigger.refresh();
+  //     }, 50);
+  //   });
+  // }, [slides]);
 
   useGSAP(
     () => {
@@ -99,28 +102,35 @@ const CubeComposition = ({ slides }: { slides: slide[] }) => {
     {
       dependencies: [slides],
       scope: rootRef,
-      revertOnUpdate: true,
     }
   );
 
   return (
     <div
       ref={rootRef}
-      className="min-h-screen px-4 sm:px-6 md:px-8 lg:px-10 py-8 sm:py-10 md:py-12 font-light"
+      className="min-h-screen relative px-4 sm:px-6 md:px-8 lg:px-10 py-8 sm:py-10 md:py-12 font-light"
     >
       {/* Cards container */}
-      <div className="flex items-start justify-center pt-12 sm:pt-16 md:pt-24 lg:pt-32 xl:pt-40">
+
+      <div className="flex  items-start justify-center pt-12 sm:pt-16 md:pt-24 lg:pt-32 xl:pt-40">
         <div className="cards relative flex items-start justify-start flex-col w-full max-w-7xl">
-          {slides.map((n, i) => (
-            <div
+
+
+          {slides.map((n, i) => {
+
+
+            return <div
               key={i}
               ref={addCardRef}
-              className="relative mb-8 sm:mb-10 md:mb-12 flex w-full max-w-full 
-                         items-start justify-start rounded-xl sm:rounded-2xl overflow-hidden"
+              className="relative mb-8  h-100 sm:mb-10 md:mb-12 flex w-full max-w-full items-start justify-start rounded-xl sm:rounded-2xl overflow-hidden"
             >
-              <TypeToRenderProd slide={n} cube={true} />
+              
+       
+
+              <Cube data={n} />
             </div>
-          ))}
+          }
+          )}
         </div>
       </div>
 

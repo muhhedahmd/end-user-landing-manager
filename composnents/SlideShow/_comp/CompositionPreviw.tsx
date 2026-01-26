@@ -1,6 +1,6 @@
 "use client"
 
-import { memo, useCallback, useEffect, useState } from "react"
+import { JSX, memo, useCallback, useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import type { slide } from "@/types/schema"
@@ -11,6 +11,7 @@ import { TypeToRenderProd } from "./TypToRenderProd"
 import { ExpermintalParallaxContainer } from "./expermintal/ExpermintalParallaxContainer"
 import FilmStrip from "./CardProd/generic/filmStrap"
 import CoverflowComposition from "./expermintal/coverflowComposition"
+import MarqueeComposition from "./expermintal/marqueeComposition"
 
 interface CompositionPreviewProps {
   composition:
@@ -35,10 +36,12 @@ interface CompositionPreviewProps {
   interval: number
   autoPlay: boolean,
   isInViewport: boolean,
+    HeaderSlideShow ?: JSX.Element | null
+
   // containerRef : RefObject<HTMLDivElement | null>
 }
 
-export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, composition, slides }: CompositionPreviewProps) => {
+export const CompositionPreview = memo(({ isInViewport, HeaderSlideShow ,interval, autoPlay, composition, slides }: CompositionPreviewProps) => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [[page, direction], setPage] = useState([0, 0])
   const [lightboxOpen, setLightboxOpen] = useState(false)
@@ -181,7 +184,7 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
 
       return (
         <div className="space-y-8 overflow-hidden">
-          <div className="flex items-center  gap-3 justify-end px-8">
+          <div dir="ltr" className="flex items-center  gap-3 justify-end px-8">
             <motion.button
               initial="rest"
               whileHover="hover"
@@ -627,8 +630,8 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
     case "CUBE":
 
       // expemental
-      return null
-      return <CubeComposition slides={slides} />
+      // return null
+      return <CubeComposition HeaderSlideShow={HeaderSlideShow} slides={slides} />
 
       return (<div className="space-y-8">
         <div className="relative h-[500px] perspective-[1200px] flex items-center justify-center rounded-3xl overflow-hidden">
@@ -735,50 +738,7 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
 
     case "FILMSTRIP":
         return <FilmStrip slides={slides} isInViewport={isInViewport} />
-      return (
-        <div className="space-y-6" >
-          <div className="relative h-max rounded-3xl overflow-hidden">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentSlide}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.4 }}
-                className=" inset-0   "
-              >
-                <TypeToRenderProd light={true} play={isInViewport} slide={slides[currentSlide]} />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          <div className="flex gap-3 overflow-x-auto pb-2 px-4">
-            {slides.map((slide, idx) => (
-              <motion.button
-                style={{
-                  outline: "none",
-                  border: "none",
-                }}
-                key={idx}
-                onClick={() => {
-                  setCurrentSlide(idx)
-                  setLightboxOpen(true)
-                }}
-                // whileHover={{ scale: 1.1 }}
-                className={`w-40 h-40 rounded-lg border-4 transition-all overflow-hidden ${idx === currentSlide
-                  ? "border-primary  scale-105"
-                  : "border-muted-foreground/30 opacity-60 hover:opacity-100"
-                  }`}
-              >
-                <div className="h-full ">
-                  <TypeToRenderProd play={isInViewport} slide={slide} imaged={true} minmal={true} />
-                </div>
-
-              </motion.button>
-            ))}
-          </div>
-        </div>
-      )
+  
 
     case "LIGHTBOX":
 
@@ -851,44 +811,7 @@ export const CompositionPreview = memo(({ isInViewport, interval, autoPlay, comp
 
       return (
         
-
-        <div className="space-y-8">
-          <div className="relative h-32 overflow-hidden rounded-3xl bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10">
-            <motion.div
-              className="flex gap-4 h-full absolute"
-              animate={{
-                x: [0, -100 * slides.length - (slides.length * 16)],
-              }}
-              transition={{
-                x: {
-                  duration: slides.length * 3,
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  ease: "linear",
-                }
-              }}
-              style={{ willChange: "transform" }}
-            >
-              {slides.map((slide, idx) => (
-                <motion.div
-                  key={`original-${idx}`}
-                  className="min-w-fit h-full aspect-video rounded-2xl shrink-0"
-                >
-                  <TypeToRenderProd play={isInViewport} slide={slide} imaged={true} minmal={true} />
-                </motion.div>
-              ))}
-
-              {slides.map((slide, idx) => (
-                <motion.div
-                  key={`clone-${idx}`}
-                  className="min-w-fit h-full aspect-video rounded-2xl shrink-0"
-                >
-                  <TypeToRenderProd play={isInViewport} slide={slide} imaged={true} minmal={true} />
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </div>
+        <MarqueeComposition isInViewport={isInViewport}  slides={slides} key={"ma"}/>
       )
 
     case "CUSTOM":

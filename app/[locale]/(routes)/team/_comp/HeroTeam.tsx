@@ -1,13 +1,11 @@
 "use client";
 
+import { DictionaryShape } from "@/composnents/contact/ContactForm";
 import { useGSAP } from "@gsap/react";
 import gsap, { SteppedEase } from "gsap";
 import { useRef } from "react";
 
-const title =
-    "Our team brings together diverse backgrounds and a shared commitment to excellence. Each member contributes unique expertise, ensuring that every project is approached with clarity, creativity, and precision.";
-
-const HeroTeam = () => {
+const HeroTeam = ({ title} : {  title : string  }) => {
     const heroSection = useRef<HTMLElement>(null);
     const heroTitle = useRef<HTMLParagraphElement>(null);
     const wordsRef = useRef<HTMLSpanElement[]>([]);
@@ -60,7 +58,8 @@ const HeroTeam = () => {
                 {title.split(" ").map((word, index) => (
                     <span
                         key={index}
-                        ref={(el) => { if (el) { if (!wordsRef.current) { wordsRef.current = []; } wordsRef.current[index] = el; } }} className=" cursor-none inline-block text-2xl md:text-5xl lg:text-6xl"
+                        ref={(el) => { if (el) { if (!wordsRef.current) { wordsRef.current = []; } wordsRef.current[index] = el; } }}
+                         className=" cursor-none inline-block text-2xl md:text-5xl lg:text-6xl"
                     >
                         {word}&nbsp;
                     </span>

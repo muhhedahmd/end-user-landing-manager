@@ -743,7 +743,17 @@ export interface ClientWithImages   {
   customDesc?: string;
   isVisible?: boolean;
 }
-
+type  EnumLang = "EN" | "AR"
+export type TeamMemberTranslation = {
+    name: string;
+    id: string;
+    lang: EnumLang;
+    position: string;
+    bio: string | null;
+    memberId: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
 export interface TeamMemberWithImage extends TeamMember {
   
   image: Image | null;

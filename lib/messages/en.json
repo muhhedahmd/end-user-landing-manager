@@ -1,0 +1,162 @@
+{
+  "teamPage": {
+    "hero": {
+      "description": "Our team brings together diverse backgrounds and a shared commitment to excellence. Each member contributes unique expertise, ensuring that every project is approached with clarity, creativity, and precision."
+    },
+    "title": "OUR TEAM",
+    "ctaCard": {
+      "title": "Get In Touch",
+      "subtitle": "Let's Work Together",
+      "hiring": "We're Hiring!",
+      "button": "Contact Us Now"
+    },
+    "brand": {
+      "name": "TECH VISION",
+      "year": "@ {{year}}"
+    }
+  },
+   "servicePage": {
+    "hero": {
+      "selectService": "SELECT SERVICE",
+      "techVision": "TECH VISION @ "
+    },
+    "table": {
+      "name": "Name",
+      "description": "Description",
+      "content": "Content"
+    }
+  },
+  "header": {
+    "services": "Services",
+    "team": "Team",
+    "about": "About",
+    "brandFallback": "Brand",
+    "contact": "Contact us",
+    "home": "Home",
+    "getStarted": "Get Started"
+  },
+  "contact": {
+    "title": "Ready to Work Together?",
+    "subtitle": "Have a project in mind? Let's discuss.",
+    "success": "Thank you! We'll be in touch soon.",
+    "submit": "Send Inquiry",
+    "sending": "Sending...",
+    "fields": {
+      "name": "Full Name",
+      "subject": "Subject",
+      "email": "Work Email",
+      "phone": "Phone",
+      "company": "Company",
+      "category": "Category",
+      "message": "Project Details"
+    },
+    "placeholders": {
+      "name": "John Doe",
+      "subject": "What's this about?",
+      "email": "john@company.com",
+      "phone": "+1 (555) 123-4567",
+      "company": "Your Company Inc.",
+      "message": "Tell us about your project..."
+    },
+    "categories": {
+      "GENERAL_INQUIRY": "General Inquiry",
+      "SUPPORT": "Support",
+      "SALES": "Sales",
+      "PARTNERSHIP": "Partnership",
+      "FEEDBACK": "Feedback",
+      "COMPLAINT": "Complaint",
+      "SERVICE_INQUIRY": "Service Inquiry",
+      "OTHER": "Other"
+    },
+    "errors": {
+      "required": "This field is required",
+      "email": "Invalid email address",
+      "phone": "Invalid phone number format",
+      "minMessage": "Message must be at least 10 characters",
+      "submit": "Failed to send. Please try again."
+    }
+  },
+  "footer": {
+    "contact": "Contact",
+    "company": "Company",
+    "legal": "Legal",
+    "about": "About Us",
+    "services": "Services",
+    "contactLink": "Contact",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "cookies": "Cookie Policy",
+    "security": "Security",
+    "rights": "All rights reserved."
+  }, 
+  
+  "aboutPage": {
+    "hero": {
+      "title": "About {{company}}",
+      "taglineFallback": "Building the future with innovation and passion"
+    },
+    "story": {
+      "title": "Our Story",
+      "extra": "Today, we serve thousands of customers worldwide, delivering solutions that empower businesses and individuals to achieve their goals. Our journey is just beginning, and we're excited about what the future holds."
+    },
+    "mission": {
+      "title": "Our Mission",
+      "description": "We believe in creating technology that empowers people and transforms businesses. Our mission is to deliver innovative solutions that solve real-world problems while maintaining the highest standards of quality and customer service. We're committed to building products that not only meet today’s needs but anticipate tomorrow’s challenges."
+    },
+    "values": {
+      "title": "Our Values",
+      "items": [
+        {
+          "title": "Innovation",
+          "description": "We constantly push boundaries and embrace new technologies to deliver cutting-edge solutions."
+        },
+        {
+          "title": "Quality",
+          "description": "Excellence is our standard. We never compromise on the quality of our products and services."
+        },
+        {
+          "title": "Integrity",
+          "description": "We build trust through transparency, honesty, and ethical business practices."
+        },
+        {
+          "title": "Collaboration",
+          "description": "Great things happen when talented people work together toward a common goal."
+        }
+      ]
+    },
+    "contact": {
+      "title": "Get In Touch",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address"
+    },
+    "cta": {
+      "title": "Join Our Journey",
+      "description": "We're always looking for talented individuals who share our passion for innovation and excellence.",
+      "primary": "View Open Positions",
+      "secondary": "Contact Us"
+    },
+    "stats": {
+      "Total Services": "Total Services",
+      "Completed Projects": "Completed Projects",
+      "Team Members": "Team Members",
+      "Testimonials": "Testimonials"
+    }
+  },
+  "achievements": {
+    "badge": "Our Journey",
+    "title": "Our Achievements",
+    "subtitle": "Celebrating milestones and the meaningful impact we've created together",
+    "stats": {
+      "Total Services": "Total Services",
+      "project in progress": "Projects in Progress",
+      "Completed Projects": "Completed Projects",
+      "Team Members": "Team Members",
+      "New Contacts": "New Contacts",
+      "Testimonials": "Testimonials"
+    }
+  }
+
+
+
+}

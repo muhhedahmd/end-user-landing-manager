@@ -62,7 +62,6 @@ export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
     }
 
     // Responsive height calculation
-    console.log(hero.variant)
 
 
     // Content padding based on variant

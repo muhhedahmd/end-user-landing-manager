@@ -8,7 +8,8 @@ import { usePathname } from 'next/navigation'
 import { useBreakPoints } from '@/hooks/useBreakPoint'
 import { useSectionVisibility } from '../contact/SectionVisibilityContext'
 import { cn } from '@/lib/utils'
-const HeaderAniamtion = ({ children  ,border  ,title}: {
+const HeaderAniamtion = ({  locale, children  ,border  ,title}: {
+  locale : "en" | "ar"
   title?: string ,
   children: React.ReactNode ,
   border?: boolean
@@ -80,7 +81,6 @@ const HeaderAniamtion = ({ children  ,border  ,title}: {
     dependencies: [timeline, ctx, isSm, pathname],
     scope: headerRef,
   })
-  console.log("Labels:", timeline?.labels);
 
   useGSAP(() => {
     if (!headerRef.current || timeline?.labels?.headerComplete === undefined) return;
@@ -102,7 +102,8 @@ const HeaderAniamtion = ({ children  ,border  ,title}: {
   })
 
   return (
-    <header ref={headerRef} className={cn("  md:h-20 lg:h-24 sm:h-16 h-10  z-50 w-full -translate-y-20  hidden  backdrop-blur " , title?.toLowerCase() ==="team" && "h-fit md:h-[10vh] lg:h-[12vh] " ,  border ? "border-b border-border bg-background/80" : "bg-transparent" )} >
+    <header  
+    ref={headerRef} className={cn("  md:h-20 lg:h-24 sm:h-20 h-16  z-50 w-full -translate-y-20  hidden  backdrop-blur " , title?.toLowerCase() ==="team" && "h-fit md:h-[10vh] lg:h-[12vh] " ,  border ? "border-b border-border bg-background/80" : "bg-transparent" )} >
       {children}
     </header>
   )

@@ -2,47 +2,42 @@
 
 import Link from "next/link"
 import { Facebook, Twitter, Linkedin, Instagram, Github, Youtube, Mail, Phone, MapPin } from "lucide-react"
-import { Skeleton } from "@/components/ui/skeleton"
-import { CompanyInfo } from "@/types/schema"
 import Image from "next/image"
+import { getDictionary } from "@/lib/i18n"
+import { getCompanyInfo } from "@/app/[locale]/(routes)/services/comp/Fetchers"
+import SwitchLang from "../locale/switchLang"
+import { ThemeToggle } from "../toggleTheme"
 
 
-async function getCompanyInfo(): Promise<CompanyInfo | null> {
-    try {
-        const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL  + "/api/company-info", {
-            cache: "force-cache",
-            next: { revalidate: 3600 },
-        })
+export default async function Footer({ dictionary, locale = "en" }: {
+    locale: "en" | "ar"
+    dictionary: Awaited<ReturnType<typeof getDictionary>>
+}) {
+    const data = await getCompanyInfo()
 
-        if (!res.ok) return null
-        const json = await res.json()
-        return json?.data ?? null
-    } catch {
-        return null
-    }
-}
 
-export default async function Footer() {
+    const currentYear = new Date().getFullYear() + 1
 
-    const companyInf = await getCompanyInfo()
 
-    const currentYear = new Date().getFullYear() +1
-
-    const companyInfo = companyInf
-
-    if (companyInfo === null) {
+    if (data === null) {
         return (
             <footer className="w-full border-t border-border bg-background">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="py-12 text-center">
-                        <p className="text-sm text-muted-foreground">© {currentYear} All rights reserved.</p>
+                        <p className="text-sm text-muted-foreground">
+                            {dictionary.footer.about}
+                            © {currentYear} All rights reserved.</p>
                     </div>
                 </div>
             </footer>
         )
     }
+    const { company: companyInfo, logo, translation } = data
+    const currentTrnalsation = translation?.find((item) => item?.lang?.toLowerCase() === locale?.toLowerCase())
     // Social media links
+
     const socialLinks = [
+
         { icon: Facebook, url: companyInfo.facebook, label: "Facebook" },
         { icon: Twitter, url: companyInfo.twitter, label: "Twitter" },
         { icon: Linkedin, url: companyInfo.linkedin, label: "LinkedIn" },
@@ -59,39 +54,39 @@ export default async function Footer() {
                     {/* Brand Column */}
                     <div className="space-y-4">
                         <div className="flex items-center gap-2">
-                            {companyInfo.logo?.url ? (
+                            {logo ? (
                                 <Image
-                                width={12} 
-                                height={12}
-                                    src={companyInfo.logo.url}
-                                    alt={companyInfo.logo.alt || companyInfo.name}
-                                    
+                                    width={12}
+                                    height={12}
+                                    src={logo.url}
+                                    alt={logo.alt || companyInfo.name}
+
                                     className="w-8 h-8 object-contain"
                                 />
                             ) : (
                                 <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
                                     <span className="text-primary-foreground font-bold text-lg">
-                                        {companyInfo.name.charAt(0).toUpperCase()}
+                                        {currentTrnalsation?.name.charAt(0).toUpperCase()}
                                     </span>
                                 </div>
                             )}
-                            <span className="font-semibold text-foreground">{companyInfo.name}</span>
+                            <span className="font-semibold text-foreground">{currentTrnalsation?.name}</span>
                         </div>
 
-                        {companyInfo.tagline && (
-                            <p className="text-sm font-medium text-foreground">{companyInfo.tagline}</p>
+                        {currentTrnalsation?.tagline && (
+                            <p className="text-sm font-medium text-foreground">{currentTrnalsation.tagline}</p>
                         )}
 
-                        {companyInfo.description && (
+                        {currentTrnalsation?.description && (
                             <p className="text-sm text-muted-foreground leading-relaxed">
-                                {companyInfo.description}
+                                {currentTrnalsation?.description}
                             </p>
                         )}
                     </div>
 
                     {/* Contact Information */}
                     <div className="space-y-4">
-                        <h3 className="font-semibold text-foreground">Contact</h3>
+                        <h3 className="font-semibold text-foreground">{dictionary.footer.contact}</h3>
                         <ul className="space-y-3">
                             {companyInfo.email && (
                                 <li className="flex items-start gap-2">
@@ -108,12 +103,12 @@ export default async function Footer() {
                             {companyInfo.phone && (
                                 <li className="flex items-start gap-2">
                                     <Phone className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-                                    <a
+                                    <Link
                                         href={`tel:${companyInfo.phone}`}
                                         className="text-sm text-muted-foreground hover:text-primary transition-colors"
                                     >
                                         {companyInfo.phone}
-                                    </a>
+                                    </Link>
                                 </li>
                             )}
 
@@ -132,22 +127,22 @@ export default async function Footer() {
 
                     {/* Company Links */}
                     <div className="space-y-4">
-                        <h3 className="font-semibold text-foreground">Company</h3>
+                        <h3 className="font-semibold text-foreground">{dictionary.footer.company}</h3>
                         <ul className="space-y-2">
                             <li>
                                 <Link href="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                    About Us
+                                    {dictionary.footer.about}
                                 </Link>
                             </li>
                             <li>
                                 <Link href="/services" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                    Services
+                                    {dictionary.footer.services}
                                 </Link>
                             </li>
-                          
+
                             <li>
                                 <Link href="#contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                    Contact
+                                    {dictionary.footer.contactLink}
                                 </Link>
                             </li>
                         </ul>
@@ -155,28 +150,29 @@ export default async function Footer() {
 
                     {/* Legal Links */}
                     <div className="space-y-4">
-                        <h3 className="font-semibold text-foreground">Legal</h3>
+                        <h3 className="font-semibold text-foreground">{dictionary.footer.legal}</h3>
                         <ul className="space-y-2">
                             <li>
                                 <Link href="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                    Privacy Policy
+                                    {dictionary.footer.privacy}
                                 </Link>
                             </li>
                             <li>
                                 <Link href="/terms" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                    Terms of Service
+                                    {dictionary.footer.terms}
                                 </Link>
                             </li>
                             <li>
                                 <Link href="/cookies" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                    Cookie Policy
+                                    {dictionary.footer.cookies}
                                 </Link>
                             </li>
                             <li>
                                 <Link href="/security" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                    Security
+                                    {dictionary.footer.security}
                                 </Link>
                             </li>
+
                         </ul>
                     </div>
                 </div>
@@ -187,29 +183,38 @@ export default async function Footer() {
                 {/* Bottom Bar */}
                 <div className="py-6 flex flex-col md:flex-row items-center justify-between gap-4">
                     <p className="text-sm text-muted-foreground">
-                        © {currentYear} {companyInfo.name}. All rights reserved.
+                        © {currentYear} {companyInfo.name}. {dictionary.footer.rights}.
                     </p>
 
                     {/* Social Links */}
+                    <div className="flex items-center justify-center text-sm ">
+
                     {socialLinks.length > 0 && (
+
                         <div className="flex items-center gap-4">
                             {socialLinks.map((link) => {
                                 const Icon = link.icon
                                 return (
-                                    <a
+                                    <Link
                                         key={link.label}
-                                        href={link.url}
+                                        href={link.url || ""}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="text-muted-foreground hover:text-primary transition-colors"
                                         aria-label={link.label}
                                     >
                                         <Icon className="w-5 h-5" />
-                                    </a>
+                                    </Link>
                                 )
                             })}
                         </div>
                     )}
+                    <SwitchLang placement="footer" showIcon={false} showTransition variant={'link'} />
+              <ThemeToggle  placement="footer" showIcon={false} showTransition variant={'link'}  />
+
+                    </div>
+
+
                 </div>
             </div>
         </footer>

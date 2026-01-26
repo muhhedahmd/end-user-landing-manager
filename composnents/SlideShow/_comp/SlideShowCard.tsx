@@ -4,8 +4,22 @@ import { SlideHeader } from "./slideShowHeader";
 import { SlideshowCardClient } from "./SlideShowCardClient";
 import { cn } from "@/lib/utils";
 
+export interface SlideShowWithTranslations extends SlideShow {
+  translations: {
+    lang: string;
+    title: string;
+    description: string;
+  }[];
+}
 interface SlideshowCardProps {
-  item: SlideShow;
+  locale: "en" | "ar"
+  item: SlideShow & {
+    translations: {
+      lang: string;
+      title: string;
+      description: string;
+    }[]
+  };
   index: number;
   bgColor?: string;
   textColor?: string;
@@ -14,52 +28,59 @@ interface SlideshowCardProps {
 }
 
 export function SlideshowCard({
+  locale,
   interval,
   autoPlay,
   item,
   index,
-  bgColor,
-  textColor,
+
 }: SlideshowCardProps) {
   const compositionType = CompositionType[item.composition as keyof typeof CompositionType];
   const slideShowType = SlideshowType[item.type as keyof typeof SlideshowType];
 
-  // const isContainer  = compositionType && (compositionType !== "SINGLE" || compositionType !== "CUBE")
-  const isCube  =  compositionType === "CUBE"
-  const isSingle  = compositionType === "SINGLE"
-  const isFilmStrip  = compositionType === "FILMSTRIP"
-  const COVERFLOW= compositionType === ( "COVERFLOW" as keyof typeof CompositionType)
-  const FILMSTRAP= compositionType === ( "FILMSTRIP" as keyof typeof CompositionType)
-  // const isParallax  = compositionType === "PARALLAX"
-    if(isCube) return null
+  const isCube = compositionType === "CUBE"
+  const isSingle = compositionType === "SINGLE"
+  const isFilmStrip = compositionType === "FILMSTRIP"
+  const COVERFLOW = compositionType === ("COVERFLOW" as keyof typeof CompositionType)
+  const MARQUEE = compositionType === ("MARQUEE" as keyof typeof CompositionType)
 
 
 
-    // if(! FILMSTRAP) return null
+  const currentTranslation = item?.translations?.find((t) => t?.lang?.toUpperCase() === locale?.toUpperCase()) || item?.translations?.[0] || {
+    title: item.title,
+    description: item.description
 
-    return (
+  }
+if( isCube) return
+
+  return (
     <div
-      style={{
-        backgroundColor: bgColor,
-        color: textColor,
-      }}
-      className={cn( "rounded-lg duration-200 overflow-hidden w-full " ,!isCube && !isSingle && !isFilmStrip && !COVERFLOW &&    "container mx-auto")}
+
+      className={cn("rounded-lg relative duration-200 overflow-hidden w-full ", !MARQUEE && !isCube && !isSingle && !isFilmStrip && !COVERFLOW && "container mx-auto")}
     >
       {/* Server-rendered header */}
 
-      <SlideHeader
-        compositionType={compositionType === "FILMSTRIP" ? (CompositionType.PARALLAX as CompositionType) : compositionType}
-        title={item.title}
-        description={item.description || ""}
-        slideShowType={slideShowType}
-      />
-    
+
+
+
+        <SlideHeader
+          compositionType={compositionType === "FILMSTRIP" ? (CompositionType.PARALLAX as CompositionType) : compositionType}
+          title={currentTranslation?.title}
+          description={currentTranslation?.description || ""}
+          slideShowType={slideShowType}
+        />
+ 
+
+      
 
 
       <div className="mt-10" />
 
       {/* Client component for interactive parts */}
       <SlideshowCardClient
+      
+
+        locale={locale}
         id={item.id}
         composition={compositionType}
         autoPlay={autoPlay}

@@ -38,7 +38,7 @@ export const TypeToRenderProd = memo(({  lightOpen ,light, idx, play, cube, sing
   }
   if (slide.type === "team") {
 
-    return <TeamMemberCard data={slide as TeamMemberWithImage}   />
+    return <TeamMemberCard  splitcarousel={splitcarousel}  data={slide as TeamMemberWithImage}   />
   }
   return <div />
 })

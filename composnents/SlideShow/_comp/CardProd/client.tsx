@@ -8,7 +8,7 @@ interface ClientCardProps {
     light?: boolean,
     lightOpen?: boolean , 
     story?: boolean,
-     imaged ?: boolean
+    imaged ?: boolean
 }
 import BlurredImage from "@/composnents/Reusabale/ClientImageWithBlurHash"
 import { cn } from "@/lib/utils"
@@ -16,7 +16,7 @@ import { useEffect, useRef } from "react"
 import { ExternalLink } from "lucide-react"
 import gsap from "gsap"
 
-export const ClientCard = ({ story  ,  imaged,  lightOpen, light, data, single, idx }: ClientCardProps) => {
+export const ClientCard = ({ story  ,  imaged,   lightOpen, light, data, single, idx }: ClientCardProps) => {
 
     if (light) {
         return <div className="h-full  w-full  ">
@@ -147,8 +147,7 @@ export const ClientCard = ({ story  ,  imaged,  lightOpen, light, data, single, 
         );
     }
     if(story) return <ClientCardStory data={data} />
-
-      if (imaged) {
+    if (imaged) {
         return (
             <>
                 {data.image && (
@@ -167,10 +166,11 @@ export const ClientCard = ({ story  ,  imaged,  lightOpen, light, data, single, 
             </>
         )
     }
-
     if (single) return <ClientCardsingle data={data} idx={idx} />
     else
         return (
+    
+
             <div
                 className="group relative h-full w-full  flex lg:flex-row flex-col   rounded-2xl  border-primary bg-card  border-1  hover:border-primary/50 transition-all duration-300 overflow-hidden gap-4"
             >

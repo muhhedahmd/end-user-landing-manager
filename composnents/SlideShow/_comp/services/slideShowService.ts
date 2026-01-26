@@ -8,6 +8,13 @@ export interface Slide {
   isVisible: boolean;
   customTitle?: string;
   customDescription?: string;
+  translation :  {
+    lang : string;
+    title : string;
+    position: string;
+    name: string
+    description : string
+  }[],
   data: {
     name?: string;
     title?: string;
@@ -56,7 +63,6 @@ const slidesApi = axios.create({
 // Request interceptor for logging
 slidesApi.interceptors.request.use(
   (config) => {
-    console.log(`[API Request] ${config.method?.toUpperCase()} ${config.url}`);
     return config;
   },
   (error) => {
@@ -110,7 +116,6 @@ export class SlidesService {
     const cached = this.cache.get(cacheKey);
 
     if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
-      console.log(`[Cache Hit] Slides for ${id}`);
       return cached.data;
     }
 
