@@ -36,30 +36,32 @@ export default async function Header({
   return (
     <HeaderAniamtion locale={locale} border={border} title={title}>
       <div dir={locale === "ar" ? "rtl" : "ltr"} className="  h-full w-full flex items-center justify-between  sm:px-8 md:px-16 lg:px-24 2xl:px-32 sm:py-4 py-0 px-4 ">
-        
-        <div className="w-full flex items-end justify-start ">
-        <Link href="/" className="flex items-center gap-2 w-fit">
 
-          {companyInfo?.logo ? (
-            <Image
-              src={companyInfo.logo.url}
-              width={8}
-              height={8}
-              alt={companyInfo.logo.alt || currentTranslaton?.name || ""}
-              className="h-8 w-8 object-contain"
-            />
-          ) : (
-            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold">
-              {currentTranslaton?.name?.charAt(0) ?? "V"}
-            </div>
-          )}
-          <span className="font-semibold ">
-            {currentTranslaton?.name ?? dictionary.header.brandFallback}
-          </span>
-        </Link>
+        <div className="w-full flex items-end justify-start flex-1 ">
+
+
+          <Link href="/" className="flex items-center gap-2 w-max">
+
+            {companyInfo?.logo ? (
+              <Image
+                src={companyInfo.logo.url}
+                width={8}
+                height={8}
+                alt={companyInfo.logo.alt || currentTranslaton?.name || ""}
+                className="h-8 w-8 object-contain"
+              />
+            ) : (
+              <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold">
+                {currentTranslaton?.name?.charAt(0) ?? "V"}
               </div>
+            )}
+            <span className="font-semibold ">
+              {currentTranslaton?.name ?? dictionary.header.brandFallback}
+            </span>
+          </Link>
+        </div>
 
-        <nav className="hidden md:flex items-center justify-center gap-1 flex-1 w-max">
+        <nav className="hidden md:flex items-center justify-center gap-1  flex-4 w-max">
           {navItems.map((item) => (
             <Link
               key={item.href}
@@ -76,7 +78,7 @@ export default async function Header({
           ))}
         </nav>
 
-        <HeaderClient locale={locale} dictionary={dictionary} companyInfo={{...company ,...currentTranslaton , logo : logo || undefined}} navItems={navItems} />
+        <HeaderClient locale={locale} dictionary={dictionary} companyInfo={{ ...company, ...currentTranslaton, logo: logo || undefined }} navItems={navItems} />
       </div>
     </HeaderAniamtion>
   );

@@ -27,7 +27,7 @@ export default function HeaderClient({ locale, dictionary, navItems, companyInfo
 
 
   return (
-    <Fragment>
+    <div>
       <div className=" p-1  flex-1 text-end  hidden md:flex  items-center  gap-3 justify-end" >
         <Link href="#contact" className=" w-max p-1 px-2 border border-primary    text-primary hover:text-primary/80 hover:border-primary/80 rounded-md " >
           {dictionary.header.contact}
@@ -49,7 +49,7 @@ export default function HeaderClient({ locale, dictionary, navItems, companyInfo
 
       </div>
       <CustomDrawer locale={locale} companyInfo={companyInfo} dictionary={dictionary} navItems={navItems} open={open} onOpenChange={setOpen} />
-    </Fragment>
+    </div>
   )
 }
 

@@ -3,7 +3,6 @@ import React, {  memo, useMemo, useRef } from "react";
 import gsap from "gsap";
 import BlurredImage from "@/composnents/Reusabale/ClientImageWithBlurHash";
 import { useGSAP } from "@gsap/react";
-import { usePathname } from "next/navigation";
 
 interface FilmStripProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,7 +32,7 @@ const FilmStrip = memo(({ slides, isInViewport }: FilmStripProps) => {
   const duplicatedFrames =  useMemo(() => { 
     const filmFrames = slides.map((slide, idx) => ({
     id: idx,
-    image: slide?.image?.url || slide?.avatar?.url || slide?.logo?.url || slide?.image || slide?.avatar || slide?.logo,
+    image: slide?.image || slide?.avatar || slide?.logo || slide?.image || slide?.avatar || slide?.logo,
     title: slide?.name || slide?.title || slide?.clientName || slide?.customTitle || `Scene ${String(idx + 1).padStart(2, '0')}`,
     alt: slide?.image?.alt || slide?.avatar?.alt || slide?.logo?.alt || `Scene ${idx + 1}`
   }));
@@ -92,7 +91,7 @@ const FilmStrip = memo(({ slides, isInViewport }: FilmStripProps) => {
   return (
     <div 
       ref={containerRef}
-      className="relative overflow-hidden py-8 cinema-glow cursor-pointer"
+      className="relative overflow-hidden py-8 bg-blend-lighten cinema-glow cursor-pointer"
     >
       {/* Film strip container */}
       <div className="bg-linear-30 from-10% from-muted to-muted-foreground/30   py-8 relative">
@@ -120,7 +119,7 @@ const FilmStrip = memo(({ slides, isInViewport }: FilmStripProps) => {
               >
                 <div className="film-frame rounded overflow-hidden aspect-4/3 relative">
                   <BlurredImage
-                    imageUrl={frame?.image || "/placeholder.svg"}
+                    imageUrl={frame?.image?.url || "/placeholder.svg"}
                     alt={frame?.image?.alt || ""}
                     blurhash={frame?.image?.blurHash || ""}
                     height={frame?.image?.height || 400}

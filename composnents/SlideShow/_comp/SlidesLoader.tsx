@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { CompositionType } from "@/types/schema";
 
 interface CompositionLoaderProps {
@@ -5,10 +6,10 @@ interface CompositionLoaderProps {
   locale?: "en" | "ar";
 }
 
-const Skeleton = ({ className = "", delay = 0  , style}: { style ?: React.CSSProperties; className?: string; delay?: number }) => (
+const Skeleton = ({ className = "", delay = 0, style }: { style?: React.CSSProperties; className?: string; delay?: number }) => (
   <div
     className={`bg-muted/50 animate-wave rounded-lg ${className}`}
-    style={{ ...style , animationDelay: `${delay}ms` }}
+    style={{ ...style, animationDelay: `${delay}ms` }}
   />
 );
 export function CompositionLoader({ composition, locale = "en" }: CompositionLoaderProps) {
@@ -82,10 +83,25 @@ export function CompositionLoader({ composition, locale = "en" }: CompositionLoa
 
     case CompositionType.PARALLAX:
       return (
-        <div className="h-[70vh] w-full overflow-hidden relative">
-          <Skeleton className="absolute inset-0 opacity-30" />
-          <Skeleton className="absolute inset-0 opacity-50 translate-y-4" delay={150} />
-          <Skeleton className="absolute inset-0 opacity-70 translate-y-8" delay={300} />
+        <div className="w-full overflow-hidden relative  space-y-20 gap-3">
+          {Array.from({ length: 3 }).map((_, index) => (
+            
+          <div key={index} className={cn("flex  flex-row-reverse gap-10 justify-start items-start" , index % 2 === 0 ? "flex-row-reverse" : "flex-row")}>
+            <div className=" flex flex-col items-end justify-start gap-2 h-200 w-1/2">
+
+              <Skeleton className=" w-full h-20 mb-20  inset-0 opacity-30" />
+              <Skeleton className=" w-full h-5  inset-0 opacity-30" />
+              <Skeleton className=" w-full h-6  inset-0 opacity-30" />
+              <Skeleton className=" w-full h-4  inset-0 opacity-30" />
+              <Skeleton className=" w-3/4 h-7  inset-0 opacity-30" />
+
+
+            </div>
+
+            <Skeleton className=" w-3/4 h-200 inset-0 opacity-30" />
+          </div>
+         
+          ))}
         </div>
       );
 
@@ -124,7 +140,7 @@ export function CompositionLoader({ composition, locale = "en" }: CompositionLoa
         </div>
       );
 
-    case CompositionType.FILMSTRIP  :
+    case CompositionType.FILMSTRIP:
       return (
         <div className="h-[70vh] w-screen  flex items-center justify-center overflow-hidden p-4">
           <div className="flex gap-4 h-full w-full">

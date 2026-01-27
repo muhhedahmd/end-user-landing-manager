@@ -7,7 +7,7 @@ import { SlideshowCard, SlideShowWithTranslations } from "./_comp/SlideShowCard"
 
 const ITEMS_PER_PAGE = 3;
 const initialSkip = 0;
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
 
 export type SlideShowResult = { status: "success" | "error"; data: PaginatedResponse<SlideShowWithTranslations> } | { status: "error" }
 async function fetchSlideShows({ locale, skip, take }: { locale: "en" | "ar", skip: number, take: number }): Promise<SlideShowResult> {
@@ -36,7 +36,7 @@ async function fetchSlideShows({ locale, skip, take }: { locale: "en" | "ar", sk
 }
 
 
-async function SlideShowsProd({ locale }: { locale: "en" | "ar", page?: string }) {
+async function SlideShowsProd({ locale }: { locale: "en" | "ar",  }) {
     const slideShows = await fetchSlideShows({ locale, skip: initialSkip, take: ITEMS_PER_PAGE })
 
     if (slideShows.status === "error" || !slideShows) return <div className="bg-destructive w-screen h-screen  flex items-center justify-between">
@@ -58,7 +58,7 @@ async function SlideShowsProd({ locale }: { locale: "en" | "ar", page?: string }
                         index={index}
                     />
                 ))}
-                <PaggintionSlideshows initialData={_SlideShows.data} locale={locale} initialPage={1} itemsPerPage={ITEMS_PER_PAGE} />
+                <PaggintionSlideshows initialData={_SlideShows.data} locale={locale} initialPage={0} itemsPerPage={ITEMS_PER_PAGE} />
             </div>
         </div>
     );
