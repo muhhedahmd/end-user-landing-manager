@@ -39,7 +39,9 @@ async function fetchSlideShows({ locale, skip, take }: { locale: "en" | "ar", sk
 async function SlideShowsProd({ locale }: { locale: "en" | "ar", page?: string }) {
     const slideShows = await fetchSlideShows({ locale, skip: initialSkip, take: ITEMS_PER_PAGE })
 
-    if (slideShows.status === "error" || !slideShows) return
+    if (slideShows.status === "error" || !slideShows) return <div className="bg-destructive w-screen h-screen  flex items-center justify-between">
+        something went wrong
+    </div>
     const _SlideShows = slideShows.data
 
     return (
