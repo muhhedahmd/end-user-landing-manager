@@ -17,7 +17,7 @@ async function fetchSlideShows({ locale, skip, take }: { locale: "en" | "ar", sk
             `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/slide-show?skip=${skip}&take=${take}&lang=${locale?.toUpperCase()}`,
             {
                 cache: "force-cache",
-                next: { revalidate: 1 },
+                next: { revalidate: 1800 },
             },
         )
         if (!res.ok) return { status: "error" }
