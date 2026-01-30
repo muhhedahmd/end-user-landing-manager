@@ -4,7 +4,9 @@ import HeroError from "./hero-error";
 import ClientHeroVarients from "./_comp/clientHeroVarients";
 import HeroAnimation from "./_comp/heroAnamation";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
+ export const revalidate = 3600; // Use this for ISR instead
+
 
 type HeroResult =
   | { status: "success"; hero: IHero; backgroundImage: Image }
@@ -15,8 +17,8 @@ async function fetchActiveHero({locale} : { locale: "en" | "ar"}): Promise<HeroR
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/hero/active?lang=${locale}`,
       {
-        cache: "force-cache",
-        next: { revalidate: 3600 },
+              cache: "no-store", // Changed for debugging
+
       },
 
     );
