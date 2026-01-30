@@ -9,9 +9,10 @@ import { PaginatedResponse } from "@/types/services";
 
 const ITEMS_PER_PAGE = 3;
 export type SlideShowResult = { status: "success" | "error"; data: PaginatedResponse<SlideShowWithTranslations> } | { status: "error" }
- async function fetchSlideShows({ locale, skip, take }: { locale: "en" | "ar", skip: number, take: number }): Promise<SlideShowResult> {
+async function fetchSlideShows({ locale, skip, take }: { locale: "en" | "ar", skip: number, take: number }): Promise<SlideShowResult> {
+    const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
     try {
-
+        if (!BASE_URL) throw new Error("BACKEND_URL is not defined")
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/slide-show?skip=${skip}&take=${take}&lang=${locale?.toUpperCase()}`,
             {
@@ -30,14 +31,11 @@ export type SlideShowResult = { status: "success" | "error"; data: PaginatedResp
         }
     } catch {
         return { status: "error" }
-     }
+    }
 }
 
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const queue: any[] = []
-const testMulti = async ({
-
+const fetchAllSlideShows = async ({
     locale,
     pages,
     take = ITEMS_PER_PAGE,
@@ -46,48 +44,58 @@ const testMulti = async ({
     pages: number,
     take?: number,
 }) => {
-    if (pages <= 0 || queue.length > 0) return;
-    try {
+    if (pages <= 0) return [];
 
-        Array.from({ length: pages }, (_, i) => {
+    try {
+        // Create array of promises
+        const promises = Array.from({ length: pages }, (_, i) =>
+            
             fetchSlideShows({
                 locale: locale || "en",
-                skip: i ,
+                skip: i,
                 take: take,
             })
-                .then(res => {
-                    if (res.status === "success") {
-                        queue.push(res.data.data)
-                    }
-                })
-                .catch(console.error)
-        })
+        );
+
+        const results = await Promise.all(promises);
+
+        // Extract successful data
+        const data = results
+            .filter(res => res.status === "success")
+            .flatMap(res => res.status === "success" ? res.data.data : []);
+
+        return data;
 
     } catch (error) {
         console.error("Error fetching slide shows:", error);
-
+        return [];
     }
 }
 
-async function SlideShowsProd({ locale = "en" }: { locale: "en" | "ar", }) {
-    const companyinfo = await getCompanyInfo()
-    const totalPages = companyinfo?.slideShowsPages?.totalPages || 0
+async function SlideShowsProd({ locale = "en" }: { locale: "en" | "ar" }) {
+    const companyinfo = await getCompanyInfo();
+    const totalPages = companyinfo?.slideShowsPages?.totalPages || 0;
 
-    await testMulti({
+    if (totalPages === 0) {
+        return (
+            <div className="min-h-screen px-4 py-16">
+                <div className="space-y-6">
+                    <p>No slide shows available.</p>
+                </div>
+            </div>
+        );
+    }
+
+    const slideShows = await fetchAllSlideShows({
         locale,
         pages: totalPages - (companyinfo?.slideShowsPages?.nowCount || 0),
         take: companyinfo?.slideShowsPages.pageSize || ITEMS_PER_PAGE,
     });
-    
-    const merge = queue.flat()
 
     return (
-        <div className="min-h-screen  px-4 py-16 ">
+        <div className="min-h-screen px-4 py-16">
             <div className="space-y-6">
-
-
-                {merge && merge.map((item, index) => (
-
+                {slideShows.map((item, index) => (
                     <SlideshowCard
                         locale={locale}
                         autoPlay={item.autoPlay}
@@ -101,5 +109,5 @@ async function SlideShowsProd({ locale = "en" }: { locale: "en" | "ar", }) {
         </div>
     );
 }
-export default SlideShowsProd
 
+export default SlideShowsProd;

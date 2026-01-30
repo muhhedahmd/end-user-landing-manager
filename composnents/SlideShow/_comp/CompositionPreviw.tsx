@@ -572,12 +572,11 @@ export const CompositionPreview = memo(({ HeaderSlideShow, interval, autoPlay, c
 
     const nextIndex = currentSlide + newDirection
 
-    // Check boundaries and wrap around
     let newPage: number
     if (nextIndex >= slides.length) {
-      newPage = 0 // Go back to first slide
+      newPage = 0
     } else if (nextIndex < 0) {
-      newPage = slides.length - 1 // Go to last slide
+      newPage = slides.length - 1
     } else {
       newPage = nextIndex
     }
@@ -599,14 +598,14 @@ export const CompositionPreview = memo(({ HeaderSlideShow, interval, autoPlay, c
       return
     }
 
-    const tickMs = 50 // Update progress every 50ms for smooth animation
-    const step = (100 * tickMs) / interval // Calculate increment per tick
+    const tickMs = 50
+    const step = (100 * tickMs) / interval
 
     const progressInterval = setInterval(() => {
       setAutoProgress(prev => {
         const next = prev + step
         if (next >= 100) {
-          // Progress complete, advance to next slide
+
           paginate(1)
           return 0 // Reset progress
         }
@@ -687,7 +686,7 @@ export const CompositionPreview = memo(({ HeaderSlideShow, interval, autoPlay, c
 
   return (
     <IsInViewPort setIsInViewport={setIsInViewport} id="" >
-
+    <>
       {Cases({
         isInViewport,
         autoProgress,
@@ -708,9 +707,10 @@ export const CompositionPreview = memo(({ HeaderSlideShow, interval, autoPlay, c
         slides,
 
       })}
-    </IsInViewPort>
+    </>
+       </IsInViewPort> 
 
-  )
+)
 
 })
 
