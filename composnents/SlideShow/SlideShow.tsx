@@ -15,9 +15,7 @@ async function fetchSlideShows({ locale, skip, take }: { locale: "en" | "ar", sk
         if (!BASE_URL) throw new Error("BACKEND_URL is not defined")
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/slide-show?skip=${skip}&take=${take}&lang=${locale?.toUpperCase()}`,
-            {
-                cache: "no-store",
-            },
+            
         )
         if (!res.ok) return { status: "error" }
         const json = await res.json()
@@ -59,7 +57,6 @@ const fetchAllSlideShows = async ({
 
         const results = await Promise.all(promises);
 
-        // Extract successful data
         const data = results
             .filter(res => res.status === "success")
             .flatMap(res => res.status === "success" ? res.data.data : []);
