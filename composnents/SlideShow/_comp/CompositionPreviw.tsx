@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { JSX, memo, useCallback, useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import type { slide } from "@/types/schema"
-// import { TypeToRenderProd  } from "./TypeToRenderProd "
 import CubeComposition from "./expermintal/cubeComposition"
 import SingleCompsotion from "./expermintal/singleComposition"
 import { TypeToRenderProd } from "./TypToRenderProd"
@@ -12,6 +12,7 @@ import { ExpermintalParallaxContainer } from "./expermintal/ExpermintalParallaxC
 import FilmStrip from "./CardProd/generic/filmStrap"
 import CoverflowComposition from "./expermintal/coverflowComposition"
 import MarqueeComposition from "./expermintal/marqueeComposition"
+import IsInViewPort from "./isInViewPort"
 
 interface CompositionPreviewProps {
   composition:
@@ -35,150 +36,49 @@ interface CompositionPreviewProps {
   slides: slide[]
   interval: number
   autoPlay: boolean,
-  isInViewport: boolean,
-    HeaderSlideShow ?: JSX.Element | null
+  HeaderSlideShow?: JSX.Element | null
 
   // containerRef : RefObject<HTMLDivElement | null>
 }
 
-export const CompositionPreview = memo(({ isInViewport, HeaderSlideShow ,interval, autoPlay, composition, slides }: CompositionPreviewProps) => {
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [[page, direction], setPage] = useState([0, 0])
-  const [lightboxOpen, setLightboxOpen] = useState(false)
-  const [columns, setColumns] = useState(3)
-  const [autoProgress, setAutoProgress] = useState(0)
 
-  useEffect(() => {
-
-    const handleResize = () => {
-      if (window.innerWidth < 640) setColumns(1)
-      else if (window.innerWidth < 1024) setColumns(2)
-      else setColumns(3)
-    }
-    handleResize()
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
-
-  // Memoize paginate to avoid recreating it on every render
-  const paginate = useCallback((newDirection: number) => {
-    if (!slides || slides.length === 0) 
-      if(composition === "LIGHTBOX") return
-
-    const nextIndex = currentSlide + newDirection
-
-    // Check boundaries and wrap around
-    let newPage: number
-    if (nextIndex >= slides.length) {
-      newPage = 0 // Go back to first slide
-    } else if (nextIndex < 0) {
-      newPage = slides.length - 1 // Go to last slide
-    } else {
-      newPage = nextIndex
-    }
-
-    setPage([newPage, newDirection])
-    setCurrentSlide(newPage)
-
-  }, [composition, currentSlide, slides])
-
-  // Auto-progress effect with smooth progress bar
-  useEffect(() => {
-
-    if(composition === "LIGHTBOX") return
-    if (!autoPlay || !slides || slides.length === 0 || interval <= 0 || isInViewport === false) {
-      (() => {
-
-        setAutoProgress(0)
-      })()
-      return
-    }
-
-    const tickMs = 50 // Update progress every 50ms for smooth animation
-    const step = (100 * tickMs) / interval // Calculate increment per tick
-
-    const progressInterval = setInterval(() => {
-      setAutoProgress(prev => {
-        const next = prev + step
-        if (next >= 100) {
-          // Progress complete, advance to next slide
-          paginate(1)
-          return 0 // Reset progress
-        }
-        return next
-      })
-    }, tickMs)
-
-    // Cleanup function
-    return () => {
-      clearInterval(progressInterval)
-    }
-  }, [autoPlay, interval, paginate, slides, currentSlide, isInViewport])
-
-  // Reset progress when slide changes manually
-  useEffect(() => {
-    if (autoPlay) {
-      (() => {
-
-        setAutoProgress(0)
-      })()
-    }
-  }, [currentSlide, autoPlay])
-
-  const slideVariants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 200 : -200,
-      opacity: 0,
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? 200 : -200,
-      opacity: 0,
-    }),
-  }
-
-  const fadeVariants = {
-    enter: {
-      opacity: 0,
-    },
-    center: {
-      opacity: 1,
-    },
-    exit: {
-      opacity: 0,
-    },
-  }
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.1,
-        duration: 0.4,
-      },
-    }),
-  }
-
-
-  if (!slides.length) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="flex items-center justify-center h-96 rounded-lg border border-border bg-muted/20"
-      >
-        <p className="text-muted-foreground font-light">No slides to preview</p>
-      </motion.div>
-    )
-  }
-
+const Cases = ({
+  composition,
+  slides,
+  isInViewport,
+  paginate,
+  direction,
+  slideVariants,
+  page,
+  currentSlide,
+  setPage,
+  setCurrentSlide,
+  cardVariants,
+  fadeVariants,
+  HeaderSlideShow,
+  setLightboxOpen,
+  lightboxOpen,
+  columns,
+  autoProgress
+}: {
+  composition: CompositionPreviewProps['composition']
+  slides: slide[]
+  isInViewport: boolean
+  paginate: (direction: number) => void
+  direction: number
+  slideVariants: any
+  page: number
+  currentSlide: number
+  setPage: (value: [number, number]) => void
+  setCurrentSlide: (value: number) => void
+  cardVariants: any
+  fadeVariants: any
+  HeaderSlideShow?: JSX.Element | null
+  setLightboxOpen: (value: boolean) => void
+  lightboxOpen: boolean
+  columns: number
+  autoProgress: number
+}) => {
   switch (composition) {
     case "CAROUSEL":
 
@@ -261,7 +161,7 @@ export const CompositionPreview = memo(({ isInViewport, HeaderSlideShow ,interva
               whileHover={{ scale: 1.05 }}
               className=" rounded-3xl   overflow-hidden cursor-pointer group"
             >
-              <div className=" inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className=" inset-0 bg-linear-to-br from-primary/10 via-transparent to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <TypeToRenderProd play={isInViewport} slide={slide} />
             </motion.div>
           ))}
@@ -279,7 +179,7 @@ export const CompositionPreview = memo(({ isInViewport, HeaderSlideShow ,interva
               whileHover={{ scale: 1.02 }}
               className=" rounded-3xl   overflow-hidden group"
             >
-              <div className=" inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className=" inset-0 bg-linear-to-br from-primary/10 via-transparent to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <TypeToRenderProd play={isInViewport} slide={slide} />
             </motion.div>
           ))}
@@ -314,7 +214,7 @@ export const CompositionPreview = memo(({ isInViewport, HeaderSlideShow ,interva
                 whileHover={{ scale: 1.4 }}
                 onClick={() => setCurrentSlide(idx)}
                 className={`h-2.5 rounded-full transition-all  ${idx === currentSlide
-                  ? "w-16 bg-gradient-to-r from-primary to-accent "
+                  ? "w-16 bg-linear-to-r from-primary to-accent "
                   : "w-2.5 bg-muted-foreground/20 hover:bg-muted-foreground/40"
                   }`}
               />
@@ -330,66 +230,7 @@ export const CompositionPreview = memo(({ isInViewport, HeaderSlideShow ,interva
         <SingleCompsotion slides={slides} />
       )
 
-      return (
-        <div className="space-y-8">
-          <motion.div
-            className="h-[500px]"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentSlide}
-                initial={{ opacity: 0, x: 100, rotateY: 15 }}
-                animate={{ opacity: 1, x: 0, rotateY: 0 }}
-                exit={{ opacity: 0, x: -100, rotateY: -15 }}
-                transition={{ duration: 0.5 }}
-                className="h-full  rounded-3xl  "
-              >
-                <TypeToRenderProd play={isInViewport} slide={slides[currentSlide]} />
-              </motion.div>
-            </AnimatePresence>
-          </motion.div>
 
-          <div className="flex gap-6 justify-center items-center">
-            <motion.button
-              initial="rest"
-              whileHover="hover"
-              whileTap="tap"
-              onClick={() => setCurrentSlide((prev) => Math.max(0, prev - 1))}
-              disabled={currentSlide === 0}
-              className="p-4 rounded-2xl bg-primary/90 backdrop-blur-xl text-primary-foreground font-semibold disabled:opacity-30 disabled:cursor-not-allowed  group overflow-hidden relative"
-            >
-              <ChevronLeft className="w-6 h-6 relative z-10" />
-            </motion.button>
-
-            <motion.div
-              key={currentSlide}
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className=" px-8 py-4 rounded-2xl min-w-[140px] text-center "
-            >
-              <span className="text-foreground font-bold text-xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                {currentSlide + 1}
-              </span>
-              <span className="text-muted-foreground font-medium text-lg mx-2">/</span>
-              <span className="text-muted-foreground font-medium text-lg">{slides.length}</span>
-            </motion.div>
-
-            <motion.button
-              initial="rest"
-              whileHover="hover"
-              whileTap="tap"
-              onClick={() => setCurrentSlide((prev) => Math.min(slides.length - 1, prev + 1))}
-              disabled={currentSlide === slides.length - 1}
-              className="p-4 rounded-2xl bg-primary/90 backdrop-blur-xl text-primary-foreground font-semibold disabled:opacity-30 disabled:cursor-not-allowed  group overflow-hidden relative"
-            >
-              <ChevronRight className="w-6 h-6 relative z-10" />
-            </motion.button>
-          </div>
-        </div>
-      )
 
     case "ZOOM":
       return (
@@ -446,91 +287,12 @@ export const CompositionPreview = memo(({ isInViewport, HeaderSlideShow ,interva
       return (
 
         <ExpermintalParallaxContainer slides={slides} isInViewport={isInViewport} />
-        // <div className="space-y-4 sm:space-y-6 md:space-y-8 px-4 sm:px-6 lg:px-8">
-        //     <div
-        //         ref={containerRef}
-        //         className="relative overflow-hidden rounded-2xl sm:rounded-3xl flex flex-col w-full h-full gap-3 sm:gap-4 md:gap-5"
-        //         onMouseMove={handleMouseMove}
-        //         onTouchStart={handleTouchStart}
-        //     >
-        //         {slides.map((slide, idx) => (
-        //             <div
-        //                 key={idx}
-        //                 ref={(el) => {
-        //                     if (el) slidesRef.current[idx] = el;
-        //                 }}
-        //                 className="inset-0 min-h-screen space-y-6 sm:space-y-8 md:space-y-12"
-        //             >
-        //                 <TypeToRenderProd  
-        //                     play={isInViewport} 
-        //                     slide={slide} 
-        //                     split={true} 
-        //                     index={idx} 
-        //                 />
-        //             </div>
-        //         ))}
-        //     </div>
-        // </div>
+
       )
 
     case "COVERFLOW":
-      return <CoverflowComposition slides={slides} isInViewport={isInViewport}  />
-      return (
-        <div className="space-y-8">
-          <div className="relative h-[500px] perspective-[1000px] flex items-center justify-center">
-            <AnimatePresence mode="wait">
-              {slides.map((slide, idx) => {
-                const offset = idx - currentSlide
-                const isVisible = Math.abs(offset) <= 2
-                if (!isVisible) return null
+      return <CoverflowComposition slides={slides} isInViewport={isInViewport} />
 
-                return (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, rotateY: 45 }}
-                    animate={{
-                      opacity: offset === 0 ? 1 : 0.6,
-                      rotateY: offset * 45,
-                      x: offset * 120,
-                      z: offset === 0 ? 0 : -200,
-                    }}
-                    exit={{ opacity: 0, rotateY: -45 }}
-                    transition={{ duration: 0.6 }}
-                    className=" h-96 w-80  rounded-2xl  "
-                    style={{ transformStyle: "preserve-3d" }}
-                  >
-                    <TypeToRenderProd play={isInViewport} slide={slide} />
-                  </motion.div>
-                )
-              })}
-            </AnimatePresence>
-          </div>
-
-          <div className="flex gap-4 justify-center">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              onClick={() => paginate(-1)}
-              className="px-8 py-2 rounded-lg bg-primary/90 text-primary-foreground font-semibold "
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </motion.button>
-            {slides.map((_, idx) => (
-              <motion.button
-                key={idx}
-                onClick={() => setCurrentSlide(idx)}
-                className={`h-2.5 rounded-full transition-all ${idx === currentSlide ? "w-10 bg-primary" : "w-2.5 bg-muted-foreground/30"}`}
-              />
-            ))}
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              onClick={() => paginate(1)}
-              className="px-8 py-2 rounded-lg bg-primary/90 text-primary-foreground font-semibold "
-            >
-              <ChevronRight className="w-5 h-5" />
-            </motion.button>
-          </div>
-        </div>
-      )
 
     case "KEN_BURNS":
       return (
@@ -585,7 +347,7 @@ export const CompositionPreview = memo(({ isInViewport, HeaderSlideShow ,interva
     case "FLIP":
       return (
         <div className="space-y-8">
-          <div className="flex items-center justify-center h-[500px]">
+          <div className="flex items-center justify-center h-125">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentSlide}
@@ -633,52 +395,6 @@ export const CompositionPreview = memo(({ isInViewport, HeaderSlideShow ,interva
       // return null
       return <CubeComposition HeaderSlideShow={HeaderSlideShow} slides={slides} />
 
-      return (<div className="space-y-8">
-        <div className="relative h-[500px] perspective-[1200px] flex items-center justify-center rounded-3xl overflow-hidden">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentSlide}
-              initial={{ rotateY: 90, opacity: 0 }}
-              animate={{ rotateY: 0, opacity: 1 }}
-              exit={{ rotateY: -90, opacity: 0 }}
-              transition={{ duration: 0.7, ease: "easeInOut" }}
-              className=" inset-0   "
-              style={{ transformStyle: "preserve-3d" }}
-            >
-              <TypeToRenderProd slide={slides[currentSlide]} />
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        <div className="flex gap-4 justify-center">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            onClick={() => paginate(-1)}
-            className="px-8 py-2 rounded-lg bg-primary/90 text-primary-foreground font-semibold "
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </motion.button>
-          <div className="flex gap-2">
-            {slides.map((_, idx) => (
-              <motion.button
-                key={idx}
-                onClick={() => setCurrentSlide(idx)}
-                className={`h-2 rounded-full transition-all ${idx === currentSlide ? "w-10 bg-primary" : "w-2 bg-muted-foreground/30"}`}
-              />
-            ))}
-          </div>
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            onClick={() => paginate(1)}
-            className="px-8 py-2 rounded-lg bg-primary/90 text-primary-foreground font-semibold "
-          >
-            <ChevronRight className="w-5 h-5" />
-          </motion.button>
-        </div>
-      </div>
-
-      )
-
     case "AUTO_GRID":
       return (
         <motion.div
@@ -695,7 +411,7 @@ export const CompositionPreview = memo(({ isInViewport, HeaderSlideShow ,interva
               whileHover={{ scale: 1.05, y: -4 }}
               className="h-64  rounded-2xl   overflow-hidden cursor-pointer group"
             >
-              <div className=" inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className=" inset-0 bg-linear-to-br from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <TypeToRenderProd play={isInViewport} slide={slide} />
             </motion.div>
           ))}
@@ -737,12 +453,12 @@ export const CompositionPreview = memo(({ isInViewport, HeaderSlideShow ,interva
       )
 
     case "FILMSTRIP":
-        return <FilmStrip slides={slides} isInViewport={isInViewport} />
-  
+      return <FilmStrip slides={slides} isInViewport={isInViewport} />
+
 
     case "LIGHTBOX":
 
-      
+
       return (
         <div className="space-y-6">
           <motion.div className="grid grid-cols-2 md:grid-cols-3 gap-4" initial="hidden" animate="visible">
@@ -787,7 +503,7 @@ export const CompositionPreview = memo(({ isInViewport, HeaderSlideShow ,interva
                   className="relative  w-full max-w-2xl h-fit flex items-center justify-center rounded-3xl overflow-hidden"
                 >
                   <div className=" inset-0  h-full w-full ">
-                    <TypeToRenderProd lightOpen={true}  play={isInViewport} slide={slides[currentSlide]} />
+                    <TypeToRenderProd lightOpen={true} play={isInViewport} slide={slides[currentSlide]} />
                   </div>
 
                   <motion.button
@@ -810,8 +526,8 @@ export const CompositionPreview = memo(({ isInViewport, HeaderSlideShow ,interva
     case "MARQUEE":
 
       return (
-        
-        <MarqueeComposition isInViewport={isInViewport}  slides={slides} key={"ma"}/>
+
+        <MarqueeComposition isInViewport={isInViewport} slides={slides} key={"ma"} />
       )
 
     case "CUSTOM":
@@ -826,6 +542,176 @@ export const CompositionPreview = memo(({ isInViewport, HeaderSlideShow ,interva
         </motion.div>
       )
   }
+}
+
+export const CompositionPreview = memo(({ HeaderSlideShow, interval, autoPlay, composition, slides }: CompositionPreviewProps) => {
+
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [[page, direction], setPage] = useState([0, 0])
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [columns, setColumns] = useState(3)
+  const [autoProgress, setAutoProgress] = useState(0)
+  const [isInViewport, setIsInViewport] = useState(false)
+
+  useEffect(() => {
+
+    const handleResize = () => {
+      if (window.innerWidth < 640) setColumns(1)
+      else if (window.innerWidth < 1024) setColumns(2)
+      else setColumns(3)
+    }
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  // Memoize paginate to avoid recreating it on every render
+  const paginate = useCallback((newDirection: number) => {
+    if (!slides || slides.length === 0)
+      if (composition === "LIGHTBOX") return
+
+    const nextIndex = currentSlide + newDirection
+
+    // Check boundaries and wrap around
+    let newPage: number
+    if (nextIndex >= slides.length) {
+      newPage = 0 // Go back to first slide
+    } else if (nextIndex < 0) {
+      newPage = slides.length - 1 // Go to last slide
+    } else {
+      newPage = nextIndex
+    }
+
+    setPage([newPage, newDirection])
+    setCurrentSlide(newPage)
+
+  }, [composition, currentSlide, slides])
+
+  // Auto-progress effect with smooth progress bar
+  useEffect(() => {
+
+    if (composition === "LIGHTBOX") return
+    if (!autoPlay || !slides || slides.length === 0 || interval <= 0 || isInViewport === false) {
+      (() => {
+
+        setAutoProgress(0)
+      })()
+      return
+    }
+
+    const tickMs = 50 // Update progress every 50ms for smooth animation
+    const step = (100 * tickMs) / interval // Calculate increment per tick
+
+    const progressInterval = setInterval(() => {
+      setAutoProgress(prev => {
+        const next = prev + step
+        if (next >= 100) {
+          // Progress complete, advance to next slide
+          paginate(1)
+          return 0 // Reset progress
+        }
+        return next
+      })
+    }, tickMs)
+
+    // Cleanup function
+    return () => {
+      clearInterval(progressInterval)
+    }
+  }, [autoPlay, interval, paginate, slides, currentSlide, isInViewport, composition])
+
+  // Reset progress when slide changes manually
+  useEffect(() => {
+    if (autoPlay) {
+      (() => {
+
+        setAutoProgress(0)
+      })()
+    }
+  }, [currentSlide, autoPlay])
+
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 200 : -200,
+      opacity: 0,
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 200 : -200,
+      opacity: 0,
+    }),
+  }
+
+  const fadeVariants = {
+    enter: {
+      opacity: 0,
+    },
+    center: {
+      opacity: 1,
+    },
+    exit: {
+      opacity: 0,
+    },
+  }
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.4,
+      },
+    }),
+  }
+
+
+  if (!slides.length) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="flex items-center justify-center h-96 rounded-lg border border-border bg-muted/20"
+      >
+        <p className="text-muted-foreground font-light">No slides to preview</p>
+      </motion.div>
+    )
+  }
+
+
+  return (
+    <IsInViewPort setIsInViewport={setIsInViewport} id="" >
+
+      {Cases({
+        isInViewport,
+        autoProgress,
+        composition,
+        cardVariants,
+        columns,
+        currentSlide,
+        direction,
+        fadeVariants,
+        lightboxOpen,
+        page,
+        paginate,
+        HeaderSlideShow,
+        setCurrentSlide,
+        setLightboxOpen,
+        setPage,
+        slideVariants,
+        slides,
+
+      })}
+    </IsInViewPort>
+
+  )
+
 })
 
 CompositionPreview.displayName = "CompositionPreview"

@@ -44,42 +44,27 @@ export function SlideshowCard({
   const COVERFLOW = compositionType === ("COVERFLOW" as keyof typeof CompositionType)
   const MARQUEE = compositionType === ("MARQUEE" as keyof typeof CompositionType)
 
-
-
   const currentTranslation = item?.translations?.find((t) => t?.lang?.toUpperCase() === locale?.toUpperCase()) || item?.translations?.[0] || {
     title: item.title,
     description: item.description
 
   }
-if( isCube) return
 
   return (
     <div
 
       className={cn("rounded-lg relative duration-200 overflow-hidden w-full ", !MARQUEE && !isCube && !isSingle && !isFilmStrip && !COVERFLOW && "container mx-auto")}
     >
-      {/* Server-rendered header */}
-
-
-
-
         <SlideHeader
           compositionType={compositionType === "FILMSTRIP" ? (CompositionType.PARALLAX as CompositionType) : compositionType}
           title={currentTranslation?.title}
           description={currentTranslation?.description || ""}
           slideShowType={slideShowType}
         />
- 
-
-      
-
 
       <div className="mt-10" />
-
-      {/* Client component for interactive parts */}
-      <SlideshowCardClient
       
-
+      <SlideshowCardClient
         locale={locale}
         id={item.id}
         composition={compositionType}

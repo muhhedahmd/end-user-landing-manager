@@ -7,12 +7,12 @@ import { PaginatedResponse } from "@/types/services";
 
 
 export const fetchServices = async ({
-langEnd ,
+  langEnd,
   skip,
   take,
   isFeatured,
 }: {
-  langEnd : "EN" | "AR",
+  langEnd: "EN" | "AR",
   skip: number;
   take: number;
   isFeatured: boolean;
@@ -44,11 +44,11 @@ langEnd ,
   }
 };
 
-export interface teamMemberResponse  {
-  teamMember: TeamMember ,
-  image: Image ,
-  translation : TeamMemberTranslation[]
-  } 
+export interface teamMemberResponse {
+  teamMember: TeamMember,
+  image: Image,
+  translation: TeamMemberTranslation[]
+}
 
 
 
@@ -63,9 +63,9 @@ export const fetchTeamMembers = async ({
   take: number;
   isFeatured: boolean;
 }): Promise<PaginatedResponse<{
-  teamMember: TeamMember ,
-  image: Image ,
-  translation : TeamMemberTranslation[]
+  teamMember: TeamMember,
+  image: Image,
+  translation: TeamMemberTranslation[]
 }> | null> => {
   try {
     const params = new URLSearchParams({
@@ -94,48 +94,59 @@ export const fetchTeamMembers = async ({
 };
 
 
-export async function fetchSlideShows({ locale , skip, take }: { locale : "en" | "ar", skip: number, take: number }): Promise<SlideShowResult> {
-    try {
-        const res = await fetch(
-            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/slide-show?skip=${skip}&take=${take}&lang=${locale.toUpperCase() as "EN" | "AR"}`,
-            {
-                // cache: "force-cache",
-                // next: { revalidate:  30 * 60 },
-            },
-        )
-        if (!res.ok) return { status: "error" }
-        const json = await res.json()
-        const payload = json as PaginatedResponse<SlideShowWithTranslations>
-        if (!payload) {
-            return { status: "error" }
-        }
-
-        return {
-            status: "success",
-            data: payload
-        }
-    } catch {
-        return { status: "error" }
+export async function fetchSlideShows({ locale, skip, take }: { locale: "en" | "ar", skip: number, take: number }): Promise<SlideShowResult> {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/slide-show?skip=${skip}&take=${take}&lang=${locale.toUpperCase() as "EN" | "AR"}`,
+      {
+        // cache: "force-cache",
+        // next: { revalidate:  30 * 60 },
+      },
+    )
+    if (!res.ok) return { status: "error" }
+    const json = await res.json()
+    const payload = json as PaginatedResponse<SlideShowWithTranslations>
+    if (!payload) {
+      return { status: "error" }
     }
+
+    return {
+      status: "success",
+      data: payload
+    }
+  } catch {
+    return { status: "error" }
+  }
 }
 export async function getCompanyInfo(): Promise<{
+
   company: CompanyInfo,
   translation: {
-     name: string,
-      tagline: string,
-      description: "",
-      footerText: "",
-      metaTitle: string
-      metaDescription: string
-      metaKeywords: string,
-      lang: "AR" | "EN"
+    name: string,
+    tagline: string,
+    description: "",
+    footerText: "",
+    metaTitle: string
+    metaDescription: string
+    metaKeywords: string,
+    lang: "AR" | "EN"
   }[]
-  logo: Image | null
+  logo: Image | null,
+
+  slideShowsPages: {
+    totalItems: number,
+    remainingItems: number,
+    nowCount: number,
+    totalPages: number,
+    currentPage: number,
+    pageSize: number
+  }
 } | null> {
+
   try {
     const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/company-info", {
       cache: "force-cache",
-      next: { revalidate: 3600 }, // Revalidate every hour
+      next: { revalidate: 1 }, // Revalidate every hour
     });
 
     if (!res.ok) {

@@ -115,6 +115,7 @@ export class SlidesService {
     const cacheKey = `${id}-${page}-${perPage}`;
     const cached = this.cache.get(cacheKey);
 
+    // revlaidate cache if stale
     if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
       return cached.data;
     }
