@@ -8,6 +8,7 @@ import { PaginatedResponse } from "@/types/services";
 
 
 const ITEMS_PER_PAGE = 3;
+export const dynamic = "force-static";
 export type SlideShowResult = { status: "success" | "error"; data: PaginatedResponse<SlideShowWithTranslations> } | { status: "error" }
 async function fetchSlideShows({ locale, skip, take }: { locale: "en" | "ar", skip: number, take: number }): Promise<SlideShowResult> {
     const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -15,7 +16,10 @@ async function fetchSlideShows({ locale, skip, take }: { locale: "en" | "ar", sk
         if (!BASE_URL) throw new Error("BACKEND_URL is not defined")
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/slide-show?skip=${skip}&take=${take}&lang=${locale?.toUpperCase()}`,
-            
+            {
+                cache: "force-cache",
+                next: { revalidate: 3600 },
+            },
         )
         if (!res.ok) return { status: "error" }
         const json = await res.json()
@@ -47,7 +51,7 @@ const fetchAllSlideShows = async ({
     try {
         // Create array of promises
         const promises = Array.from({ length: pages }, (_, i) =>
-            
+
             fetchSlideShows({
                 locale: locale || "en",
                 skip: i,
