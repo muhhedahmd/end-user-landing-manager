@@ -15,8 +15,7 @@ export type SlideShowResult = { status: "success" | "error"; data: PaginatedResp
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/slide-show?skip=${skip}&take=${take}&lang=${locale?.toUpperCase()}`,
             {
-                cache: "force-cache",
-                next: { revalidate: 30 * 60 },
+                cache: "no-store",
             },
         )
         if (!res.ok) return { status: "error" }
