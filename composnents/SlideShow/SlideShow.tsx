@@ -1,24 +1,23 @@
 
 
 
-
-import { getCompanyInfo } from "@/app/[locale]/(routes)/services/comp/Fetchers";
-import { SlideshowCard, SlideShowWithTranslations } from "@/composnents/SlideShow/_comp/SlideShowCard";
 import { PaginatedResponse } from "@/types/services";
-
+import PaggintionSlideshows from "./_comp/PaggintionSlideshows";
+import { SlideshowCard, SlideShowWithTranslations } from "./_comp/SlideShowCard";
 
 const ITEMS_PER_PAGE = 3;
+const initialSkip = 0;
 export const dynamic = "force-static";
+
 export type SlideShowResult = { status: "success" | "error"; data: PaginatedResponse<SlideShowWithTranslations> } | { status: "error" }
 async function fetchSlideShows({ locale, skip, take }: { locale: "en" | "ar", skip: number, take: number }): Promise<SlideShowResult> {
-    const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
     try {
-        if (!BASE_URL) throw new Error("BACKEND_URL is not defined")
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/slide-show?skip=${skip}&take=${take}&lang=${locale?.toUpperCase()}`,
             {
                 cache: "force-cache",
-                next: { revalidate: 3600 },
+                next: { revalidate: 1800 },
             },
         )
         if (!res.ok) return { status: "error" }
@@ -37,67 +36,19 @@ async function fetchSlideShows({ locale, skip, take }: { locale: "en" | "ar", sk
 }
 
 
-const fetchAllSlideShows = async ({
-    locale,
-    pages,
-    take = ITEMS_PER_PAGE,
-}: {
-    locale?: "en" | "ar",
-    pages: number,
-    take?: number,
-}) => {
-    if (pages <= 0) return [];
+async function SlideShowsProd({ locale }: { locale: "en" | "ar",  }) {
+    const slideShows = await fetchSlideShows({ locale, skip: initialSkip, take: ITEMS_PER_PAGE })
 
-    try {
-        // Create array of promises
-        const promises = Array.from({ length: pages }, (_, i) =>
-
-            fetchSlideShows({
-                locale: locale || "en",
-                skip: i,
-                take: take,
-            })
-        );
-
-        const results = await Promise.all(promises);
-
-        const data = results
-            .filter(res => res.status === "success")
-            .flatMap(res => res.status === "success" ? res.data.data : []);
-
-        return data;
-
-    } catch (error) {
-        console.error("Error fetching slide shows:", error);
-        return [];
-    }
-}
-
-async function SlideShowsProd({ locale = "en" }: { locale: "en" | "ar" }) {
-    const companyinfo = await getCompanyInfo();
-    const totalPages = companyinfo?.slideShowsPages?.totalPages || 0;
-
-    if (totalPages === 0) {
-        return (
-            <div className="min-h-screen px-4 py-16">
-                <div className="space-y-6">
-                  
-                    <p>No slide shows available.</p>
-                </div>
-            </div>
-        );
-    }
-
-    const slideShows = await fetchAllSlideShows({
-        locale,
-        pages: totalPages - (companyinfo?.slideShowsPages?.nowCount || 0),
-        take: companyinfo?.slideShowsPages.pageSize || ITEMS_PER_PAGE,
-    });
+    if (slideShows.status === "error" || !slideShows) return <div className="bg-destructive w-screen h-screen  flex items-center justify-between">
+        something went wrong
+    </div>
+    const _SlideShows = slideShows.data
 
     return (
-        <div className="min-h-screen px-4 py-16">
+        <div className="min-h-screen  px-4 py-16 ">
             <div className="space-y-6">
-                {/* {slideShows.map((item, index) => (
+                {_SlideShows && _SlideShows.data.map((item, index) => (
+
                     <SlideshowCard
                         locale={locale}
                         autoPlay={item.autoPlay}
@@ -106,10 +57,11 @@ async function SlideShowsProd({ locale = "en" }: { locale: "en" | "ar" }) {
                         item={item}
                         index={index}
                     />
-                ))} */}
+                ))}
+                <PaggintionSlideshows initialData={_SlideShows.data} locale={locale} initialPage={0} itemsPerPage={ITEMS_PER_PAGE} />
             </div>
         </div>
     );
 }
+export default SlideShowsProd
 
-export default SlideShowsProd;

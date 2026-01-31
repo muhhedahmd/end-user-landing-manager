@@ -128,8 +128,8 @@ const FilmStrip = memo(({ slides, isInViewport }: FilmStripProps) => {
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100"
                   />
                   <div className="absolute inset-0 bg-liner-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className=" p-2 backdrop-blur-2xl bg-white/30 absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
-                    <span className="font-display text-lg line-clamp-1 text-primary tracking-wider">
+                  <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                    <span className="font-display text-lg text-primary tracking-wider">
                       {frame.title}
                     </span>
                   </div>

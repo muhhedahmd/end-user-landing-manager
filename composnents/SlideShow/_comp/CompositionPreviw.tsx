@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { JSX, memo, useCallback, useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import type { slide } from "@/types/schema"
+// import { TypeToRenderProd  } from "./TypeToRenderProd "
 import CubeComposition from "./expermintal/cubeComposition"
 import SingleCompsotion from "./expermintal/singleComposition"
 import { TypeToRenderProd } from "./TypToRenderProd"
@@ -12,7 +12,6 @@ import { ExpermintalParallaxContainer } from "./expermintal/ExpermintalParallaxC
 import FilmStrip from "./CardProd/generic/filmStrap"
 import CoverflowComposition from "./expermintal/coverflowComposition"
 import MarqueeComposition from "./expermintal/marqueeComposition"
-import IsInViewPort from "./isInViewPort"
 
 interface CompositionPreviewProps {
   composition:
@@ -36,49 +35,150 @@ interface CompositionPreviewProps {
   slides: slide[]
   interval: number
   autoPlay: boolean,
-  HeaderSlideShow?: JSX.Element | null
+  isInViewport: boolean,
+    HeaderSlideShow ?: JSX.Element | null
 
   // containerRef : RefObject<HTMLDivElement | null>
 }
 
+export const CompositionPreview = memo(({ isInViewport, HeaderSlideShow ,interval, autoPlay, composition, slides }: CompositionPreviewProps) => {
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [[page, direction], setPage] = useState([0, 0])
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [columns, setColumns] = useState(3)
+  const [autoProgress, setAutoProgress] = useState(0)
 
-const Cases = ({
-  composition,
-  slides,
-  isInViewport,
-  paginate,
-  direction,
-  slideVariants,
-  page,
-  currentSlide,
-  setPage,
-  setCurrentSlide,
-  cardVariants,
-  fadeVariants,
-  HeaderSlideShow,
-  setLightboxOpen,
-  lightboxOpen,
-  columns,
-  autoProgress
-}: {
-  composition: CompositionPreviewProps['composition']
-  slides: slide[]
-  isInViewport: boolean
-  paginate: (direction: number) => void
-  direction: number
-  slideVariants: any
-  page: number
-  currentSlide: number
-  setPage: (value: [number, number]) => void
-  setCurrentSlide: (value: number) => void
-  cardVariants: any
-  fadeVariants: any
-  HeaderSlideShow?: JSX.Element | null
-  setLightboxOpen: (value: boolean) => void
-  lightboxOpen: boolean
-  columns: number
-  autoProgress: number
-}) => {
+  useEffect(() => {
+
+    const handleResize = () => {
+      if (window.innerWidth < 640) setColumns(1)
+      else if (window.innerWidth < 1024) setColumns(2)
+      else setColumns(3)
+    }
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
+  // Memoize paginate to avoid recreating it on every render
+  const paginate = useCallback((newDirection: number) => {
+    if (!slides || slides.length === 0) 
+      if(composition === "LIGHTBOX") return
+
+    const nextIndex = currentSlide + newDirection
+
+    // Check boundaries and wrap around
+    let newPage: number
+    if (nextIndex >= slides.length) {
+      newPage = 0 // Go back to first slide
+    } else if (nextIndex < 0) {
+      newPage = slides.length - 1 // Go to last slide
+    } else {
+      newPage = nextIndex
+    }
+
+    setPage([newPage, newDirection])
+    setCurrentSlide(newPage)
+
+  }, [composition, currentSlide, slides])
+
+  // Auto-progress effect with smooth progress bar
+  useEffect(() => {
+
+    if(composition === "LIGHTBOX") return
+    if (!autoPlay || !slides || slides.length === 0 || interval <= 0 || isInViewport === false) {
+      (() => {
+
+        setAutoProgress(0)
+      })()
+      return
+    }
+
+    const tickMs = 50 // Update progress every 50ms for smooth animation
+    const step = (100 * tickMs) / interval // Calculate increment per tick
+
+    const progressInterval = setInterval(() => {
+      setAutoProgress(prev => {
+        const next = prev + step
+        if (next >= 100) {
+          // Progress complete, advance to next slide
+          paginate(1)
+          return 0 // Reset progress
+        }
+        return next
+      })
+    }, tickMs)
+
+    // Cleanup function
+    return () => {
+      clearInterval(progressInterval)
+    }
+  }, [autoPlay, interval, paginate, slides, currentSlide, isInViewport, composition])
+
+  // Reset progress when slide changes manually
+  useEffect(() => {
+    if (autoPlay) {
+      (() => {
+
+        setAutoProgress(0)
+      })()
+    }
+  }, [currentSlide, autoPlay])
+
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 200 : -200,
+      opacity: 0,
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 200 : -200,
+      opacity: 0,
+    }),
+  }
+
+  const fadeVariants = {
+    enter: {
+      opacity: 0,
+    },
+    center: {
+      opacity: 1,
+    },
+    exit: {
+      opacity: 0,
+    },
+  }
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.4,
+      },
+    }),
+  }
+
+
+  if (!slides.length) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="flex items-center justify-center h-96 rounded-lg border border-border bg-muted/20"
+      >
+        <p className="text-muted-foreground font-light">No slides to preview</p>
+      </motion.div>
+    )
+  }
+
   switch (composition) {
     case "CAROUSEL":
 
@@ -230,7 +330,7 @@ const Cases = ({
         <SingleCompsotion slides={slides} />
       )
 
-
+   
 
     case "ZOOM":
       return (
@@ -287,12 +387,36 @@ const Cases = ({
       return (
 
         <ExpermintalParallaxContainer slides={slides} isInViewport={isInViewport} />
-
+        // <div className="space-y-4 sm:space-y-6 md:space-y-8 px-4 sm:px-6 lg:px-8">
+        //     <div
+        //         ref={containerRef}
+        //         className="relative overflow-hidden rounded-2xl sm:rounded-3xl flex flex-col w-full h-full gap-3 sm:gap-4 md:gap-5"
+        //         onMouseMove={handleMouseMove}
+        //         onTouchStart={handleTouchStart}
+        //     >
+        //         {slides.map((slide, idx) => (
+        //             <div
+        //                 key={idx}
+        //                 ref={(el) => {
+        //                     if (el) slidesRef.current[idx] = el;
+        //                 }}
+        //                 className="inset-0 min-h-screen space-y-6 sm:space-y-8 md:space-y-12"
+        //             >
+        //                 <TypeToRenderProd  
+        //                     play={isInViewport} 
+        //                     slide={slide} 
+        //                     split={true} 
+        //                     index={idx} 
+        //                 />
+        //             </div>
+        //         ))}
+        //     </div>
+        // </div>
       )
 
     case "COVERFLOW":
-      return <CoverflowComposition slides={slides} isInViewport={isInViewport} />
-
+      return <CoverflowComposition slides={slides} isInViewport={isInViewport}  />
+    
 
     case "KEN_BURNS":
       return (
@@ -347,7 +471,7 @@ const Cases = ({
     case "FLIP":
       return (
         <div className="space-y-8">
-          <div className="flex items-center justify-center h-125">
+          <div className="flex items-center justify-center h-132">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentSlide}
@@ -394,6 +518,8 @@ const Cases = ({
       // expemental
       // return null
       return <CubeComposition HeaderSlideShow={HeaderSlideShow} slides={slides} />
+
+   
 
     case "AUTO_GRID":
       return (
@@ -453,12 +579,12 @@ const Cases = ({
       )
 
     case "FILMSTRIP":
-      return <FilmStrip slides={slides} isInViewport={isInViewport} />
-
+        return <FilmStrip slides={slides} isInViewport={isInViewport} />
+  
 
     case "LIGHTBOX":
 
-
+      
       return (
         <div className="space-y-6">
           <motion.div className="grid grid-cols-2 md:grid-cols-3 gap-4" initial="hidden" animate="visible">
@@ -503,7 +629,7 @@ const Cases = ({
                   className="relative  w-full max-w-2xl h-fit flex items-center justify-center rounded-3xl overflow-hidden"
                 >
                   <div className=" inset-0  h-full w-full ">
-                    <TypeToRenderProd lightOpen={true} play={isInViewport} slide={slides[currentSlide]} />
+                    <TypeToRenderProd lightOpen={true}  play={isInViewport} slide={slides[currentSlide]} />
                   </div>
 
                   <motion.button
@@ -526,8 +652,8 @@ const Cases = ({
     case "MARQUEE":
 
       return (
-
-        <MarqueeComposition isInViewport={isInViewport} slides={slides} key={"ma"} />
+        
+        <MarqueeComposition isInViewport={isInViewport}  slides={slides} key={"ma"}/>
       )
 
     case "CUSTOM":
@@ -542,176 +668,6 @@ const Cases = ({
         </motion.div>
       )
   }
-}
-
-export const CompositionPreview = memo(({ HeaderSlideShow, interval, autoPlay, composition, slides }: CompositionPreviewProps) => {
-
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [[page, direction], setPage] = useState([0, 0])
-  const [lightboxOpen, setLightboxOpen] = useState(false)
-  const [columns, setColumns] = useState(3)
-  const [autoProgress, setAutoProgress] = useState(0)
-  const [isInViewport, setIsInViewport] = useState(false)
-
-  useEffect(() => {
-
-    const handleResize = () => {
-      if (window.innerWidth < 640) setColumns(1)
-      else if (window.innerWidth < 1024) setColumns(2)
-      else setColumns(3)
-    }
-    handleResize()
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
-
-  // Memoize paginate to avoid recreating it on every render
-  const paginate = useCallback((newDirection: number) => {
-    if (!slides || slides.length === 0)
-      if (composition === "LIGHTBOX") return
-
-    const nextIndex = currentSlide + newDirection
-
-    let newPage: number
-    if (nextIndex >= slides.length) {
-      newPage = 0
-    } else if (nextIndex < 0) {
-      newPage = slides.length - 1
-    } else {
-      newPage = nextIndex
-    }
-
-    setPage([newPage, newDirection])
-    setCurrentSlide(newPage)
-
-  }, [composition, currentSlide, slides])
-
-  // Auto-progress effect with smooth progress bar
-  useEffect(() => {
-
-    if (composition === "LIGHTBOX") return
-    if (!autoPlay || !slides || slides.length === 0 || interval <= 0 || isInViewport === false) {
-      (() => {
-
-        setAutoProgress(0)
-      })()
-      return
-    }
-
-    const tickMs = 50
-    const step = (100 * tickMs) / interval
-
-    const progressInterval = setInterval(() => {
-      setAutoProgress(prev => {
-        const next = prev + step
-        if (next >= 100) {
-
-          paginate(1)
-          return 0 // Reset progress
-        }
-        return next
-      })
-    }, tickMs)
-
-    // Cleanup function
-    return () => {
-      clearInterval(progressInterval)
-    }
-  }, [autoPlay, interval, paginate, slides, currentSlide, isInViewport, composition])
-
-  // Reset progress when slide changes manually
-  useEffect(() => {
-    if (autoPlay) {
-      (() => {
-
-        setAutoProgress(0)
-      })()
-    }
-  }, [currentSlide, autoPlay])
-
-  const slideVariants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 200 : -200,
-      opacity: 0,
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? 200 : -200,
-      opacity: 0,
-    }),
-  }
-
-  const fadeVariants = {
-    enter: {
-      opacity: 0,
-    },
-    center: {
-      opacity: 1,
-    },
-    exit: {
-      opacity: 0,
-    },
-  }
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.1,
-        duration: 0.4,
-      },
-    }),
-  }
-
-
-  if (!slides.length) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="flex items-center justify-center h-96 rounded-lg border border-border bg-muted/20"
-      >
-        <p className="text-muted-foreground font-light">No slides to preview</p>
-      </motion.div>
-    )
-  }
-
-
-  return (
-    <IsInViewPort setIsInViewport={setIsInViewport} id="" >
-    <>
-      {Cases({
-        isInViewport,
-        autoProgress,
-        composition,
-        cardVariants,
-        columns,
-        currentSlide,
-        direction,
-        fadeVariants,
-        lightboxOpen,
-        page,
-        paginate,
-        HeaderSlideShow,
-        setCurrentSlide,
-        setLightboxOpen,
-        setPage,
-        slideVariants,
-        slides,
-
-      })}
-    </>
-       </IsInViewPort> 
-
-)
-
 })
 
 CompositionPreview.displayName = "CompositionPreview"
