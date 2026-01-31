@@ -7,7 +7,6 @@ import { SlideshowCard, SlideShowWithTranslations } from "./_comp/SlideShowCard"
 
 const ITEMS_PER_PAGE = 3;
 const initialSkip = 0;
-export const dynamic = "force-static";
 
 export type SlideShowResult = { status: "success" | "error"; data: PaginatedResponse<SlideShowWithTranslations> } | { status: "error" }
 async function fetchSlideShows({ locale, skip, take }: { locale: "en" | "ar", skip: number, take: number }): Promise<SlideShowResult> {
@@ -58,7 +57,7 @@ async function SlideShowsProd({ locale }: { locale: "en" | "ar",  }) {
                         index={index}
                     />
                 ))}
-                <PaggintionSlideshows initialData={_SlideShows.data} locale={locale} initialPage={0} itemsPerPage={ITEMS_PER_PAGE} />
+                <PaggintionSlideshows initialData={_SlideShows.data} locale={locale} initialPage={1} itemsPerPage={ITEMS_PER_PAGE} />
             </div>
         </div>
     );

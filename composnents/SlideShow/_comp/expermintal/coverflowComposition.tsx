@@ -156,7 +156,7 @@ const CoverflowComposition = ({
     return (
         <section
             ref={containerRef}
-            className='mask-b-from-60% mask-t-from-60% w-full max-w-[95vw] lg:max-w-[90vw] grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mx-auto h-[80vh] lg:h-screen overflow-hidden'
+            className='mask-b-from-60% mask-t-from-60% w-full max-w-[95vw] lg:max-w-[90vw] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mx-auto h-[80vh] lg:h-screen overflow-hidden'
         >
             <div
                 onPointerOver={() => handlePointerDown(refFirstCol)}
@@ -165,7 +165,7 @@ const CoverflowComposition = ({
                 className='flex flex-col gap-3 lg:gap-4 will-change-transform'
             >
                 {col1Data.map((slide, idx) => (
-                    <div key={`col1-${slide.id}-${idx}`} className='min-h-[280px] lg:min-h-[320px]'>
+                    <div key={`col1-${slide.id}-${idx}`} className='min-h-100 lg:min-h-[320px]'>
                         <MemoizedCard data={slide} idx={idx} />
                     </div>
                 ))}

@@ -55,7 +55,7 @@ const PaginationTrigger = ({
           loadingRef.current = false
         }
       },
-      { threshold: .1, rootMargin: "0px 0px 400px 0px" }
+      { threshold: .1, rootMargin: "400px 0px 400px 0px" }
     )
 
     observer.observe(ref.current)
@@ -75,7 +75,7 @@ const PaginationTrigger = ({
         />
       ))}
 
-      {hasMore && <div ref={ref} className="h-10 w-full bg-transparent" />}
+      {hasMore && <div ref={ref} className="h-40  w-full bg-transparent" />}
     </>
   )
 }

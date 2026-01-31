@@ -7,7 +7,7 @@ import Cube from "../CardProd/generic/cube";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const CubeComposition = ({ slides, HeaderSlideShow }: {
+const CubeComposition = ({ slides }: {
   HeaderSlideShow?: JSX.Element | null
   , slides: slide[]
 }) => {
@@ -20,29 +20,6 @@ const CubeComposition = ({ slides, HeaderSlideShow }: {
     }
   };
 
-  // Wait for images to load before calculating ScrollTrigger positions
-  // useEffect(() => {
-  //   const images = Array.from(rootRef.current?.querySelectorAll("img") || []);
-
-  //   const loadPromises = images.map(
-
-  //     (img) =>
-  //       new Promise((resolve) => {
-  //         if (img.complete) {
-  //           resolve(true);
-  //         } else {
-  //           img.onload = () => resolve(true);
-  //           img.onerror = () => resolve(true);
-  //         }
-  //       })
-  //   );
-
-  //   Promise.all(loadPromises).then(() => {
-  //     setTimeout(() => {
-  //       ScrollTrigger.refresh();
-  //     }, 50);
-  //   });
-  // }, [slides]);
 
   useGSAP(
     () => {
@@ -112,7 +89,7 @@ const CubeComposition = ({ slides, HeaderSlideShow }: {
     >
       {/* Cards container */}
 
-      <div className="flex  items-start justify-center pt-12 sm:pt-16 md:pt-24 lg:pt-32 xl:pt-40">
+      <div className="flex  items-start justify-center pt-4 sm:pt-16 md:pt-10 lg:pt-32 xl:pt-40">
         <div className="cards relative flex items-start justify-start flex-col w-full max-w-7xl">
 
 
@@ -135,7 +112,7 @@ const CubeComposition = ({ slides, HeaderSlideShow }: {
       </div>
 
       {/* Spacer section */}
-      <div className="mt-8 sm:mt-10 md:mt-12 h-[60vh] sm:h-[40vh] md:h-[50vh] w-full border-t border-border" />
+      <div className="mt-8 sm:mt-10 md:mt-12 h-[60vh] sm:h-[40vh] md:h-[50vh] w-full border-t " />
     </div>
   );
 };

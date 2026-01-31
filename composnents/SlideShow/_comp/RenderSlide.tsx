@@ -14,7 +14,7 @@ interface RenderSlidesProps {
   interval?: number;
   autoPlay: boolean;
   composition: CompositionType;
-    HeaderSlideShow ?: JSX.Element | null
+  HeaderSlideShow ?: JSX.Element | null
   
 }
 const RenderSlidesManual = memo(({

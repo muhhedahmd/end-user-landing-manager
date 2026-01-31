@@ -51,7 +51,6 @@ export function SlideshowCard({
     description: item.description
 
   }
-if( isCube) return
 
   return (
     <div
