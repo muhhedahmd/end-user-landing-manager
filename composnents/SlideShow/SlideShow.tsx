@@ -81,6 +81,7 @@ async function SlideShowsProd({ locale = "en" }: { locale: "en" | "ar" }) {
         return (
             <div className="min-h-screen px-4 py-16">
                 <div className="space-y-6">
+                  
                     <p>No slide shows available.</p>
                 </div>
             </div>
@@ -96,7 +97,7 @@ async function SlideShowsProd({ locale = "en" }: { locale: "en" | "ar" }) {
     return (
         <div className="min-h-screen px-4 py-16">
             <div className="space-y-6">
-                {slideShows.map((item, index) => (
+                {/* {slideShows.map((item, index) => (
                     <SlideshowCard
                         locale={locale}
                         autoPlay={item.autoPlay}
@@ -105,7 +106,7 @@ async function SlideShowsProd({ locale = "en" }: { locale: "en" | "ar" }) {
                         item={item}
                         index={index}
                     />
-                ))}
+                ))} */}
             </div>
         </div>
     );
