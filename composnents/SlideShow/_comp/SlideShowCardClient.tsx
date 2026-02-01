@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useRef, useState, useEffect, JSX } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { CompositionType } from "@/types/schema";
 
 import  RenderSlides  from "./RenderSlide";
@@ -76,7 +76,7 @@ export const SlideshowCardClient = memo(function SlideshowCardClient({
         id={id}
         composition={composition as CompositionType}
       />
-      {/* )} */}
+      
     </div>
   );
 });

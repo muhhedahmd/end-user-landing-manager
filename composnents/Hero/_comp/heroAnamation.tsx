@@ -6,7 +6,7 @@ import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { usePathname } from "next/navigation";
 
-const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
+const HeroAnimation = ({ children , companyName }: { children: React.ReactNode  , companyName : string }) => {
     const pathname = usePathname();
     const isRTL  = pathname.startsWith("/ar");
     const { timeline, ctx, isReady } = useTimeLine();
@@ -123,8 +123,8 @@ const HeroAnimation = ({ children }: { children: React.ReactNode }) => {
                         <h3
                         key={i}
                             className="  text-[5rem] sm:text-[7rem] md:text-[8rem] h-lg:bg-red-500  xl:text-[5rem] min-xl:text-[10rem] font-normal text-nowrap">
-
-                            TECH VISION SOLUTIONS
+                                {companyName} &nbsp;
+                            
                         </h3>
                     ))}
                 </div>

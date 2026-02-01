@@ -1,73 +1,72 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-"use client"
+'use client'
 
-import { useEffect, useRef, useState } from "react"
-import { SlideShow } from "@/types/slideShows"
-import { fetchSlideShows } from "@/app/[locale]/(routes)/services/comp/Fetchers"
+import { useEffect, useRef, useState, useTransition } from "react"
 import { SlideshowCard, SlideShowWithTranslations } from "./SlideShowCard"
+import { CompositionLoader } from "./SlidesLoader"
+import { CompositionType } from "@/types/schema"
+import { loadMoreSlideShows } from "@/lib/actions/slideShows"
 
-interface PaginationTriggerProps {
+interface InfiniteScrollContainerProps {
+  initialData: SlideShowWithTranslations[]
   locale: "en" | "ar"
-  initialData: SlideShowWithTranslations[]          
-  initialPage?: number              
-  itemsPerPage?: number
+  itemsPerPage: number
+  initialHasMore: boolean
 }
 
-const PaginationTrigger = ({
+export function InfiniteScrollContainer({
+  initialData,
   locale,
-  initialPage = 1,
-  itemsPerPage = 3,
-}: PaginationTriggerProps) => {
-  const [items, setItems] = useState<SlideShow[]>([])
-  const [currentPage, setCurrentPage] = useState(initialPage)
-  const [hasMore, setHasMore] = useState(true)
-  const ref = useRef<HTMLDivElement>(null)
+  itemsPerPage,
+  initialHasMore,
+}: InfiniteScrollContainerProps) {
+  const [items, setItems] = useState<SlideShowWithTranslations[]>(initialData)
+  const [currentPage, setCurrentPage] = useState(1) // Start from page 2 since initialData is page 1
+  const [hasMore, setHasMore] = useState(initialHasMore)
+  const [isPending, startTransition] = useTransition()
+  const observerRef = useRef<HTMLDivElement>(null)
   const loadingRef = useRef(false)
 
   useEffect(() => {
-    if (!ref.current || !hasMore) return
+    if (!observerRef.current || !hasMore || isPending) return
 
     const observer = new IntersectionObserver(
       async ([entry]) => {
-        if (!entry.isIntersecting) return
-        if (loadingRef.current) return
+        if (!entry.isIntersecting || loadingRef.current) return
 
         loadingRef.current = true
-        const nextPage = currentPage + 1
 
-        try {
-          const res = await fetchSlideShows({
-            locale :locale,
-            skip: (nextPage - 1),
-            take: itemsPerPage,
-          })
-
-          if (res.status === "success" && res.data.data.length > 0) {
-            setItems(prev => [...prev, ...res.data.data])
-            setCurrentPage(nextPage)
-            setHasMore(res.data.pagination.remainingItems > 0)
+        startTransition(async () => {
+          const result = await loadMoreSlideShows(locale, currentPage, itemsPerPage)
+          console.log('Loading page:', currentPage, result)
+          
+          if (result.success && result.data.length > 0) {
+            setItems(prev => [...prev, ...result.data])
+            setCurrentPage(prev => prev + 1) // Increment page
+            setHasMore(result.hasMore)
           } else {
             setHasMore(false)
           }
-        } catch {
-          setHasMore(false)
-        } finally {
+
           loadingRef.current = false
-        }
+        })
       },
-      { threshold: .1, rootMargin: "400px 0px 400px 0px" }
+      {
+        threshold: 0.1,
+        rootMargin: "400px 400px 400px 0px",
+      }
     )
 
-    observer.observe(ref.current)
+    observer.observe(observerRef.current)
+
     return () => observer.disconnect()
-  }, [locale, currentPage, hasMore, itemsPerPage])
+  }, [hasMore, isPending, currentPage, locale, itemsPerPage])
 
   return (
     <>
       {items.map((item, index) => (
         <SlideshowCard
           key={item.id}
-          item={item as any}
+          item={item}
           index={index}
           locale={locale}
           autoPlay={item.autoPlay}
@@ -75,9 +74,25 @@ const PaginationTrigger = ({
         />
       ))}
 
-      {hasMore && <div ref={ref} className="h-40  w-full bg-transparent" />}
+      {isPending && (
+        <div className="flex min-h-screen w-screen items-center container mx-auto justify-center flex-col gap-4">
+          <CompositionLoader composition={CompositionType.GRID} locale="en" />
+          <CompositionLoader composition={CompositionType.PARALLAX} locale="en" />
+          <CompositionLoader composition={CompositionType.CAROUSEL} locale="en" />
+          <CompositionLoader composition={CompositionType.LIGHTBOX} locale="en" />
+          <CompositionLoader composition={CompositionType.MARQUEE} locale="en" />
+          <CompositionLoader composition={CompositionType.COVERFLOW} locale="en" />
+        </div>
+      )}
+
+      {/* Invisible trigger element for intersection observer */}
+      {hasMore && (
+        <div 
+          ref={observerRef} 
+          className="h-20 w-full" 
+          aria-hidden="true"
+        />
+      )}
     </>
   )
 }
-
-export default PaginationTrigger

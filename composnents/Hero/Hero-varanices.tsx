@@ -171,7 +171,7 @@ export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
                                     <h1
 
                                         className="text-base sm:text-lg md:text-5xl leading-relaxed text-balance font-bold"
-                                        style={{ color: hero.titleColor || undefined, marginBottom: "1rem" }}
+                                        // style={{  || undefined, marginBottom: "1rem" }}
                                     >
                                         {hero.title}
                                     </h1>
@@ -180,7 +180,7 @@ export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
 
                                         <p
                                             className="text-xl sm:text-2xl md:text-2xl  text-balance font-light"
-                                            style={{ color: hero.subtitleColor || undefined, marginBottom: "1rem" }}
+                                            // style={{ color: hero.subtitleColor || undefined, marginBottom: "1rem" }}
                                         >
                                             {hero.subtitle}
                                         </p>
@@ -190,7 +190,7 @@ export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
 
                                         <p
                                             className="text-base sm:text-lg md:text-xl max-w-3xl leading-relaxed text-balance font-light"
-                                            style={{ color: hero.descriptionColor || undefined, }}
+                                            // style={{ color: hero.descriptionColor || undefined, }}
                                         >
                                             {hero.description}
                                         </p>
@@ -320,7 +320,7 @@ export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
         <div
             className={cn(`relative w-full overflow-hidden flex  justify-center ${getMinHeight()}`, hero.variant !== "SPLIT" && "items-center")}
             style={{
-                backgroundColor: "#ffffff",
+                // backgroundColor: "#ffffff",
                 // backgroundColor: !backgroundImageUrl && !hero.backgroundVideo ? hero.backgroundColor || "transparent" : "transparent",
                 backgroundImage: hero.variant !== "SPLIT" && backgroundImageUrl ? `url(${backgroundImageUrl})` : "none",
                 backgroundSize: "cover",

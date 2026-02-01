@@ -52,6 +52,7 @@ export function SlideshowCard({
 
   }
 
+  if(isCube) return;
   return (
     <div
 

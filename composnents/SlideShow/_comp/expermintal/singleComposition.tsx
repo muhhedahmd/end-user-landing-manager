@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import {  useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { slide } from "@/types/schema";
@@ -104,7 +104,7 @@ const SingleComposition = ({ slides }: { slides: slide[] }) => {
             key={slideItem.id}
             className="shrink-0 h-full  flex items-end py-10 justify-start"
           >
-            <div className=" w-0 md:w-[10rem] h-screen md:pl-10 flex items-center justify-center">
+            <div className=" w-0 md:w-40 h-screen md:pl-10 flex items-center justify-center">
             </div>
             {/* md:w-220 md:h-120 w-110  */}
             <div className="pointer-events-auto  w-screen h-full   overflow-hidden flex items-center justify-center" >

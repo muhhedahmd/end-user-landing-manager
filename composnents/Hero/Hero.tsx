@@ -3,6 +3,7 @@ import HeroError from "./hero-error";
 
 import ClientHeroVarients from "./_comp/clientHeroVarients";
 import HeroAnimation from "./_comp/heroAnamation";
+import { getCompanyInfo } from "@/app/[locale]/(routes)/services/comp/Fetchers";
 
 
 
@@ -15,8 +16,8 @@ async function fetchActiveHero({locale} : { locale: "en" | "ar"}): Promise<HeroR
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/hero/active?lang=${locale}`,
       {
-              cache: "force-cache", 
-              next: { revalidate: 3600 },
+              cache: "no-store", 
+              // next: { revalidate: 3600 },
 
       },
 
@@ -43,18 +44,21 @@ export default async function HeroSection({
     locale: "en" | "ar"
 }) {
   const result = await fetchActiveHero({locale});
+  const cmopanyInfo = await getCompanyInfo();
+  const companyName =  cmopanyInfo?.company?.name || "Your Company Name";
 
   if (result.status === "error") {
     return <HeroError />;
   }
 
+  
   return (
     <section
       className="w-screen h-screen"
       role="banner"
       aria-label={result.hero.name || "Hero section"}
     >
-      <HeroAnimation>
+      <HeroAnimation companyName={companyName}>
         <ClientHeroVarients
           hero={{...result.hero , 
             backgroundColor:"",

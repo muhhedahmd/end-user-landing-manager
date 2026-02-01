@@ -107,6 +107,7 @@ export class SlidesService {
    * Fetch paginated slides for a slideshow
    */
   async fetchSlides({
+    
     id,
     page = 1,
     perPage = 50,

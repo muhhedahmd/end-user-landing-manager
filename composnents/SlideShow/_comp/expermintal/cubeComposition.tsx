@@ -85,7 +85,7 @@ const CubeComposition = ({ slides }: {
   return (
     <div
       ref={rootRef}
-      className="min-h-screen relative px-4 sm:px-6 md:px-8 lg:px-10 py-8 sm:py-10 md:py-12 font-light"
+      className="min-h-screen h-screen relative px-4 sm:px-6 md:px-8 lg:px-10 py-8 sm:py-10 md:py-12 font-light"
     >
       {/* Cards container */}
 

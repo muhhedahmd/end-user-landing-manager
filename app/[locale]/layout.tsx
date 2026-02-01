@@ -9,6 +9,7 @@ import SmoothScrolling from "@/composnents/scroll/smoothScrolling";
 import { getCompanyInfo } from "./(routes)/services/comp/Fetchers";
 import { locales  } from "@/lib/i18n";
 import { notFound } from "next/navigation";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],

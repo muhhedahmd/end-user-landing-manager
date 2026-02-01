@@ -21,6 +21,7 @@ const RenderSlidesManual = memo(({
   HeaderSlideShow ,
   locale,
   isInViewport,
+  
   id,
   interval = 5000,
   autoPlay,
@@ -44,7 +45,7 @@ const RenderSlidesManual = memo(({
       const response = await slidesService.fetchSlides({
         id,
         page: 1,
-        perPage: 50,
+        perPage: 20,
       });
 
       if (response.success && response.data.slides) {

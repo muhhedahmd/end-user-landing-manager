@@ -27,25 +27,25 @@ const CoverflowComposition = ({
     const col1Data = useMemo(() => {
         if (slides.length === 0) return []
         const col1Slides = slides.filter((_, idx) => idx % 4 === 0)
-        return [...col1Slides, ...col1Slides]
+        return [...col1Slides, ...col1Slides ,...col1Slides, ...col1Slides ]
     }, [slides])
     
     const col2Data = useMemo(() => {
         if (slides.length === 0) return []
         const col2Slides = slides.filter((_, idx) => idx % 4 === 1)
-        return [...col2Slides, ...col2Slides]
+        return [...col2Slides, ...col2Slides ,...col2Slides ,...col2Slides ]
     }, [slides])
     
     const col3Data = useMemo(() => {
         if (slides.length === 0) return []
         const col3Slides = slides.filter((_, idx) => idx % 4 === 2)
-        return [...col3Slides, ...col3Slides]
+        return [...col3Slides, ...col3Slides ,...col3Slides , ...col3Slides ]
     }, [slides])
     
     const col4Data = useMemo(() => {
         if (slides.length === 0) return []
         const col4Slides = slides.filter((_, idx) => idx % 4 === 3)
-        return [...col4Slides, ...col4Slides]
+        return [...col4Slides, ...col4Slides ,...col4Slides ,...col4Slides ]
     }, [slides])
 
     useGSAP(() => {
