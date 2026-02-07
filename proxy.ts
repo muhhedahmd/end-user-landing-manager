@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { defaultLocale as DEFAULT_LOCALE, locales, locales as LOCALES } from "./lib/i18n";
 import { cookies } from "next/headers";
 
-export async function  proxy(req: NextRequest, _: NextResponse) {
+export async function  proxy(req: NextRequest, ) {
   const Cookies =  await cookies()
 
   const { pathname } = req.nextUrl;
@@ -17,7 +17,6 @@ export async function  proxy(req: NextRequest, _: NextResponse) {
 
 
 
-//  if(currentUrlLang && )
   if( currentUrlLang && !locales.includes(currentUrlLang) ) {
   return NextResponse.next();
 
@@ -26,7 +25,6 @@ export async function  proxy(req: NextRequest, _: NextResponse) {
    if(currentUrlLang && currentUrlLang !== cookieLocale) { 
     Cookies.set("lang" , currentUrlLang || "en" )
     const url = req.nextUrl.clone();
-    // url.pathname = `/${currentUrlLang}${pathname}`;
     return NextResponse.redirect(url);
   }
 
