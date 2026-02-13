@@ -246,14 +246,14 @@ SlideShow/
 │   │   ├── teamMemeber.tsx         # Team member cards
 │   │   ├── testimonals.tsx         # Testimonial cards
 │   │   └── generic/                # Generic compositions
-│   │       ├── coverFlow.tsx       # 3D coverflow effect
+│   │       ├── coverFlow.tsx       # 3 cols auto scroll effect
 │   │       ├── cube.tsx            # Cube rotation effect
 │   │       ├── filmStrap.tsx       # Film strip layout
 │   │       ├── Marquee.tsx         # Auto-scrolling marquee
 │   │       ├── Parallax.tsx        # Parallax scrolling
 │   │       └── Single.tsx          # Single slide display
 │   │
-│   ├── expermintal/                # Experimental compositions
+│   ├── expermintal/                # Experimental compositions #new
 │   │   ├── coverflowComposition.tsx
 │   │   ├── cubeComposition.tsx
 │   │   ├── marqueeComposition.tsx
@@ -305,11 +305,9 @@ shadcn/ui components:
 // Configures next-intl with locales and default locale
 
 // Usage in components:
-import { useTranslations } from 'next-intl';
-
-function Component() {
-  const t = useTranslations('namespace');
-  return <h1>{t('key')}</h1>;
+export const dictionaries = {
+  en: () => import("./messages/en.json").then(m => m.default),
+  ar: () => import("./messages/ar.json").then(m => m.default),
 }
 ```
 

@@ -89,7 +89,7 @@ export function InfiniteScrollContainer({
       {hasMore && (
         <div 
           ref={observerRef} 
-          className="h-20 w-full" 
+          className="h-2400 w-full" 
           aria-hidden="true"
         />
       )}

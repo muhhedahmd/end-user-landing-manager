@@ -18,9 +18,6 @@ const ImageWithBlurHash = ({
     image
 }: interFaceImageWithBlurHash) => {
     
-
-
-
     if (!image.url || !image.blurHash) {
         return <div>
             <ImageIcon />
