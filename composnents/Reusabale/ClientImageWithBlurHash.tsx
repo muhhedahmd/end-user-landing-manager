@@ -27,12 +27,11 @@ const BlurredImage = memo<Props>(({
   alt, 
   quality = 100, 
   blurhash,
-  minLoadingTime = 20 // No minimum by default
+  minLoadingTime = 20 
 }: Props) => {
   const [imageState, setImageState] = useState<'loading' | 'loaded' | 'error'>('loading')
   const [showImage, setShowImage] = useState(false)
 
-  // Preload image in background
   useEffect(() => {
     let isCancelled = false
     const startTime = Date.now()
@@ -49,7 +48,6 @@ const BlurredImage = memo<Props>(({
       const elapsedTime = Date.now() - startTime
       const remainingTime = Math.max(0, minLoadingTime - elapsedTime)
 
-      // Wait for minimum loading time if specified
       if (remainingTime > 0) {
         setTimeout(() => {
           if (!isCancelled) {
@@ -75,7 +73,7 @@ const BlurredImage = memo<Props>(({
       img.onload = null
       img.onerror = null
     }
-  }, [imageUrl, minLoadingTime])
+  }, [height, imageUrl, minLoadingTime, width])
 
   if (imageState === 'error') {
     return (
@@ -108,7 +106,6 @@ const BlurredImage = memo<Props>(({
         </div>
       )}
 
-      {/* Actual image - hidden until loaded */}
       {showImage && (
         <Image
           alt={alt}
