@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { memo,  useEffect, useState } from "react"
+import { memo, useEffect, useState } from "react"
 import { BlurhashCanvas } from "react-blurhash"
 import Image from "next/image"
 import { ImageIcon } from "lucide-react"
@@ -15,19 +15,19 @@ interface Props {
   quality?: number
   blurhash?: string
   style?: React.CSSProperties
-  minLoadingTime?: number 
+  minLoadingTime?: number
 }
 
-const BlurredImage = memo<Props>(({ 
-  style, 
-  imageUrl, 
-  width, 
-  height, 
-  className, 
-  alt, 
-  quality = 100, 
+const BlurredImage = memo<Props>(({
+  style,
+  imageUrl,
+  width,
+  height,
+  className,
+  alt,
+  quality = 75,
   blurhash,
-  minLoadingTime = 20 
+  // minLoadingTime = 0
 }: Props) => {
   const [imageState, setImageState] = useState<'loading' | 'loaded' | 'error'>('loading')
   const [showImage, setShowImage] = useState(false)
@@ -46,7 +46,7 @@ const BlurredImage = memo<Props>(({
       if (isCancelled) return
 
       const elapsedTime = Date.now() - startTime
-      const remainingTime = Math.max(0, minLoadingTime - elapsedTime)
+      const remainingTime = Math.max(0, elapsedTime)
 
       if (remainingTime > 0) {
         setTimeout(() => {
@@ -73,11 +73,11 @@ const BlurredImage = memo<Props>(({
       img.onload = null
       img.onerror = null
     }
-  }, [height, imageUrl, minLoadingTime, width])
+  }, [height, imageUrl, width])
 
   if (imageState === 'error') {
     return (
-      <div 
+      <div
         style={style}
         className={`flex items-center justify-center bg-gray-100 ${className}`}
       >
@@ -91,12 +91,11 @@ const BlurredImage = memo<Props>(({
   return (
     <div style={style} className={`relative overflow-hidden ${className}`}>
       {blurhash && (
-        <div 
-          className={`absolute inset-0 w-full h-full transition-opacity duration-500 ${
-            showImage ? 'opacity-0 pointer-events-none' : 'opacity-100'
-          }`}
+        <div
+          className={`absolute inset-0 w-full h-full transition-opacity duration-500 ${showImage ? 'opacity-0 pointer-events-none' : 'opacity-100'
+            }`}
         >
-          <BlurhashCanvas 
+          <BlurhashCanvas
             hash={blurhash}
             width={32}
             height={32}
@@ -113,9 +112,8 @@ const BlurredImage = memo<Props>(({
           quality={quality}
           width={width}
           height={height}
-          className={`w-full h-full object-cover transition-opacity duration-500 ${
-            isLoading ? 'opacity-0' : 'opacity-100'
-          }`}
+          className={`w-full h-full object-cover transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'
+            }`}
         />
       )}
 

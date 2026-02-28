@@ -14,27 +14,35 @@ interface RenderSlidesProps {
   interval?: number;
   autoPlay: boolean;
   composition: CompositionType;
-  HeaderSlideShow ?: JSX.Element | null
-  
+  HeaderSlideShow?: JSX.Element | null
+  prefetchedSlides?: any[];
 }
 const RenderSlidesManual = memo(({
-  HeaderSlideShow ,
+  HeaderSlideShow,
   locale,
   isInViewport,
-  
+
   id,
   interval = 5000,
   autoPlay,
   composition,
+  prefetchedSlides,
 }: RenderSlidesProps) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [slides, setSlides] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [slides, setSlides] = useState<any[]>(prefetchedSlides || []);
+  const [isLoading, setIsLoading] = useState(!prefetchedSlides || prefetchedSlides.length === 0);
   const [error, setError] = useState<Error | null>(null);
 
   const hasTriggered = useRef(false);
 
   const fetchSlides = useCallback(async () => {
+    // Skip fetching if we already have prefetched slides
+    if (prefetchedSlides && prefetchedSlides.length > 0) {
+      setSlides(prefetchedSlides);
+      setIsLoading(false);
+      return;
+    }
+
     if (hasTriggered.current) return;
 
     hasTriggered.current = true;
@@ -53,13 +61,13 @@ const RenderSlidesManual = memo(({
           .filter((item) => item.isVisible)
           .sort((a, b) => a.order - b.order)
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          .map((item : any) => ({
+          .map((item: any) => ({
             ...item.data,
             type: item.type,
             order: item.order,
             id: item.id,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ...item.translation.find((t : any) => t.lang.toUpperCase() === locale.toUpperCase()),
+            ...item.translation.find((t: any) => t.lang.toUpperCase() === locale.toUpperCase()),
             customTitle: item.customTitle,
             customDescription: item.customDesc,
           }));
@@ -76,7 +84,7 @@ const RenderSlidesManual = memo(({
     } finally {
       setIsLoading(false);
     }
-  }, [id , locale]);
+  }, [id, locale, prefetchedSlides]);
 
 
   useEffect(() => {
@@ -88,7 +96,7 @@ const RenderSlidesManual = memo(({
 
   if (isLoading) {
     return (
-      <CompositionLoader composition={composition} locale="en"/>
+      <CompositionLoader composition={composition} locale="en" />
     );
   }
 
@@ -108,7 +116,7 @@ const RenderSlidesManual = memo(({
 
       {!isLoading && !error && (
         <CompositionPreview
-        HeaderSlideShow={HeaderSlideShow}
+          HeaderSlideShow={HeaderSlideShow}
           interval={interval}
           autoPlay={autoPlay}
           isInViewport={isInViewport}

@@ -33,7 +33,7 @@ export const ClientCard = ({ story  ,  imaged,   lightOpen, light, data, single,
                         width={data.image.width || 400}
                         alt={data.image.alt || data.name}
                         blurhash={data.image.blurHash || ""}
-                        quality={100}
+                        
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
                 </div>
@@ -67,7 +67,7 @@ export const ClientCard = ({ story  ,  imaged,   lightOpen, light, data, single,
                                 width={data.image.width || 400}
                                 alt={data.image.alt || data.name}
                                 blurhash={data.image.blurHash || ""}
-                                quality={100}
+                                
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                             />
                         </div>
@@ -92,7 +92,7 @@ export const ClientCard = ({ story  ,  imaged,   lightOpen, light, data, single,
                                 width={data.logo.width || 100}
                                 alt={data.logo.alt || `${data.name} logo`}
                                 blurhash={data.logo.blurHash || ""}
-                                quality={100}
+                                
                                 className="max-w-5 max-h-5 w-5 h-5 object-contain rounded-xl"
                             />
                             <h3 className="text-lg font-bold text-foreground font-sora">
@@ -158,7 +158,7 @@ export const ClientCard = ({ story  ,  imaged,   lightOpen, light, data, single,
                             width={data.image.width || 800}
                             alt={data.image.alt || data.name}
                             blurhash={data.image.blurHash || ""}
-                            quality={100}
+                            
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                         />
                     </div>
@@ -188,7 +188,7 @@ export const ClientCard = ({ story  ,  imaged,   lightOpen, light, data, single,
                                 width={data.image.width || 400}
                                 alt={data.image.alt || data.name}
                                 blurhash={data.image.blurHash || ""}
-                                quality={100}
+                                
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                             />
                         </div>
@@ -207,7 +207,7 @@ export const ClientCard = ({ story  ,  imaged,   lightOpen, light, data, single,
                                 width={data.logo.width || 100}
                                 alt={data.logo.alt || `${data.name} logo`}
                                 blurhash={data.logo.blurHash || ""}
-                                quality={100}
+                                
                                 className="max-w-5 max-h-5 w-5 h-5 object-contain rounded-xl"
                             />
                             <h3
@@ -284,7 +284,7 @@ const ClientCardsingle = ({ data, idx = 0 }: ClientCardProps) => {
                             width={data.image.width || 400}
                             alt={data.image.alt || data.name}
                             blurhash={data.image.blurHash || ""}
-                            quality={100}
+                            
                             className="md:w-full md:h-full sm:h-[70%] sm:w-[90%]  w-full h-full  object-cover  transition-transform duration-700 ease-out rounded-2xl shadow-md"
                         />
                     </div>
@@ -323,7 +323,7 @@ const ClientCardsingle = ({ data, idx = 0 }: ClientCardProps) => {
                             width={data.logo.width || 100}
                             alt={data.logo.alt || `${data.name} logo`}
                             blurhash={data.logo.blurHash || ""}
-                            quality={100}
+                            
                             className="max-w-10 max-h-10 sm:w-10 sm:h-10  object-contain rounded-md"
                         />
                         <h3
@@ -429,7 +429,7 @@ const ClientCardStory = ({ data }: { data: ClientWithRelationsSlide }) => {
                             width={data.image.width || 800}
                             alt={data.image.alt || data.name}
                             blurhash={data.image.blurHash || ""}
-                            quality={100}
+                            
                             className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                         />
                     </div>

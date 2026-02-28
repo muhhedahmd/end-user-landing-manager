@@ -17,10 +17,10 @@ interface ServiceCardProps {
     imaged?: boolean
     splitcarousel?: boolean
     story?: boolean,
-    lightOpen ?: boolean
+    lightOpen?: boolean
 }
 
-export const ServiceCard = ({ lightOpen ,data, imaged = false, splitcarousel, story }: ServiceCardProps) => {
+export const ServiceCard = ({ lightOpen, data, imaged = false, splitcarousel, story }: ServiceCardProps) => {
 
 
     const cardRef = useRef<HTMLElement>(null)
@@ -84,7 +84,7 @@ export const ServiceCard = ({ lightOpen ,data, imaged = false, splitcarousel, st
             )
         }
 
-   
+
     }, [])
 
     if (imaged) {
@@ -98,7 +98,7 @@ export const ServiceCard = ({ lightOpen ,data, imaged = false, splitcarousel, st
                             width={DataToRender.image.width || 800}
                             alt={DataToRender.image.alt || data.name}
                             blurhash={DataToRender.image.blurHash || ""}
-                            quality={100}
+                            
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                         />
                     </div>
@@ -122,7 +122,7 @@ export const ServiceCard = ({ lightOpen ,data, imaged = false, splitcarousel, st
                             width={DataToRender.image.width || 800}
                             alt={DataToRender.image.alt || data.name}
                             blurhash={DataToRender.image.blurHash || ""}
-                            quality={100}
+                            
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                         />
                     </div>
@@ -166,106 +166,106 @@ export const ServiceCard = ({ lightOpen ,data, imaged = false, splitcarousel, st
                     )}
 
                     {/* Price - Push to bottom */}
-                  
+
                 </div>
             </article>
         )
     }
 
-    if(lightOpen){
+    if (lightOpen) {
         return (
-    <article
-        ref={cardRef}
-        className={cn(
-            "group relative overflow-hidden bg-background/90 rounded-2xl transition-all duration-300",
-            lightOpen 
-                ? "h-full w-full flex flex-col" 
-                : "h-full p-2 hover:border-primary/50"
-        )}
-    >
-        {/* Image Section */}
-        {DataToRender?.image && (
-            <div 
+            <article
+                ref={cardRef}
                 className={cn(
-                    "overflow-hidden rounded-md bg-muted",
-                    lightOpen 
-                        ? "h-64 md:h-96 w-full rounded-t-2xl rounded-b-none" 
-                        : "mb-5 h-70"
+                    "group relative overflow-hidden bg-background/90 rounded-2xl transition-all duration-300",
+                    lightOpen
+                        ? "h-full w-full flex flex-col"
+                        : "h-full p-2 hover:border-primary/50"
                 )}
             >
-                <BlurredImage
-                    imageUrl={DataToRender?.image.url || ""}
-                    height={DataToRender?.image.height || 400}
-                    width={DataToRender?.image.width || 800}
-                    alt={DataToRender?.image.alt || data.name}
-                    blurhash={DataToRender?.image.blurHash || ""}
-                    quality={100}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                />
-            </div>
-        )}
-
-        {/* Content Section */}
-        <div 
-            className={cn(
-                "space-y-4",
-                lightOpen 
-                    ? "p-8 flex-1 overflow-y-auto" 
-                    : "p-0"
-            )}
-        >
-            {/* Icon & Title */}
-            <div className="flex items-center gap-3">
-                {DataToRender?.icon && DataToRender?.icon?.startsWith("http") ? (
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 p-2.5 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
-                        <Image
-                            src={DataToRender?.icon}
-                            width={24}
-                            height={24}
-                            alt={DataToRender.name + "-icon"}
-                            className="w-full h-full object-contain"
+                {/* Image Section */}
+                {DataToRender?.image && (
+                    <div
+                        className={cn(
+                            "overflow-hidden rounded-md bg-muted",
+                            lightOpen
+                                ? "h-64 md:h-96 w-full rounded-t-2xl rounded-b-none"
+                                : "mb-5 h-70"
+                        )}
+                    >
+                        <BlurredImage
+                            imageUrl={DataToRender?.image.url || ""}
+                            height={DataToRender?.image.height || 400}
+                            width={DataToRender?.image.width || 800}
+                            alt={DataToRender?.image.alt || data.name}
+                            blurhash={DataToRender?.image.blurHash || ""}
+                            
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                         />
                     </div>
-                ) : (
-                    <span className="text-2xl">{DataToRender?.icon}</span>
                 )}
-                <h3 
-                    className={cn(
-                        "service-title font-bold font-sora text-foreground",
-                        lightOpen ? "text-2xl" : "text-xl"
-                    )}
-                >
-                    {DataToRender?.name}
-                </h3>
-            </div>
 
-            {/* Description */}
-            {DataToRender?.description && (
-                <p 
-                    className={cn(
-                        "service-description text-muted-foreground leading-relaxed font-inter",
-                        lightOpen ? "text-base" : "text-sm"
-                    )}
-                >
-                    {DataToRender?.description}
-                </p>
-            )}
-
-            {/* Rich Description */}
-            {DataToRender.richDescription && (
+                {/* Content Section */}
                 <div
                     className={cn(
-                        "service-description text-muted-foreground leading-relaxed font-inter prose prose-sm dark:prose-invert",
-                        lightOpen 
-                            ? "text-base line-clamp-none prose-base" 
-                            : "text-sm line-clamp-4"
+                        "space-y-4",
+                        lightOpen
+                            ? "p-8 flex-1 overflow-y-auto"
+                            : "p-0"
                     )}
-                    dangerouslySetInnerHTML={{ __html: DataToRender?.richDescription }}
-                />
-            )}
-        </div>
-    </article>
-);
+                >
+                    {/* Icon & Title */}
+                    <div className="flex items-center gap-3">
+                        {DataToRender?.icon && DataToRender?.icon?.startsWith("http") ? (
+                            <div className="w-12 h-12 rounded-xl bg-primary/10 p-2.5 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
+                                <Image
+                                    src={DataToRender?.icon}
+                                    width={24}
+                                    height={24}
+                                    alt={DataToRender.name + "-icon"}
+                                    className="w-full h-full object-contain"
+                                />
+                            </div>
+                        ) : (
+                            <span className="text-2xl">{DataToRender?.icon}</span>
+                        )}
+                        <h3
+                            className={cn(
+                                "service-title font-bold font-sora text-foreground",
+                                lightOpen ? "text-2xl" : "text-xl"
+                            )}
+                        >
+                            {DataToRender?.name}
+                        </h3>
+                    </div>
+
+                    {/* Description */}
+                    {DataToRender?.description && (
+                        <p
+                            className={cn(
+                                "service-description text-muted-foreground leading-relaxed font-inter",
+                                lightOpen ? "text-base" : "text-sm"
+                            )}
+                        >
+                            {DataToRender?.description}
+                        </p>
+                    )}
+
+                    {/* Rich Description */}
+                    {DataToRender.richDescription && (
+                        <div
+                            className={cn(
+                                "service-description text-muted-foreground leading-relaxed font-inter prose prose-sm dark:prose-invert",
+                                lightOpen
+                                    ? "text-base line-clamp-none prose-base"
+                                    : "text-sm line-clamp-4"
+                            )}
+                            dangerouslySetInnerHTML={{ __html: DataToRender?.richDescription }}
+                        />
+                    )}
+                </div>
+            </article>
+        );
 
     }
 
@@ -282,7 +282,7 @@ export const ServiceCard = ({ lightOpen ,data, imaged = false, splitcarousel, st
                         width={DataToRender.image.width || 800}
                         alt={DataToRender.image.alt || data.name}
                         blurhash={DataToRender.image.blurHash || ""}
-                        quality={100}
+                        
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
                 </div>

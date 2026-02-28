@@ -87,7 +87,7 @@ export const TestimonialCard = ({ data, minmal, light }: TestimonialCardProps) =
                             width={data.avatar.width || 800}
                             alt={data.avatar.alt || data.clientName}
                             blurhash={data.avatar.blurHash || ""}
-                            quality={100}
+                            
                             className="w-12 h-12 rounded-full object-cover border-2 border-primary/20"
                         />
                     )}
@@ -126,7 +126,7 @@ if (light) {
                             width={data.avatar.width || 800}
                             alt={data.avatar.alt || data.clientName}
                             blurhash={data.avatar.blurHash || ""}
-                            quality={100}
+                            
                             className="w-12 h-12 rounded-full object-cover border-2 border-primary/20"
                         />
                     )}
@@ -184,7 +184,7 @@ if (light) {
                                 width={data.avatar.width || 800}
                                 alt={data.avatar.alt || data.clientName}
                                 blurhash={data.avatar.blurHash || ""}
-                                quality={100}
+                                
                                 className="w-12 h-12 rounded-full object-cover border-2 border-primary/20"
                             />
                         )}

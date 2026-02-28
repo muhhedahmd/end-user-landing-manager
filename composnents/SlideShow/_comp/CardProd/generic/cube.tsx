@@ -23,7 +23,7 @@ const Cube = memo(( { data} : {data : any}) => {
                                 width={data.image.width || 400}
                                 alt={data.image.alt || data.name}
                                 blurhash={data.image.blurHash || ""}
-                                quality={100}
+                                
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                             />
                         </div>
@@ -42,7 +42,7 @@ const Cube = memo(( { data} : {data : any}) => {
                                 width={data.logo.width || 100}
                                 alt={data.logo.alt || `${data.name} logo`}
                                 blurhash={data.logo.blurHash || ""}
-                                quality={100}
+                                
                                 className="max-w-5 max-h-5 w-5 h-5 object-contain rounded-xl"
                             />
                             <h3

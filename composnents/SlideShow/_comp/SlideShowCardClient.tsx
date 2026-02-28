@@ -3,19 +3,16 @@
 import { memo, useEffect, useRef, useState } from "react";
 import { CompositionType } from "@/types/schema";
 
-import  RenderSlides  from "./RenderSlide";
-
-
-
-
+import RenderSlides from "./RenderSlide";
 
 interface SlideshowCardClientProps {
   id: string;
-  locale : "en" | "ar";
+  locale: "en" | "ar";
   composition: keyof typeof CompositionType;
   autoPlay: boolean;
   interval: number;
   index: number;
+  prefetchedSlides?: any[];
 }
 
 export const SlideshowCardClient = memo(function SlideshowCardClient({
@@ -24,6 +21,7 @@ export const SlideshowCardClient = memo(function SlideshowCardClient({
   composition,
   autoPlay,
   interval,
+  prefetchedSlides,
 }: SlideshowCardClientProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isInViewport, setIsInViewport] = useState(false);
@@ -62,21 +60,21 @@ export const SlideshowCardClient = memo(function SlideshowCardClient({
 
   return (
     <div
-    ref={cardRef}
+      ref={cardRef}
 
     >
 
-     
-      <RenderSlides
 
-      locale={locale}
+      <RenderSlides
+        prefetchedSlides={prefetchedSlides}
+        locale={locale}
         isInViewport={isInViewport}
         autoPlay={autoPlay}
         interval={interval}
         id={id}
         composition={composition as CompositionType}
       />
-      
+
     </div>
   );
 });

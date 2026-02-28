@@ -238,7 +238,7 @@ export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
                                     width={backgroundImage.width && backgroundImage.width > 400 ? backgroundImage.width : 400}
                                     blurhash={backgroundImage.blurHash || ""}
                                     className={"w-full h-full object-cover"}
-                                    quality={100}
+                                    
                                 />
 
                             </div>
@@ -340,7 +340,7 @@ export function ProductionHero({ hero, backgroundImage }: ProductionHeroProps) {
                             height={backgroundImage.height || 400}
                             width={backgroundImage.width || 400}
                             className={"w-full h-full object-cover"}
-                            quality={100}
+                            
                             blurhash={backgroundImage.blurHash || ""}
 
                         />

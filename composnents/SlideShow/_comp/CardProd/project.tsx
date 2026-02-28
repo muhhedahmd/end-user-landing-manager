@@ -43,7 +43,7 @@ export const ProjectCard = ({
                             width={data.image.width || 800}
                             alt={data.image.alt || data.clientName || ""}
                             blurhash={data.image.blurHash || ""}
-                            quality={100}
+                            
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                         />
                     </div>
@@ -126,7 +126,7 @@ const ProjectCardDefault = ({ data }: { data: ProjectWithRelationsSlide }) => {
                         width={data.image.width || 800}
                         alt={data.image.alt || data.title}
                         blurhash={data.image.blurHash || ""}
-                        quality={100}
+                        
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
                 )}
@@ -239,7 +239,7 @@ const ProjectCardStory = ({ data }: { data: ProjectWithRelationsSlide }) => {
                     width={data.image.width || 800}
                     alt={data.image.alt || data.title}
                     blurhash={data.image.blurHash || ""}
-                    quality={100}
+                    
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
             </div>

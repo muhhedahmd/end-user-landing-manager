@@ -99,7 +99,7 @@ export const TeamMemberCard = ({ splitcarousel, data }: TeamMemberCardProps) => 
             width={data.image.width || 800}
             alt={data.image.alt || data.name}
             blurhash={data.image.blurHash || ""}
-            quality={100}
+            
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           />
         )}
@@ -195,7 +195,7 @@ const SplitcarouselTeam = ({ data }: { data: TeamMemberWithImage }) => {
             width={data.image.width || 800}
             alt={data.image.alt || data.name}
             blurhash={data.image.blurHash || ""}
-            quality={100}
+            
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           />
         )}

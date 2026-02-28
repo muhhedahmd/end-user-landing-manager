@@ -28,7 +28,7 @@ const GenricSingle = ({ data, idx = 0 }: { data: any, idx?: number }) => {
                             width={image.width || 400}
                             alt={image.alt || name}
                             blurhash={image.blurHash || ""}
-                            quality={100}
+                            
                             className="md:w-full md:h-full sm:h-[70%] sm:w-[90%] w-full h-full object-cover transition-transform duration-700 ease-out rounded-2xl shadow-md"
                         />
                     </div>
@@ -62,7 +62,7 @@ const GenricSingle = ({ data, idx = 0 }: { data: any, idx?: number }) => {
                             width={data.logo.width || 100}
                             alt={data.logo.alt || `${name} logo`}
                             blurhash={data.logo.blurHash || ""}
-                            quality={100}
+                            
                             className="max-w-10 max-h-10 sm:w-10 sm:h-10 object-contain rounded-md"
                         />
                         <h3 className="text-2xl md:text-4xl line-clamp-1 font-bold text-foreground font-sora">

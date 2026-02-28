@@ -25,6 +25,7 @@ interface SlideshowCardProps {
   textColor?: string;
   autoPlay: boolean;
   interval: number;
+  prefetchedSlides?: any[];
 }
 
 export function SlideshowCard({
@@ -33,6 +34,7 @@ export function SlideshowCard({
   autoPlay,
   item,
   index,
+  prefetchedSlides,
 
 }: SlideshowCardProps) {
   const compositionType = CompositionType[item.composition as keyof typeof CompositionType];
@@ -52,7 +54,7 @@ export function SlideshowCard({
 
   }
 
-  if(isCube) return;
+  if (isCube) return;
   return (
     <div
 
@@ -63,23 +65,23 @@ export function SlideshowCard({
 
 
 
-        <SlideHeader
-          compositionType={compositionType === "FILMSTRIP" ? (CompositionType.PARALLAX as CompositionType) : compositionType}
-          title={currentTranslation?.title}
-          description={currentTranslation?.description || ""}
-          slideShowType={slideShowType}
-        />
- 
+      <SlideHeader
+        compositionType={compositionType === "FILMSTRIP" ? (CompositionType.PARALLAX as CompositionType) : compositionType}
+        title={currentTranslation?.title}
+        description={currentTranslation?.description || ""}
+        slideShowType={slideShowType}
+      />
 
-      
+
+
 
 
       <div className="mt-10" />
 
       {/* Client component for interactive parts */}
       <SlideshowCardClient
-      
 
+        prefetchedSlides={prefetchedSlides}
         locale={locale}
         id={item.id}
         composition={compositionType}
