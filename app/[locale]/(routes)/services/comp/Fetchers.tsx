@@ -1,7 +1,5 @@
 
 
-import { SlideShowWithTranslations } from "@/composnents/SlideShow/_comp/SlideShowCard";
-import { SlideShowResult } from "@/composnents/SlideShow/SlideShow";
 import { CompanyInfo, Image, ServiceWithImage, TeamMember, TeamMemberTranslation } from "@/types/schema";
 import { PaginatedResponse } from "@/types/services";
 
@@ -53,7 +51,7 @@ export interface teamMemberResponse {
 
 
 export const fetchTeamMembers = async ({
-  
+
 
 
   skip,
@@ -112,8 +110,8 @@ export async function getCompanyInfo(): Promise<{
 } | null> {
   try {
     const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/api/company-info", {
-      cache: "force-cache",
-      next: { revalidate: 3600 }, // Revalidate every hour
+      cache: "no-store",
+      next: { revalidate: 0 }, // Revalidate every hour
     });
 
     if (!res.ok) {

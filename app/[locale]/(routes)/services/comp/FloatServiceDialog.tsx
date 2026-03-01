@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useSectionVisibility } from "@/composnents/contact/SectionVisibilityContext";
-import BlurredImage from "@/composnents/Reusabale/ClientImageWithBlurHash";
+import { useSectionVisibility } from "@/custom-components/contact/SectionVisibilityContext";
+import BlurredImage from "@/custom-components/Reusable/ClientImageWithBlurHash";
 import { useBreakPoints } from "@/hooks/useBreakPoint";
 import { ServiceWithImage } from "@/types/schema";
 import { useGSAP } from "@gsap/react";

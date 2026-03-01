@@ -1,8 +1,8 @@
 // app/actions/slideshow-actions.ts
 "use server";
 
-import { SlideShowWithTranslations } from "@/composnents/SlideShow/_comp/SlideShowCard";
-import { SlideShowResult } from "@/composnents/SlideShow/SlideShow";
+import { SlideShowWithTranslations } from "@/custom-components/SlideShow/_comp/SlideShowCard";
+import { SlideShowResult } from "@/custom-components/SlideShow/SlideShow";
 
 import { PaginatedResponse } from "@/types/services";
 

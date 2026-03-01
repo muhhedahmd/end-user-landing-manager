@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import FloatServiceDialog from "./FloatServiceDialog";
 import { fetchServices } from "./Fetchers";
-import { DictionaryShape } from "@/composnents/contact/ContactForm";
+import { DictionaryShape } from "@/custom-components/contact/ContactForm";
 
 export const dynamic = "force-static"
 

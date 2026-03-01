@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Header from "@/composnents/Header/header";
+import Header from "@/custom-components/Header/header";
 import { Fragment } from "react";
 import { fetchServices } from "./comp/Fetchers";
-import DarkSchema from "@/composnents/DarkShema";
+import DarkSchema from "@/custom-components/DarkSchema";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const _locale : string = (await params).locale 

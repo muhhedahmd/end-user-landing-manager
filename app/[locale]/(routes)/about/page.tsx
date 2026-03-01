@@ -1,4 +1,4 @@
-import { DictionaryShape } from "@/composnents/contact/ContactForm";
+import { DictionaryShape } from "@/custom-components/contact/ContactForm";
 import { getCompanyInfo } from "../services/comp/Fetchers";
 import { AnimationWrapper } from "./_comp/animation-wrapper";
 import { getDictionary } from "@/lib/i18n";
@@ -61,10 +61,10 @@ export default async function AboutPage({
     const _locale = (await params).locale
     const dictionary = await getDictionary(_locale)
 
-    const currentTranslaton = translation?.find((item) => item?.lang?.toLowerCase() === _locale.toLowerCase())
-    const companyName = currentTranslaton?.name ?? "Our Company";
-    const companyTagline = currentTranslaton?.tagline ?? dictionary.aboutPage.hero.taglineFallback;
-    const companyDescription = currentTranslaton?.description ??
+    const currentTranslation = translation?.find((item) => item?.lang?.toLowerCase() === _locale.toLowerCase())
+    const companyName = currentTranslation?.name ?? "Our Company";
+    const companyTagline = currentTranslation?.tagline ?? dictionary.aboutPage.hero.taglineFallback;
+    const companyDescription = currentTranslation?.description ??
         "We started with a simple mission: to create products that make a difference. What began as a small team with big dreams has grown into a passionate community dedicated to innovation and excellence.";
 
     const values = dictionary.aboutPage.values.items

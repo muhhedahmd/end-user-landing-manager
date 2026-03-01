@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Header from "@/composnents/Header/header";
+import Header from "@/custom-components/Header/header";
 import { Fragment } from "react";
 import { fetchTeamMembers } from "../services/comp/Fetchers";
 

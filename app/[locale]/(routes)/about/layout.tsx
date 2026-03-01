@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Header from "@/composnents/Header/header";
+import Header from "@/custom-components/Header/header";
 import { Fragment } from "react";
-import Footer from "@/composnents/Footer/Footer";
-import ContactForm from "@/composnents/contact/ContactForm";
+import Footer from "@/custom-components/Footer/Footer";
+import ContactForm from "@/custom-components/contact/ContactForm";
 import { getCompanyInfo } from "../services/comp/Fetchers";
 import { getDictionary } from "@/lib/i18n";
 // import type { Metadata } from "next";

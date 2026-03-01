@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import ContactForm, { DictionaryShape } from "@/composnents/contact/ContactForm";
-import { useSectionVisibility } from "@/composnents/contact/SectionVisibilityContext";
-import BlurredImage from "@/composnents/Reusabale/ClientImageWithBlurHash";
+import ContactForm, { DictionaryShape } from "@/custom-components/contact/ContactForm";
+import { useSectionVisibility } from "@/custom-components/contact/SectionVisibilityContext";
+import BlurredImage from "@/custom-components/Reusable/ClientImageWithBlurHash";
 import { TeamMemberWithImage } from "@/types/schema";
 import { PaginatedResponse } from "@/types/services";
 import { useGSAP } from "@gsap/react";

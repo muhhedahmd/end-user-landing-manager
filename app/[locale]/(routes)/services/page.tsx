@@ -1,8 +1,8 @@
 
 // ServicePage.tsx
 import ServiceTable from "./comp/ServiceTable"
-import Footer from "@/composnents/Footer/Footer";
-import ContactForm from "@/composnents/contact/ContactForm";
+import Footer from "@/custom-components/Footer/Footer";
+import ContactForm from "@/custom-components/contact/ContactForm";
 import AllServices from "./comp/AllServices";
 import { getDictionary } from "@/lib/i18n";
 

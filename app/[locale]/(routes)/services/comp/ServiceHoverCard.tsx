@@ -3,7 +3,7 @@
 import { ServiceWithImage } from '@/types/schema'
 import React, { useState, useRef, useEffect } from 'react'
 import gsap from 'gsap'
-import BlurredImage from '@/composnents/Reusabale/ClientImageWithBlurHash'
+import BlurredImage from '@/custom-components/Reusable/ClientImageWithBlurHash'
 import { useGSAP } from '@gsap/react'
 import { BlurhashCanvas } from 'react-blurhash'
 import { cn } from '@/lib/utils'

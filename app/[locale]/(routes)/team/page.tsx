@@ -1,6 +1,6 @@
 
 
-import Footer from '@/composnents/Footer/Footer'
+import Footer from '@/custom-components/Footer/Footer'
 import { fetchTeamMembers } from '../services/comp/Fetchers'
 import HeroTeam from './_comp/HeroTeam'
 import TeamSectionCard from './_comp/TeamSectionCard'

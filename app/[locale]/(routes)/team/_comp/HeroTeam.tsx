@@ -1,6 +1,6 @@
 "use client";
 
-import { DictionaryShape } from "@/composnents/contact/ContactForm";
+import { DictionaryShape } from "@/custom-components/contact/ContactForm";
 import { useGSAP } from "@gsap/react";
 import gsap, { SteppedEase } from "gsap";
 import { useRef } from "react";

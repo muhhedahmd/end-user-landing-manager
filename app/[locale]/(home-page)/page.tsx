@@ -1,15 +1,14 @@
-import AchievementsSection from "@/composnents/AchiveMents/Achivements";
-import LoaderAchievements from "@/composnents/AchiveMents/loader-achivements";
-import ContactForm from "@/composnents/contact/ContactForm";
-import Footer from "@/composnents/Footer/Footer";
-import Header from "@/composnents/Header/header";
-import HeroSection from "@/composnents/Hero/Hero";
-import MainLoader from "@/composnents/Loaders/MainLoader";
-import { CompositionLoader } from "@/composnents/SlideShow/_comp/SlidesLoader";
-import SlideShowsProd from "@/composnents/SlideShow/SlideShow";
+import AchievementsSection from "@/custom-components/Achievements/Achievements";
+import LoaderAchievements from "@/custom-components/Achievements/loader-achievements";
+import ContactForm from "@/custom-components/contact/ContactForm";
+import Footer from "@/custom-components/Footer/Footer";
+import Header from "@/custom-components/Header/header";
+import HeroSection from "@/custom-components/Hero/Hero";
+import MainLoader from "@/custom-components/Loaders/MainLoader";
+import { CompositionLoader } from "@/custom-components/SlideShow/_comp/SlidesLoader";
+import SlideShowsProd from "@/custom-components/SlideShow/SlideShow";
 import { getDictionary } from "@/lib/i18n";
 import { CompositionType } from "@/types/schema";
-import { Loader2 } from "lucide-react";
 import { Fragment, Suspense } from "react";
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
